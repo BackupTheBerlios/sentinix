@@ -2,11 +2,23 @@
 
 <img src="images/michels_kitchen.jpg" width=400 height=270 align=right>
 
-<h1>THE SENTINIX DEVELOPMENT TEAM</h1>
+<h1>THE DEVELOPERS</h1>
 
 <p>
 This is the current list of the people who help to develop this distribution.
+You may notice that I have changed things around a bit. I have decided to only
+put people in The SENTINIX Development Team section that actually are, on a
+continuous basis, developing SENTINIX. Because I am not only the project
+manager, but also the (extremely) busy lead developer of SENTINIX, I am unable
+to keep in contact with people, instead I ask of people interested in helping
+out with the project to keep in contact with me. Those who do keep in contact
+with me (on a regular basis) are, most likely, those who end up in the
+Development Team section below. Everyone else end up in the CONTRIBUTORS
+section below. All who contribute development/administration efforts to
+SENTINIX, no matter how small, will be listed under the CONTRIBUTORS section.
 </p>
+
+<h2>THE SENTINIX DEVELOPMENT AND MAINTENANCE TEAM</h2>
 
 <!--
 <table border=0 cellpadding=0 cellspacing=1 width="100%" bgcolor="#000000"><tr><td>
@@ -20,15 +32,47 @@ WWW: <a target="_blank" href="http://zebra.ath.cx">http://zebra.ath.cx</a>
 </td></tr></table>
 -->
 
-
 <ul type=square>
 <li><b>Michel Blomgren</b><br>
 <small>
-<b>Project Manager and Main Developer</b><br>
+<b>Project Manager and Lead Developer</b><br>
 E-mail: michel&nbsp;at&nbsp;sentinix.org<br>
 WWW: <a target="_blank" href="http://zebra.ath.cx">http://zebra.ath.cx</a><br>
 </small>
 </ul>
+
+<ul type=square>
+<li><b>Xavier Kaotico</b><br>
+<small>
+E-mail: xavier&nbsp;at&nbsp;pure-elite.org<br>
+WWW: <a target="_blank" href="http://sabu.net">http://sabu.net</a><br>
+<b>Currently working on:</b> A full-fledge IDS (Intrusion Detection System) for
+SENTINIX with filehashing and rootkit detection.<br>
+<b>Past contribution:</b> grsec kernel and various security patches to Compledge Sentinel.
+</small>
+</ul>
+
+<ul type=square>
+<li><b>Chris Hammond</b><br>
+<small>
+E-mail: chammond&nbsp;at&nbsp;cox.net<br>
+<b>Past contribution:</b> bandwidthd, Nikto, backup/restore scripts, mirroring.
+</small>
+</ul>
+
+<ul type=square>
+<li><b>Hugo Teso Torío</b><br>
+<small>
+E-mail: HugoT&nbsp;(at)&nbsp;mkzingenieria.com<br>
+<!-- WWW: <a target="_blank" href=""></a><br> -->
+<b>Currently working on:</b> Adding webmin and nagmin to SENTINIX.
+<!-- <b>Past contribution:</b> -->
+</small>
+</ul>
+
+<br>
+
+<h2>CONTRIBUTORS</h2>
 
 <ul type=square>
 <li><b>Preston Carter</b><br>
@@ -50,54 +94,6 @@ WWW: <a target="_blank" href="http://sukkha.info">http://sukkha.info</a><br>
 </small>
 </ul>
 
-<ul type=square>
-<li><b>Sebastian Petersson</b><br>
-<small>
-<b>Contributor</b><br>
-E-mail: sebastian&nbsp;at&nbsp;sentinix.org<br>
-<b>Contribution:</b> SENTINIX Documentation Project and beta testing.
-</small>
-</ul>
-
-<ul type=square>
-<li><b>Stephan Seliger</b><br>
-<small>
-<b>Contributor</b><br>
-E-mail: stephan&nbsp;at&nbsp;sentinix.org<br>
-<!-- <b>Contribution:</b> -->
-</small>
-</ul>
-
-<ul type=square>
-<li><b>Xavier Kaotico</b><br>
-<small>
-<b>Contributor</b><br>
-E-mail: xavier&nbsp;at&nbsp;pure-elite.org<br>
-WWW: <a target="_blank" href="http://sabu.net">http://sabu.net</a><br>
-<b>Contribution:</b> grsec kernel and various security patches to Compledge Sentinel.
-</small>
-</ul>
-
-<ul type=square>
-<li><b>Hugo Teso Torío</b><br>
-<small>
-<b>Contributor</b><br>
-E-mail: HugoT&nbsp;(at)&nbsp;mkzingenieria.com<br>
-<!-- WWW: <a target="_blank" href=""></a><br> -->
-<!-- <b>Contribution:</b> -->
-</small>
-</ul>
-
-<ul type=square>
-<li><b>Chris Hammond</b><br>
-<small>
-<b>Contributor</b><br>
-E-mail: chammond&nbsp;at&nbsp;cox.net<br>
-<b>Contribution:</b> bandwidthd, Nikto, backup/restore scripts, mirroring
-</small>
-</ul>
-
-
 <!--
 <ul type=square>
 <li><b>Name</b><br>
@@ -110,41 +106,10 @@ WWW: <a target="_blank" href=""></a><br>
 </ul>
 -->
 
-<h1>BETA TESTERS</h1>
-
-<ul type=square>
-<li><b>Kartikeya Puri</b><br>
-<small>
-<b>Beta Tester</b><br>
-E-mail: kartikeya_puri&nbsp;at&nbsp;hotmail.com
-<br>
-</small>
-</ul>
-
-<ul type=square>
-<li><b>Yasar Curtay</b><br>
-<small>
-<b>Beta Tester</b><br>
-E-mail: yasar_curtay&nbsp;at&nbsp;hotmail.com<br>
-</small>
-</ul>
-
-<ul type=square>
-<li><b>George Bogart</b><br>
-<small>
-<b>Beta Tester</b><br>
-E-mail: gbogart&nbsp;at&nbsp;fidalgo.net<br>
-</small>
-</ul>
-
-<ul type=square>
-<li><b>Hare Ram</b><br>
-<small>
-<b>Beta Tester</b><br>
-E-mail: balaji&nbsp;(at)&nbsp;sol.net.in<br>
-</small>
-</ul>
-
 <font color="#ff0000">Remember to replace "<b>at</b>" with <b>@</b> in any e-mail address before e-mailing!</font>
+
+<p>
+<i><small>$Date: 2004/01/09 15:47:05 $</small></i>
+</p>
 
 <!--#include virtual="bottom.html"-->
