@@ -1,4 +1,4 @@
 #!/bin/sh
 . sxconfig &&
-rm -rf snort-$SNORTVER &&
+rm -rf snort-$VERSION &&
 rm -f installwatch.log

@@ -1,6 +1,6 @@
 divert(-1)
 #
-# $Id: sendmail.mc,v 1.8 2004/01/16 03:36:27 replikan Exp $
+# $Id: sendmail.mc,v 1.9 2004/01/17 22:34:11 replikan Exp $
 #
 # This is the Sendmail macro configuration file for SENTINIX.
 # If you want to change/extend your Sendmail configuration, edit this
@@ -14,7 +14,7 @@ divert(-1)
 #
 divert(0)
 include(`/usr/share/sendmail-cf/m4/cf.m4')
-VERSIONID(`SENTINIX GNU/Linux, $Id: sendmail.mc,v 1.8 2004/01/16 03:36:27 replikan Exp $')
+VERSIONID(`SENTINIX GNU/Linux, $Id: sendmail.mc,v 1.9 2004/01/17 22:34:11 replikan Exp $')
 OSTYPE(linux)
 DOMAIN(generic)
 define(`confDEF_USER_ID',``8:12'')

@@ -1,4 +1,4 @@
-PKG=usleep
+PKG=libol
 
 include ../sxarchconfig
 include sxconfig
@@ -16,4 +16,3 @@ clean:
 
 version:
 	@echo $(PKG)-$(VERSION)-$(SXARCH)-$(BUILD)
-

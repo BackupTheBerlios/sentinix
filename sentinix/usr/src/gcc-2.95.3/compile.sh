@@ -16,7 +16,7 @@ cd $CWD/gcc-build &&
 CFLAGS="-Wall -O2" LDFLAGS=-s \
     $CWD/gcc-$VERSION/configure \
 	--prefix=/usr/gcc-$VERSION \
-	--target=$SXARCH-$SXSYSNAME-linux \
+	--build=$SXARCH-$SXSYSNAME-linux \
 	--host=$SXARCH-$SXSYSNAME-linux \
 	--enable-shared \
 	--enable-languages=c \

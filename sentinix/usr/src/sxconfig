@@ -20,7 +20,7 @@ nfs-utils bchunk gcal mhash http_fetcher fetch fping qstat radiusclient net-snmp
 nessus nagios snort bmon replimenu dialog openmosix-tools rexima \
 cdparanoia cdp gnupg sharkwrapper python sysstat fblogo clamav \
 perlmodules spamassassin mailscanner pine ngrep ansirem announceuptime \
-ipaudit tcptrace lsof makedev ipfm iptraf ettercap rcs cvs syslog-ng \
+ipaudit tcptrace lsof makedev ipfm iptraf ettercap rcs cvs libol syslog-ng \
 screen \
 syswideconfig rc_scripts setuputility cgitoolkit rrdtool \
 cacti snortcenter bandwidthd \

@@ -9,6 +9,7 @@ cd snort-$VERSION &&
 chown -R root.root . &&
 CFLAGS=-O2 ./configure \
     --prefix=/usr/components/snort \
+    --mandir=/usr/man \
     --host=$SXARCH-$SXSYSNAME-linux \
     --with-mysql &&
 make &&

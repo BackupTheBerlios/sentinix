@@ -14,18 +14,13 @@ for i in *
 do
     if [ -d $i ]; then
 
-	FOUND=0
+	cd $i
 
-	for x in $SRC
-        do
-	    if [ "$i" = "$x" ]; then
-		FOUND=1
-	    fi
-        done
-
-	if [ $FOUND -eq 0 ]; then
-	    echo "$i not found in sxconfig."
+	if [ -f version.sh ]; then
+	    cvs rm -f version.sh
 	fi
+
+	cd ..
 
     fi
 done
