@@ -13,8 +13,6 @@ organizations that use SENTINIX (and wish to be listed).
 </ul>
 </p>
 
-<p>
-<small><i>$Id: users.shtml,v 1.1 2004/01/09 16:27:07 replikan Exp $</i></small>
-</p>
-
-<!--#include virtual="bottom.html"-->
+<!--#include virtual="bottom1.html"-->
+$Id: users.shtml,v 1.2 2004/01/09 16:35:47 replikan Exp $
+<!--#include virtual="bottom2.html"-->

@@ -110,8 +110,6 @@ and GNU/Linux distribution experts. Send an e-mail to
 and what you'd like to do in the SENTINIX project.
 </p>
 
-<p>
-<small><i>$Id: index2.shtml,v 1.2 2004/01/09 16:27:06 replikan Exp $</i></small>
-</p>
-
-<!--#include virtual="bottom.html"-->
+<!--#include virtual="bottom1.html"-->
+$Id: index2.shtml,v 1.3 2004/01/09 16:35:47 replikan Exp $
+<!--#include virtual="bottom2.html"-->
