@@ -1,44 +1,142 @@
 
+
+                                  ?#|                       ,#o\
+                                  HMF     .__               +MM+
+                            ,d#oooHMb..   MMM|   .             ,o,       o\
+     ._oooo_           .o.  &HM##HMRMMMMD `"'  ,MM#HMH#b.   ob,?MM#.    ?MM-
+   ,dMMM#HMM|  ,#HMM#? TMHdMMMM#, `MMT`"' ,b.  |MMM*"*MMM, .MM| `MMM,  ?HMP
+ .&MM""   `'  ,MM?.9MM'|MMMH'"9MM  HMb    MM|  |MM|   4MM|  MM|  `9MMbdMM*
+ |MMboooooo,\_9MMMMM?' `RMM   :MM| |M6   :MM:  :MH:   {MMT `HM|   `HMMMM?
+  `#HHH###HMMM6M6"     ,MHMi  |MM| |MM   :MM:  |MM    JMM|  MMF    :HMMH.
+  ,oo_      ]MMMMbooodHMMMM|  .MM- ``'   :MM.  `##    `'"   HM|   ?MMHHMM|
+  *MMMM##ddHMH#`#MHMMMH? ?*'             |MM.                    dMM*'`H6Mb.
+    """****""    `"'"'                   |MM'                   |MH?    ?MMb
+                                         `**                     `       `HMH
+                                                                           `
+
+$Id: README.CVS,v 1.2 2004/01/16 00:25:45 replikan Exp $
+
 SENTINIX CVS HOWTO
 
-The public SENTINIX repository is kindly hosted by berlios.de. This
-repository only holds the scripts and Makefiles used to compile and
-install SENTINIX, the tarballs are located on sentinix.org. You will be
-using rsync to retrieve them. But first, checkout a working copy of the
-CVS repository:
+The public SENTINIX CVS repository is kindly hosted by berlios.de. This
+repository only holds the scripts and Makefiles used to compile and install
+SENTINIX, the tarballs are located on sentinix.org. You will be using rsync to
+retrieve them.
 
-    cvs -d:pserver:anonymous@cvs.sentinix.berlios.de:/cvsroot/sentinix login
+Start by doing _exactly_ this (lines starting with a `$' are the commands you
+should enter):
 
-    cvs -z3 -d:pserver:anonymous@cvs.sentinix.berlios.de:/cvsroot/sentinix co sentinix
+    - Download all tarballs and the buildsys, all which are required in order
+      to compile SENTINIX. This is accomplished through rsync. You must supply
+      "sentinix" as the last argument, this will create the directory
+      "sentinix" in which all files are put:
 
-This will create the directory "sentinix" in which "isotope/" and
-"usr/src/" will be created. The -z3 is optional (for compression;
-requires some CPU power but will speed up transfers on slow
-connections).
+      $ rsync -vr rsync://sentinix.org/sentinix-devel-tartree sentinix
 
-You won't get any tarballs from the CVS repository. When CVS checkout is
-done, type:
+    - Untar the buildsys tarball, _exactly_ like this:
 
-    rsync -vr rsync://sentinix.org/sentinix-devel-tartree sentinix/
+      $ tar -xzf sentinix/sentinix-buildsys-X.XX.tar.gz
+      (choose the latest version if there's more than one present).
 
-This will retrieve the tarfiles for each package (both isotope and
-usr/src). The tartree is about 400MB, so it will take some time. There's
-no use in applying the -z option to rsync since the files are already
-compressed.
+    - Prepare to retrieve a working copy of the SENTINIX Source Tree (if you've
+      already logged in to cvs.sentinix.berlios.de [check your ~/.cvspass
+      file], you don't need to do this):
 
-If you just want to retrieve a specific package's tarball, do this:
+      $ cvs -d:pserver:anonymous@cvs.sentinix.berlios.de:/cvsroot/sentinix login
+      (simply press enter when asked for a password).
 
-    rsync -vr -R rsync://sentinix.org/sentinix-devel-tartree/usr/src/eject sentinix/
+    - Check out a working copy of the SENTINIX Source Tree (the -z3 is
+      optional):
 
-Or, if you're inside the "sentinix" directory already, simply execute:
+      $ cvs -z3 -d:pserver:anonymous@cvs.sentinix.berlios.de:/cvsroot/sentinix co sentinix
 
-    rsync -vr -R rsync://sentinix.org/sentinix-devel-tartree/usr/src/eject .
+If cvs.sentinix.berlios.de is down for some reason, you can replace
+"cvs.sentinix.berlios.de" with "sentinix.org" _and_ replace
+":/cvsroot/sentinix" with ":/cvsroot".
 
-The -R means rsync should use relative paths, that is, the full source
-path should be reflected on the destination. In the above example, if we
-were to remove the -R, the "eject" directory would have ended up under
-"./eject". With the -R, the "eject" directory ends up under
-"./usr/src/eject" (where we want it).
+You should now have a working copy of the full SENTINIX Source Tree and all
+software tarballs required to compile the SENTINIX distribution. You may now
+enter the "sentinix" directory and consult the README file for more
+information.
 
-Consult the README file for more information.
+REMEMBER!!! IMPORTANT!!!
+
+If you start compiling SENTINIX using the make routines under usr/src/, the
+/proc file system will be mounted under sentinix/proc/. If you want to exit the
+chroot (./schroot) and do a fresh install, or delete the entire "sentinix"
+directory, remember to run this while still in the chroot:
+
+      $ umount /proc
+
+If you want to get a totally fresh copy of the entire tree without downloading
+all those hundered megabytes of tarballs, just do this:
+
+    - First, enter the parent directory of the "sentinix" directory you have
+      since previously. Then type:
+
+      $ rsync -vur --delete rsync://sentinix.org/sentinix-devel-tartree sentinix
+
+      This will delete all local files not present under sentinix-devel-tartree
+      on sentinix.org. In effect, this means that you revert to the very first
+      rsync described in the initial instructions above.
+
+    - You can now continue with the rest of the steps described in the initial
+      instructions:
+
+      $ tar -xzf sentinix/sentinix-buildsys-X.XX.tar.gz
+      $ cvs -z3 -d:pserver:anonymous@cvs.sentinix.berlios.de:/cvsroot/sentinix co sentinix
+
+    - That's it.
+
+
+Below is a Makefile to simplify both of the above procedures. Please remember
+that "make" doesn't like idents as 8 spaces, it wants a single TAB.
+
+------<snip>-------------------------------------------------------------------
+
+none:
+	@echo "make getnew : retrieve a fresh first-time copy."
+	@echo "make update : update the sentinix directory."
+	@echo "make update-tartree : only update the tarballs."
+	@echo "make update-cvs : only update the CVS copy."
+	@echo "make renew : like \"make getnew\", but only efficient"
+	@echo "             to totally refresh an existing copy."
+	@echo "             Saves lots of time and bandwidth than doing"
+	@echo "             a new \"make getnew\"."
+
+getnew: getballs untarbuildsys cocvs
+
+getballs:
+	rsync -vr rsync://sentinix.org/sentinix-devel-tartree sentinix
+
+untarbuildsys:
+	echo sentinix/sentinix-buildsys-* | cut -d' ' -f1 | xargs tar -xzf
+
+cocvs:
+	cvs -z3 -d:pserver:anonymous@cvs.sentinix.berlios.de:/cvsroot/sentinix co sentinix
+
+update: update-tartree update-cvs
+
+update-tartree:
+	rsync -vur rsync://sentinix.org/sentinix-devel-tartree sentinix
+
+update-cvs:
+	cd sentinix && cvs -q update
+
+renew: renew-tarballs untarbuildsys cocvs
+
+renew-tarballs:
+	rsync -vur --delete rsync://sentinix.org/sentinix-devel-tartree sentinix
+
+
+------<snip>-------------------------------------------------------------------
+
+
+May the Source be with You!
+All bow to RMS! ;)
+
+--
+Michel Blomgren
+SENTINIX Project
+http://sentinix.org
 

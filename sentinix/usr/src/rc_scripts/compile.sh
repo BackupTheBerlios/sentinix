@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: compile.sh,v 1.2 2004/01/14 03:54:52 replikan Exp $
+# $Id: compile.sh,v 1.3 2004/01/16 00:25:45 replikan Exp $
 CWD=`pwd`
 
 tar --exclude CVS -cf sentinix_rcd.tar rc.d

@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # starts dhcpd - the DHCP protocol daemon
-# $Id: rc.dhcpd,v 1.3 2004/01/14 03:54:52 replikan Exp $
+# $Id: rc.dhcpd,v 1.4 2004/01/16 00:25:45 replikan Exp $
 #
 
 function start_dhcpd() {

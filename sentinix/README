@@ -1,4 +1,4 @@
-$Id: README,v 1.2 2004/01/14 03:54:52 replikan Exp $
+$Id: README,v 1.3 2004/01/16 00:25:45 replikan Exp $
 
 The SENTINIX Source Tree
 ------------------------
@@ -19,10 +19,9 @@ The SENTINIX Source Tree
  
     $ make
 
-    Or you can type:
-    
-    $ make -C /usr/src
-    (to cd into /usr/src first)
+    This will give you some options, you should start with:
+
+    $ make sentinix
 
     This step will take about 3 hours on an AMD 1800+ with an ATA-100
     hard disk.

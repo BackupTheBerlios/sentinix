@@ -7,7 +7,7 @@ function execinstallsh() {
     # failed compilation (in order to e.g. change something in a package's
     # install.sh file).
     #
-    make
+    make -s
     if [ ! $? -eq 0 ]; then
         echo -ne "\033[0;31m$1 (seem to) have failed, continue anyway?\033[0m [(y)es (n)o (r)etry] "
         read x

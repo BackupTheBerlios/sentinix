@@ -2,7 +2,7 @@
 CWD=`pwd`
 
 source sxconfig &&
-cd binutils-$VERSION &&
+cd binutils-build &&
 make install &&
 #
 # have binutils link against libs in /lib and /usr/lib instead of /static/lib.
