@@ -57,7 +57,7 @@ To do it with a wget command (not recommended) do this:
 <table bgcolor="#e0e0e0" border=0 cellpadding=10 cellspacing=0><tr><td>
 <pre>
 $ cd /where/you/want/it/
-$ wget -r -nH --cut-dirs=2 ftp://sentinix.org/pub/sentinix-release
+$ wget -m -nH --cut-dirs=2 ftp://sentinix.org/pub/sentinix-release
 </pre>
 </td></tr></table>
 
@@ -69,5 +69,5 @@ SENTINIX Project Manager<br>
 </p>
 
 <!--#include virtual="bottom1.html"-->
-$Id: downloads.shtml,v 1.6 2004/01/11 22:40:22 replikan Exp $
+$Id: downloads.shtml,v 1.7 2004/01/23 15:51:30 replikan Exp $
 <!--#include virtual="bottom2.html"-->
