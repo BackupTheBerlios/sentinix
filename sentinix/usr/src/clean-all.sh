@@ -11,12 +11,10 @@ fi
 
 for i in $SRC
 do
-    cd $i
-    if [ -e clean.sh ]; then
+    if [ ! -e $i/SKIP ]; then
 	echo -e "\033[1mCleaning $i ...\033[0m"
-	./clean.sh
+	make -s -C $i clean
     fi
-    cd $CWD
 done
 
 echo

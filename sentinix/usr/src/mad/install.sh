@@ -4,34 +4,34 @@ CWD=`pwd`
 source ../sxarchconfig &&
 source sxconfig &&
 ./clean.sh &&
-tar -xzf libmad-${madVER}.tar.gz &&
-cd libmad-${madVER} &&
+tar -xzf libmad-$VERSION.tar.gz &&
+cd libmad-$VERSION &&
 chown -R root.root . &&
 CFLAGS="-O2 $SXARCHFLAGS" ./configure \
     --prefix=/usr \
     --host=$SXARCH-$SXSYSNAME-linux \
     --with-gnu-ld &&
 make &&
-make install &&
+installwatch -o $CWD/installwatch_1.log make install &&
 
 cd $CWD &&
-tar -xzf libid3tag-${madVER}.tar.gz &&
-cd libid3tag-${madVER} &&
+tar -xzf libid3tag-$VERSION.tar.gz &&
+cd libid3tag-$VERSION &&
 chown -R root.root . &&
 CFLAGS="-O2 $SXARCHFLAGS" ./configure \
     --prefix=/usr \
     --host=$SXARCH-$SXSYSNAME-linux \
     --with-gnu-ld &&
 make &&
-make install &&
+installwatch -o $CWD/installwatch_2.log make install &&
 
 cd $CWD &&
-tar -xzf madplay-${madVER}.tar.gz &&
-cd madplay-${madVER} &&
+tar -xzf madplay-$VERSION.tar.gz &&
+cd madplay-$VERSION &&
 chown -R root.root . &&
 CFLAGS="-O2 $SXARCHFLAGS" ./configure \
     --prefix=/usr \
     --host=$SXARCH-$SXSYSNAME-linux \
     --with-gnu-ld &&
 make &&
-make install
+installwatch -o $CWD/installwatch_3.log make install

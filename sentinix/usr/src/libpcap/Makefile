@@ -1,4 +1,9 @@
-libpcap: compile install
+PKG=libpcap
+
+include ../sxarchconfig
+include sxconfig
+
+$(PKG): compile install
 
 compile:
 	./compile.sh
@@ -10,4 +15,4 @@ clean:
 	./clean.sh
 
 version:
-	@source sxconfig && echo libpcap-$$PCAPVER
+	@echo $(PKG)-$(VERSION)-$(SXARCH)-$(BUILD)

@@ -1,4 +1,5 @@
 #!/bin/sh
 
 . sxconfig &&
-rm -rf syslog-ng-$VERSION
+rm -rf syslog-ng-$VERSION &&
+rm -f installwatch.log

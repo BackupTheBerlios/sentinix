@@ -1,0 +1,44 @@
+
+SENTINIX CVS HOWTO
+
+The public SENTINIX repository is kindly hosted by berlios.de. This
+repository only holds the scripts and Makefiles used to compile and
+install SENTINIX, the tarballs are located on sentinix.org. You will be
+using rsync to retrieve them. But first, checkout a working copy of the
+CVS repository:
+
+    cvs -d:pserver:anonymous@cvs.sentinix.berlios.de:/cvsroot/sentinix login
+
+    cvs -z3 -d:pserver:anonymous@cvs.sentinix.berlios.de:/cvsroot/sentinix co sentinix
+
+This will create the directory "sentinix" in which "isotope/" and
+"usr/src/" will be created. The -z3 is optional (for compression;
+requires some CPU power but will speed up transfers on slow
+connections).
+
+You won't get any tarballs from the CVS repository. When CVS checkout is
+done, type:
+
+    rsync -vr rsync://sentinix.org/sentinix-devel-tartree sentinix/
+
+This will retrieve the tarfiles for each package (both isotope and
+usr/src). The tartree is about 400MB, so it will take some time. There's
+no use in applying the -z option to rsync since the files are already
+compressed.
+
+If you just want to retrieve a specific package's tarball, do this:
+
+    rsync -vr -R rsync://sentinix.org/sentinix-devel-tartree/usr/src/eject sentinix/
+
+Or, if you're inside the "sentinix" directory already, simply execute:
+
+    rsync -vr -R rsync://sentinix.org/sentinix-devel-tartree/usr/src/eject .
+
+The -R means rsync should use relative paths, that is, the full source
+path should be reflected on the destination. In the above example, if we
+were to remove the -R, the "eject" directory would have ended up under
+"./eject". With the -R, the "eject" directory ends up under
+"./usr/src/eject" (where we want it).
+
+Consult the README file for more information.
+

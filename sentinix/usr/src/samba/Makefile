@@ -1,7 +1,12 @@
-samba: compile install
+PKG=samba
+
+include ../sxarchconfig
+include sxconfig
+
+$(PKG): compile install
 
 compile:
-	./compile.shh
+	./compile.sh
 
 install:
 	installwatch -o installwatch.log ./install.sh
@@ -10,4 +15,4 @@ clean:
 	./clean.sh
 
 version:
-	@source sxconfig && echo samba-$$VERSION
+	@echo $(PKG)-$(VERSION)-$(SXARCH)-$(BUILD)

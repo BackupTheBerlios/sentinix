@@ -11,3 +11,5 @@ fi
 if [ -h linux-$VERSION.tar.bz2 ]; then
     rm -f linux-$VERSION.tar.bz2
 fi
+
+rm -f installwatch.log

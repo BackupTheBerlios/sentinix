@@ -1,2 +1,4 @@
 #!/bin/sh
-rm -rf netcat-build
+rm -rf netcat-build &&
+rm -f installwatch.log
+

@@ -1,0 +1,63 @@
+$Id: README,v 1.1 2004/01/14 03:49:14 replikan Exp $
+
+The SENTINIX Source Tree
+------------------------
+
+ 1. To enter the automatic build system you must chroot into it, do this by
+    typing:
+
+    $ ./schroot
+
+    As the root user on your regular Linux system.
+
+ 2. Change directory to /usr/src:
+ 
+    $ cd /usr/src
+
+ 3. Start the compilation process by executing the build-all script, but
+    make sure you don't have MySQL running:
+ 
+    $ make
+
+    Or you can type:
+    
+    $ make -C /usr/src
+    (to cd into /usr/src first)
+
+    This step will take about 3 hours on an AMD 1800+ with an ATA-100
+    hard disk.
+
+ 4. When finished, logout of the chroot environment by simply pressing Ctrl+D.
+
+ 5. Re-enter the build system, but first you may want to edit "schroot" and
+    replace "/bin/bash" with "/bin/bash --login", then type:
+
+    $ ./schroot
+
+ 6. Change directory to /isotope:
+
+    $ cd /isotope
+
+ 7. You may want to read the README file in that directory and perhaps edit the    
+    "config" file, then you would want to type:
+
+    $ make sources
+
+    Then run:
+
+    $ make iso
+
+ 8. You are now ready to create the Sentinix CD. Insert an empty/rewritable
+    CD-R in your recorder and type either:
+
+    $ make realcd
+
+    ...to indicate that you want to burn a CD-R, or:
+
+    $ make cdrw
+
+    ...to indicate that you want to burn a CD-RW. The CD-RW will be blanked
+    before burning (that's the only difference).
+
+ 9. That's it! Good luck!
+

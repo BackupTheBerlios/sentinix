@@ -12,7 +12,7 @@ CFLAGS="-O2 $SXARCHFLAGS" ./configure \
     --host=$SXARCH-$SXSYSNAME-linux \
     --disable-esdtest &&
 make &&
-make install &&
+installwatch -o $CWD/installwatch_1.log make install &&
 ldconfig &&
 
 cd $CWD &&
@@ -23,7 +23,7 @@ CFLAGS="-O2 $SXARCHFLAGS" ./configure \
     --prefix=/usr \
     --host=$SXARCH-$SXSYSNAME-linux &&
 make &&
-make install &&
+installwatch -o $CWD/installwatch_2.log make install &&
 ldconfig &&
 
 cd $CWD &&
@@ -34,15 +34,15 @@ CFLAGS="-O2 $SXARCHFLAGS" ./configure \
     --prefix=/usr \
     --host=$SXARCH-$SXSYSNAME-linux &&
 make &&
-make install &&
+installwatch -o $CWD/installwatch_3.log make install &&
 ldconfig &&
 
 cd $CWD &&
-tar -xzf vorbis-tools-${toolsVER}.tar.gz &&
-cd vorbis-tools-${toolsVER} &&
+tar -xzf vorbis-tools-${VERSION}.tar.gz &&
+cd vorbis-tools-${VERSION} &&
 chown -R root.root . &&
 CFLAGS="-O2 $SXARCHFLAGS" ./configure \
     --prefix=/usr \
     --host=$SXARCH-$SXSYSNAME-linux &&
 make &&
-make install
+installwatch -o $CWD/installwatch_4.log make install

@@ -1,4 +1,6 @@
 libaoVER=0.8.4
 liboggVER=1.0
 libvorbisVER=1.0
-toolsVER=1.0
+
+VERSION=1.0
+BUILD=1

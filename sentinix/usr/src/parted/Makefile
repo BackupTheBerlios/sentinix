@@ -1,4 +1,9 @@
-parted: compile install
+PKG=parted
+
+include ../sxarchconfig
+include sxconfig
+
+$(PKG): compile install
 
 compile:
 	./compile.sh
@@ -10,4 +15,4 @@ clean:
 	./clean.sh
 
 version:
-	@source sxconfig && echo parted-$$VERSION
+	@echo $(PKG)-$(VERSION)-$(SXARCH)-$(BUILD)

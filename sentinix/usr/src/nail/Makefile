@@ -1,4 +1,9 @@
-nail: compile install
+PKG=nail
+
+include ../sxarchconfig
+include sxconfig
+
+$(PKG): compile install
 
 compile:
 	./compile.sh
@@ -10,4 +15,4 @@ clean:
 	./clean.sh
 
 version:
-	@source sxconfig && echo nail-$$VERSION
+	@echo $(PKG)-$(VERSION)-$(SXARCH)-$(BUILD)

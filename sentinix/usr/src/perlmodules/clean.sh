@@ -29,4 +29,5 @@ rm -rf MIME-Types-$MIMETYPESV &&
 rm -rf MIME-Lite-$MIMELITEV &&
 rm -rf Bit-Vector-$BITVECTORV &&
 rm -rf Date-Calc-$DATECALCV &&
-rm -rf Parallel-ForkManager-$PARALLELFMV
+rm -rf Parallel-ForkManager-$PARALLELFMV &&
+rm -f installwatch_??.log installwatch.log

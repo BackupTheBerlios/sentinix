@@ -16,13 +16,12 @@ curl nail lynx gmp mysql gd apache portmap cyrus-sasl openldap samba eject \
 cron dhcp dhcpcd parted debianutils openssh bind bc ntp biew gpm mop03 mc \
 pure-ftpd libnet nmap netcat lftp raidtools zoneinfo links slocate \
 cdrtools infozip usleep postfix procmail oggvorbis sox mad mpg321 \
-nfs-utils bchunk gcal mhash fetch fping qstat radiusclient net-snmp \
+nfs-utils bchunk gcal mhash http_fetcher fetch fping qstat radiusclient net-snmp \
 nessus nagios snort bmon replimenu dialog openmosix-tools rexima \
 cdparanoia cdp gnupg sharkwrapper python sysstat fblogo clamav \
 perlmodules spamassassin mailscanner pine ngrep ansirem announceuptime \
 ipaudit tcptrace lsof makedev ipfm iptraf ettercap rcs cvs syslog-ng \
 screen \
-syswideconfig rc_scripts setuputility cgitoolkit \
+syswideconfig rc_scripts setuputility cgitoolkit rrdtool \
 cacti snortcenter bandwidthd \
-rc_scripts \
-mop04"
+mysqldatabases mop04"

@@ -1,8 +1,7 @@
 #!/bin/sh
 CWD=`pwd`
 
-tar --exclude CVS -cf cgitoolkit.$$.tar cgitoolkit &&
 cd /usr/components &&
-tar -xf $CWD/cgitoolkit.$$.tar &&
+tar -xf $CWD/cgitoolkit_tarball.tar &&
 cd $CWD &&
-rm -f cgitoolkit.$$.tar
+rm -f cgitoolkit_tarball.tar

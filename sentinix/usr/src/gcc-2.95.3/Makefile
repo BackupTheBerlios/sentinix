@@ -1,4 +1,9 @@
-gcc-2.95.3: compile install
+PKG=gcc
+
+include ../sxarchconfig
+include sxconfig
+
+$(PKG): compile install
 
 compile:
 	./compile.sh
@@ -8,3 +13,6 @@ install:
 
 clean:
 	./clean.sh
+
+version:
+	@echo $(PKG)-$(VERSION)-$(SXARCH)-$(BUILD)

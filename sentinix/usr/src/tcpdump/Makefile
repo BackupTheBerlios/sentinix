@@ -1,4 +1,9 @@
-tcpdump: compile install
+PKG=tcpdump
+
+include ../sxarchconfig
+include sxconfig
+
+$(PKG): compile install
 
 compile:
 	./compile.sh
@@ -10,4 +15,4 @@ clean:
 	./clean.sh
 
 version:
-	@source sxconfig && echo tcpdump-$$TCPDUMPVER
+	@echo $(PKG)-$(VERSION)-$(SXARCH)-$(BUILD)

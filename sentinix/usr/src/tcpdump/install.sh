@@ -1,5 +1,5 @@
 #!/bin/sh
 
 source sxconfig &&
-cd tcpdump-$TCPDUMPVER &&
+cd tcpdump-$VERSION &&
 make install

@@ -1,2 +1,3 @@
 #!/bin/sh
-rm -rf lynx2-8-4
+rm -rf lynx${UNTARVER} &&
+rm -f installwatch.log

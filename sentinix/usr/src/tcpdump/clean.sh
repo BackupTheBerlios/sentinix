@@ -1,4 +1,4 @@
 #!/bin/sh
 . sxconfig &&
-rm -rf tcpdump-$TCPDUMPVER &&
-rm -rf libpcap-$PCAPVER
+rm -rf tcpdump-$VERSION &&
+rm -f installwatch.log

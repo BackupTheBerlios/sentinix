@@ -24,18 +24,8 @@ CFLAGS="-O2 $SXARCHFLAGS" ./configure \
     --prefix=/usr/components/nagios \
     --host=$SXARCH-$SXSYSNAME-linux &&
 make all &&
-make install &&
-( cd /usr/components/nagios/ &&
-  tar -xzf $CWD/nagios_configfiles.tgz &&
-  cd $CWD &&
-  mkdir -p /usr/components/nagios/var/rw &&
-  chown nagios.nobody /usr/components/nagios/var/rw &&
-  chmod 6770 /usr/components/nagios/var/rw &&
-  chown -R nagios.nobody /usr/components/nagios/etc &&
-  chmod 0770 /usr/components/nagios/etc &&
-  chmod 0660 /usr/components/nagios/etc/* &&
-  chmod 0771 /usr/components/nagios/bin/nagios
-) &&
+installwatch -o $CWD/installwatch_01.log $CWD/function_install_nagios.sh $CWD &&
+
 #
 # nagios-plugins
 #
@@ -46,27 +36,12 @@ chown -R root.root . &&
 CFLAGS="-O2 $SXARCHFLAGS" ./configure \
     --prefix=/usr/components/nagios \
     --host=$SXARCH-$SXSYSNAME-linux &&
-make install &&
-cd $CWD/extra_plugins &&
-cp check_* /usr/components/nagios/libexec/ &&
+installwatch -o $CWD/installwatch_02.log $CWD/function_install_plugins.sh $CWD &&
 cd $CWD &&
 chown -R nagios.nagios /usr/components/nagios/libexec/ &&
 
-( cat > /usr/components/nagios/share/.htaccess <<EOF
-AuthName "Nagios Login"
-AuthType Basic
-AuthUserFile /usr/components/nagios/etc/htpasswd.users
-require valid-user
-EOF
-cp /usr/components/nagios/share/.htaccess /usr/components/nagios/sbin/ &&
-htpasswd -mbc /usr/components/nagios/etc/htpasswd.users nagiosadmin nagios &&
-htpasswd -mb /usr/components/nagios/etc/htpasswd.users guest guest &&
-chown root.nobody /usr/components/nagios/etc/htpasswd.users &&
-chmod 0644 /usr/components/nagios/etc/htpasswd.users
-) &&
+installwatch -o $CWD/installwatch_03.log $CWD/function_post_install.sh $CWD &&
 
-cd /usr/components &&
-tar -xzf $CWD/nagat-sentinix.tgz &&
 cd $CWD &&
 ( umount /proc
   rm /etc/mtab

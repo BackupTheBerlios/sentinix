@@ -1,4 +1,9 @@
-db1: compile install
+PKG=db1
+ARCH=$(shell source ../../sxarchconfig && echo $$SXARCH)
+VERSION=$(shell source sxconfig && echo $$VERSION)
+BUILD=$(shell source sxconfig && echo $$BUILD)
+
+$(PKG): compile install
 
 compile:
 	./compile.sh
@@ -8,3 +13,6 @@ install:
 
 clean:
 	./clean.sh
+
+version:
+	@echo $(PKG)-$(VERSION)-$(ARCH)-$(BUILD)

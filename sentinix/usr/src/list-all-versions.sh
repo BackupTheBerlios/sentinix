@@ -10,11 +10,7 @@ fi
 
 for i in $SRC
 do
-    cd $i
-	make version
-    cd $CWD
+    if [ ! -e $i/SKIP ]; then
+	make -s -C $i version
+    fi
 done
-
-echo
-echo Done.
-echo

@@ -1,13 +1,18 @@
-apache: compile install
+PKG=apache
+
+include ../sxarchconfig
+include sxconfig
+
+$(PKG): install
 
 compile:
-	./compile.sh
+	@echo "sorry, no \"compile\", try \"make\" or \"make install\" instead."
 
 install:
-	installwatch -o installwatch.log ./install.sh
+	./install.sh
 
 clean:
 	./clean.sh
 
 version:
-	@source sxconfig && echo apache-$$APACHEVER && echo mod_ssl-$$MODSSLVER && echo php-$$PHPVER
+	@echo $(PKG)-$(VERSION)-$(SXARCH)-$(BUILD)

@@ -1,3 +1,4 @@
 #!/bin/sh
 . sxconfig &&
-rm -rf cdparanoia-$VERSION
+rm -rf cdparanoia-$VERSION &&
+rm -f installwatch.log

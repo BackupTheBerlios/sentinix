@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# db 4.1 is fortunately pretty straigt forward to install :)
+# db 4.1 is fortunately pretty straight forward to install :)
 #
 
 source sxconfig &&

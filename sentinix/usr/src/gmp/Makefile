@@ -1,4 +1,9 @@
-gmp: compile install
+PKG=gmp
+
+include ../sxarchconfig
+include sxconfig
+
+$(PKG): compile install
 
 compile:
 	./compile.sh
@@ -10,4 +15,4 @@ clean:
 	./clean.sh
 
 version:
-	@source sxconfig && echo gmp-$$VERSION
+	@echo $(PKG)-$(VERSION)-$(SXARCH)-$(BUILD)

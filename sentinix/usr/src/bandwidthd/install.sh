@@ -1,6 +1,22 @@
 #!/bin/sh
 CWD=`pwd`
 
+#
+# installwatch is Copyright (C) 1998-9 Pancrazio `Ezio' de Mauro <p@demauro.net>
+#
+function installwatch_start {
+    unset INSTALLWATCH_BACKUP_PATH
+    unset INSTALLWATCHFILE
+    LD_PRELOAD=/usr/lib/installwatch.so
+    INSTALLWATCHFILE="$1"
+    export LD_PRELOAD INSTALLWATCHFILE
+}
+
+function installwatch_stop {
+    unset LD_PRELOAD
+    unset INSTALLWATCHFILE
+}
+
 source sxconfig &&
 ./clean.sh &&
 tar -xzf bandwidthd-$VERSION.tgz &&
@@ -9,8 +25,16 @@ chown -R root.root . &&
 cat Makefile | sed "s%/usr/local/bandwidthd%/usr/components/bandwidthd%" > new.Makefile.$$ &&
 mv new.Makefile.$$ Makefile &&
 make &&
+
+####
+# start installwatch logging
+installwatch_start $CWD/installwatch.log
 make install &&
 cp $CWD/bandwidthd.cron /etc/cron.daily/bandwidthd &&
+# stop installwatch logging
+installwatch_stop &&
+####
+
 chmod 0644 /etc/cron.daily/bandwidthd &&
 # edit /usr/components/bandwidthd/etc/bandwidthd.conf
 cd /usr/components/bandwidthd/etc &&

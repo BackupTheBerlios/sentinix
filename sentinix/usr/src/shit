@@ -12,8 +12,9 @@ fi
 for i in $SRC
 do
     cd $i
-	echo $i
-	read junk
+	if [ -e clean.sh ]; then
+	    mcedit clean.sh
+	fi
     cd $CWD
 done
 

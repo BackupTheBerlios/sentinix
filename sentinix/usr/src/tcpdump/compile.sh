@@ -3,8 +3,8 @@
 source ../sxarchconfig &&
 source sxconfig &&
 ./clean.sh &&
-tar -xzf tcpdump-$TCPDUMPVER.tar.gz &&
-cd tcpdump-$TCPDUMPVER &&
+tar -xzf tcpdump-$VERSION.tar.gz &&
+cd tcpdump-$VERSION &&
 chown -R root.root . &&
 ./configure \
     --prefix=/usr \

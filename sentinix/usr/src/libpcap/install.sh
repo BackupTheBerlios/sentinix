@@ -1,5 +1,5 @@
 #!/bin/sh
 
 source sxconfig &&
-cd libpcap-$PCAPVER &&
+cd libpcap-$VERSION &&
 make install

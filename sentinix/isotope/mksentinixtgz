@@ -10,8 +10,8 @@ fi
 source config
 
 if [ "$SENTINIXPATH" = "" ]; then
-	echo "The variable SENTINIXPATH is no good, check the \"config\" file"!
-	exit 1
+    echo "The variable SENTINIXPATH is no good, check the \"config\" file!"
+    exit 1
 fi
 
 cat <<EOF > $TMP
@@ -22,6 +22,7 @@ CVS
 ./schroot
 ./.rnd
 ./README
+./README.CVS
 ./isotope
 ./proc/*
 ./usr/src/*

@@ -1,4 +1,9 @@
-make: compile install
+PKG=make
+
+include ../sxarchconfig
+include sxconfig
+
+$(PKG): compile install
 
 compile:
 	./compile.sh
@@ -8,3 +13,6 @@ install:
 
 clean:
 	./clean.sh
+
+version:
+	@echo $(PKG)-$(VERSION)-$(SXARCH)-$(BUILD)

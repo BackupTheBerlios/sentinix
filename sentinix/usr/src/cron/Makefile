@@ -1,4 +1,9 @@
-cron: compile install
+PKG=cron
+
+include ../sxarchconfig
+include sxconfig
+
+$(PKG): compile install
 
 compile:
 	./compile.sh
@@ -10,4 +15,4 @@ clean:
 	./clean.sh
 
 version:
-	@source sxconfig && echo cron-$$VERSION
+	@echo $(PKG)-$(VERSION)-$(SXARCH)-$(BUILD)

@@ -1,3 +1,4 @@
 #!/bin/sh
 . sxconfig &&
-rm -rf bandwidthd-$VERSION
+rm -rf bandwidthd-$VERSION &&
+rm -f installwatch.log

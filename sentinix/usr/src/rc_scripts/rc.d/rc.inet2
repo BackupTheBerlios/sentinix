@@ -13,7 +13,7 @@
 # Modified for Slackware by Patrick Volkerding <volkerdi@slackware.com>
 #
 # Yet further modified for SENTINIX by Michel Blomgren <michel@sentinix.org>  =)
-# $Id: rc.inet2,v 1.1 2004/01/11 20:10:21 replikan Exp $
+# $Id: rc.inet2,v 1.2 2004/01/14 03:49:15 replikan Exp $
 #
 
 # set up firewall

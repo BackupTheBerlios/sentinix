@@ -14,25 +14,25 @@ tar -xzvf nessus-plugins-$VERSION.tar.gz &&
 ( cd $CWD/nessus-libraries &&
   ./configure --prefix=/usr/components/nessus &&
   make &&
-  make install ) &&
+  installwatch -o $CWD/installwatch_1.log make install ) &&
 #
 # compile libnasl
 #
 ( cd $CWD/libnasl &&
   ./configure --prefix=/usr/components/nessus &&
   make &&
-  make install ) &&
+  installwatch -o $CWD/installwatch_2.log make install ) &&
 #
 # compile nessus-core
 #
 ( cd $CWD/nessus-core &&
   ./configure --prefix=/usr/components/nessus &&
   make &&
-  make install ) &&
+  installwatch -o $CWD/installwatch_3.log make install ) &&
 #
 # compile nessus-plugins
 #
 ( cd $CWD/nessus-plugins &&
   ./configure --prefix=/usr/components/nessus &&
   make &&
-  make install )
+  installwatch -o $CWD/installwatch_4.log make install )

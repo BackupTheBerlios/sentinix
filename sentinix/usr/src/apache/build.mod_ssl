@@ -30,7 +30,7 @@ echo
 echo -e "\033[1mFixing PIDFILE and HTTPD variables in \"apachectl\"\033[0m"
 echo
 
-( cd $CWD/apache_$APACHEVER/src/support
+( cd $CWD/apache_$VERSION/src/support
 cat apachectl | sed -e "s|PIDFILE=/usr/local/apache/logs/httpd.pid|PIDFILE=/var/run/httpd.pid|g" | sed -e "s|HTTPD='/usr/local/apache/src/httpd'|HTTPD=/usr/sbin/httpd|g" > apachectl.new
 mv apachectl.new apachectl )
 

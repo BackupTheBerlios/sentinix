@@ -1,9 +1,10 @@
 #!/bin/sh
 
 source ../sxarchconfig &&
+source sxconfig &&
 ./clean.sh &&
-tar --use-compress-program=bzip2 -xvf vim-6.2.tar.bz2 &&
-cd vim62 &&
+tar --use-compress-program=bzip2 -xvf vim-$VERSION.tar.bz2 &&
+cd vim${DIRVER} &&
 chown -R root.root . &&
 CFLAGS="-O2 $SXARCHFLAGS" ./configure \
     --prefix=/usr \

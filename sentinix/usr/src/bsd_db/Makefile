@@ -8,6 +8,10 @@ compile:
 
 install:
 	make -C db4 install
+	cp db4/installwatch.log .
 
 clean:
 	make -C db4 clean
+
+version:
+	@make -s -C db4 version

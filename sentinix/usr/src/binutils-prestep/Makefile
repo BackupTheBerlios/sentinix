@@ -8,3 +8,6 @@ install:
 
 clean:
 	./clean.sh
+
+version:
+	@true

@@ -4,3 +4,6 @@ install:
 	./install.sh
 
 clean:
+
+version:
+	@true

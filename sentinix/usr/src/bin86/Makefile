@@ -1,4 +1,9 @@
-bin86: compile install
+PKG=bin86
+
+include ../sxarchconfig
+include sxconfig
+
+$(PKG): compile install
 
 compile:
 	./compile.sh
@@ -8,3 +13,6 @@ install:
 
 clean:
 	./clean.sh
+
+version:
+	@echo $(PKG)-$(VERSION)-$(SXARCH)-$(BUILD)

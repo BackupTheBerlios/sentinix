@@ -7,21 +7,19 @@ function execinstallsh() {
     # failed compilation (in order to e.g. change something in a package's
     # install.sh file).
     #
-    if [ -x install.sh ]; then
-	./install.sh
-	if [ ! $? -eq 0 ]; then
-	    echo -ne "\033[0;31m$1 (seem to) have failed, continue anyway?\033[0m [(y)es (n)o (r)etry] "
-	    read x
-	    if [ "$x" = "y" -o "$x" = "Y" -o "$x" = "yes" -o "$x" = "YES" ]; then
-		echo -e "\033[0;33mOK, continuing!\033[0m"
-	    elif [ "$x" = "r" -o "$x" = "R" -o "$x" = "retry" -o "$x" = "RETRY" ]; then
-		echo -e "Retrying..."
-    		# recursive
-		execinstallsh $1
-    	    else
-        	echo -e "Aborting!"
-        	exit 1
-    	    fi
+    make
+    if [ ! $? -eq 0 ]; then
+        echo -ne "\033[0;31m$1 (seem to) have failed, continue anyway?\033[0m [(y)es (n)o (r)etry] "
+        read x
+	if [ "$x" = "y" -o "$x" = "Y" -o "$x" = "yes" -o "$x" = "YES" ]; then
+	    echo -e "\033[0;33mOK, continuing!\033[0m"
+	elif [ "$x" = "r" -o "$x" = "R" -o "$x" = "retry" -o "$x" = "RETRY" ]; then
+	    echo -e "Retrying..."
+    	    # recursive
+	    execinstallsh $1
+	else
+	    echo -e "Aborting!"
+	    exit 1
 	fi
     fi
 }
@@ -86,8 +84,10 @@ do
 	echo -e "\033[1;37mentering --> \033[1;36m$i\033[0m"
 	echo
 
-	cd $i &&
+	cd $i || exit 1
+	if [ ! -e SKIP ]; then
 	    execinstallsh $i
+	fi
 	cd $CWD
 done
 

@@ -1,3 +1,4 @@
 #!/bin/sh
 
-rm -rf ansirem
+rm -rf ansirem &&
+rm -f installwatch.log

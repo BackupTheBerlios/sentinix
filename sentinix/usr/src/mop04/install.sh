@@ -16,13 +16,15 @@ chown root.postdrop /usr/sbin/postqueue
 # gzip every manual under /usr/man that does not have a .gz suffix
 ( for dir in /usr/man/man{1,2,3,4,5,6,7,8,9}
 do
-	cd $dir
-	for i in *; do
-		if [ -f $i ]; then
-			# gzip will do this for us...
-			gzip -9 $i
-		fi
-	done
+    cd $dir
+    for i in *; do
+	if [ -f $i ]; then
+	    if ! echo "$i" | grep -vq ".gz\$" ; then
+		# if it doesn't end with .gz, gzip it...
+		gzip -9 $i
+	    fi
+	fi
+    done
 done ) &&
 
 # openssl has replaced the passwd(1) manpage, re-install it...
