@@ -4,7 +4,7 @@ source ../sxarchconfig &&
 source sxconfig &&
 ./clean.sh &&
 echo "Uncompressing Python-$VERSION ..." &&
-tar -xzf Python-$VERSION.tgz &&
+tar -xjf Python-$VERSION.tar.bz2 &&
 cd Python-$VERSION &&
 chown -R root.root . &&
 CFLAGS="-O2 $SXARCHFLAGS" ./configure \
