@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # start BIND nameserver daemon (named).
-# $Id: rc.named,v 1.5 2004/01/16 02:03:52 replikan Exp $
+# $Id: rc.named,v 1.6 2004/01/16 02:50:52 replikan Exp $
 #
 
 start_named() {
