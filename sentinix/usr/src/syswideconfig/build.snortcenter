@@ -1,7 +1,9 @@
 #!/bin/sh
 
+cd misc &&
+
 # install the mksnortcentersensorcert script
-( zcat mksnortcentersensorcert.gz > /usr/local/sbin/mksnortcentersensorcert &&
+( cat mksnortcentersensorcert > /usr/local/sbin/mksnortcentersensorcert &&
   chown root.root /usr/local/sbin/mksnortcentersensorcert &&
   chmod 0755 /usr/local/sbin/mksnortcentersensorcert )
 

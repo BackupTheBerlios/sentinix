@@ -1,7 +1,7 @@
 #
 # Makefile for SENTINIX
 #
-# $Id: Makefile,v 1.9 2004/01/17 22:34:10 replikan Exp $
+# $Id: Makefile,v 1.10 2004/01/18 06:18:34 replikan Exp $
 #
 none:
 	@echo

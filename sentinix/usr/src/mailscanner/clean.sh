@@ -1,5 +1,5 @@
 #!/bin/sh
 
 . sxconfig &&
-rm -rf MailScanner-$MSVERSION &&
+rm -rf MailScanner-$VERSION &&
 rm -f installwatch.log

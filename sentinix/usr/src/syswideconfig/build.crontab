@@ -1,5 +1,7 @@
 #!/bin/sh
 
-zcat run-parts.gz > /usr/bin/run-parts &&
+cd misc &&
+
+cat run-parts > /usr/bin/run-parts &&
 chmod 0755 /usr/bin/run-parts &&
 crontab - -u root < root.crontab

@@ -31,7 +31,9 @@ fi
 if [ ! -d linux-$KVERSION ]; then
 	rm -rf linux-$KVERSION
 	tar --use-compress-program bzip2 -xvf linux-$KVERSION.tar.bz2 &&
-	( cd linux-$KVERSION && cat $CWD/linux-$KVERSION-do_brk_boundscheck.diff | patch -Np1 ) &&
+	( cd linux-$KVERSION &&
+	  patch -Np1 -i $CWD/linux-$KVERSION-do_brk_boundscheck.diff &&
+	  patch -Np1 -i $CWD/linux-$KVERSION-do_mremap_boundscheck.diff ) &&
 	( cd $CWD/linux_logo && ./patchkernel ../linux-$KVERSION ) &&
 	cd linux-$KVERSION &&
 	chown -R root.root . &&

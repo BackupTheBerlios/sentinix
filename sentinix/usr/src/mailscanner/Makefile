@@ -1,4 +1,4 @@
-PKG=sendmail
+PKG=mailscanner
 
 include ../sxarchconfig
 include sxconfig

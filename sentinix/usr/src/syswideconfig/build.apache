@@ -1,7 +1,8 @@
 #!/bin/sh
+CWD=`pwd`
 
 # install the mkapachecert script
-( zcat mkapachecert.gz > /usr/local/sbin/mkapachecert &&
+( cat misc/mkapachecert > /usr/local/sbin/mkapachecert &&
   chown root.root /usr/local/sbin/mkapachecert &&
   chmod 0755 /usr/local/sbin/mkapachecert ) &&
 #
@@ -15,6 +16,9 @@
   cp php.ini-sentinix /etc/apache/php.ini &&
   rm -rf /var/www/htdocs &&
   rm -rf /var/www/htdocs-unsecure &&
-  cp -a htdocs-unsecure /var/www/ &&
-  cp -a htdocs /var/www/
+  # tar up htdocs and htdocs-unsecure
+  tar --exclude CVS -cf /tmp/build.apache.$$.tar htdocs-unsecure htdocs &&
+  # untar them where we want them
+  tar -xf /tmp/build.apache.$$.tar &&
+  rm -f /tmp/build.apache.$$.tar
 )

@@ -17,7 +17,7 @@ if [ ! $? -eq 0 ]; then
 fi
 
 mysql -u root < /tmp/snort.$$ &&
-mysql -u root snort < snort-$SNORTVER/contrib/create_mysql &&
+mysql -u root snort < snort-$VERSION/contrib/create_mysql &&
 mysql -u root snort < /usr/components/snort/acid/create_acid_tbls_mysql.sql &&
 
 # snort_archive
@@ -32,7 +32,7 @@ if [ ! $? -eq 0 ]; then
 fi
 
 mysql -u root < /tmp/snort.$$ &&
-mysql -u root snort_archive < snort-$SNORTVER/contrib/create_mysql &&
+mysql -u root snort_archive < snort-$VERSION/contrib/create_mysql &&
 mysql -u root snort_archive < /usr/components/snort/acid/create_acid_tbls_mysql.sql &&
 
 rm -f /tmp/snort.$$

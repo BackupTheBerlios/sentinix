@@ -45,7 +45,9 @@ if [ ! -d linux-${KVERSION}${XTRAVER} ]; then
 	  mkdir tmp &&
 	  cd tmp &&
 	  tar --use-compress-program bzip2 -xvf $CWD/linux-$KVERSION.tar.bz2 &&
-	  ( cd linux-$KVERSION && cat $CWD/linux-$KVERSION-do_brk_boundscheck.diff | patch -Np1 ) &&
+	  ( cd linux-$KVERSION &&
+	    patch -Np1 -i $CWD/linux-$KVERSION-do_brk_boundscheck.diff &&
+	    patch -Np1 -i $CWD/linux-$KVERSION-do_mremap_boundscheck.diff ) &&
 	  mv linux-$KVERSION $CWD/linux-${KVERSION}${XTRAVER} )
 	if [ ! $? -eq 0 ]; then
 		echo "Will not continue"!

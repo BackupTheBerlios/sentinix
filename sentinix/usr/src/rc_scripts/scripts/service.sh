@@ -1,5 +1,5 @@
 #
-# $Id: service.sh,v 1.1 2004/01/17 22:34:11 replikan Exp $
+# $Id: service.sh,v 1.2 2004/01/18 06:18:35 replikan Exp $
 #
 # service.sh - (c) 2004 Michel Blomgren
 # for SENTINIX and/or Slackware style /etc/rc.d/rc.* scripts

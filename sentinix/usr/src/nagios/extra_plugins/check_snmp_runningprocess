@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# $Id: check_snmp_runningprocess,v 1.9 2004/01/17 22:34:11 replikan Exp $
+# $Id: check_snmp_runningprocess,v 1.10 2004/01/18 06:18:35 replikan Exp $
 #
 # check_snmp_runningprocess (c) 2003,2004 Michel Blomgren <michel@sentinix.org>
 #

@@ -30,5 +30,4 @@ tar -xzf $CWD/adodb340.tgz &&
 cd /usr/components/snort/acid &&
 tar -xzf $CWD/jpgraph-1.12.1.tar.gz &&
 #mv jpgraph-1.12.1 jpgraph &&
-[ -e jpgraph ] && rm -rf jpgraph &&
-ln -s jpgraph-1.12.1 jpgraph
+ln -sf jpgraph-1.12.1 jpgraph

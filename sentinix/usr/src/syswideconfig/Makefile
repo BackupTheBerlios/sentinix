@@ -1,4 +1,4 @@
-PKG=sentinix-mysqldatabases
+PKG=miscrequired
 
 include ../sxarchconfig
 include sxconfig
@@ -6,10 +6,10 @@ include sxconfig
 $(PKG): install
 
 compile:
-	@echo "no \"compile\", try \"make\" instead."
+	@echo "sorry, try \"make\" or \"make install\" instead."
 
 install:
-	./fakeinstall.sh
+	./install.sh
 
 clean:
 	rm -f installwatch.log

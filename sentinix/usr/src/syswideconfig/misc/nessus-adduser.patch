@@ -1,0 +1,87 @@
+--- /usr/components/nessus/sbin/nessus-adduser	2003-10-12 17:52:23.000000000 +0200
++++ nessus-adduser	2003-10-12 17:58:09.000000000 +0200
+@@ -3,6 +3,7 @@
+ # nessus-adduser
+ #
+ # Written by Renaud Deraison <deraison@cvs.nessus.org>
++# --- Modified July 2003 by Michel Blomgren for SENTINIX.
+ #
+ # This script is distributed under the Gnu General Public License (GPL)
+ #
+@@ -129,10 +130,19 @@
+ while test "$ok" = "n";
+ do
+  echo $Xn "Login : $Xc"
+- read login
++ if [ "$1" = "-q" ]; then
++	login=nessus
++ else
++	read login
++ fi
+  if [ -d $localstatedir/nessus/users/$login ];
+  then
+-   echo "This login already exists. Choose another one"
++   if [ "$1" = "-q" ]; then
++	echo "Login already exists."
++	exit 1
++   else
++	echo "This login already exists. Choose another one"
++   fi
+  else
+    ok="y"
+  fi
+@@ -143,7 +153,11 @@
+ while test "$ok" = "n";
+ do
+  echo $Xn "Authentication (pass/cert) [pass] : $Xc"
+- read auth
++ if [ "$1" = "-q" ]; then
++	auth=pass
++ else
++	read auth
++ fi
+  test -z "$auth" && auth="pass"
+  if [ "$auth" = "pass" -o "$auth" = "cert" ]; then
+   ok=y
+@@ -176,7 +190,11 @@
+ while test "$ok" = "n";
+ do
+  echo $Xn "$askPasswd $Xc"
+- read password
++ if [ "$1" = "-q" ]; then
++	password=nessus
++ else
++	read password
++ fi
+  if test -z "$password"; then
+    echo "Your password can not be empty."
+  else
+@@ -208,10 +226,15 @@
+       exit 0" 0
+ 
+ echo "(the user can have an empty rules set)"
++
++if [ "$1" = "-q" ]; then
++	echo "" > $TMPDIR/rules.$$
++else
+ cat > $TMPDIR/rules.$$ || {
+   	echo "Error - could not write $TMPDIR/rules.$$"
+ 	exit 1
+ }
++fi
+ 
+ echo 
+ echo
+@@ -229,7 +252,11 @@
+ else
+ 	cp /dev/null $TMPDIR/rules.$$
+ fi
+-read ok
++if [ "$1" = "-q" ]; then
++	ok=y
++else
++	read ok
++fi
+ 
+ # check for answer, default is Yes, abort on other reply
+ case $ok in ''|[Yy]*);; *) 
