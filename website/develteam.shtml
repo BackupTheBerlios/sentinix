@@ -55,7 +55,7 @@ SENTINIX with filehashing and rootkit detection.<br>
 <ul type=square>
 <li><b>Chris Hammond</b><br>
 <small>
-E-mail: chammond&nbsp;at&nbsp;cox.net<br>
+E-mail: chris&nbsp;at&nbsp;bluecobras.com<br>
 <b>Past contribution:</b> bandwidthd, Nikto, backup/restore scripts, mirroring.
 </small>
 </ul>
@@ -109,5 +109,5 @@ WWW: <a target="_blank" href=""></a><br>
 <font color="#ff0000">Remember to replace "<b>at</b>" with <b>@</b> in any e-mail address before e-mailing!</font>
 
 <!--#include virtual="bottom1.html"-->
-$Id: develteam.shtml,v 1.4 2004/01/09 16:35:47 replikan Exp $
+$Id: develteam.shtml,v 1.5 2004/01/10 11:48:39 chammond Exp $
 <!--#include virtual="bottom2.html"-->
