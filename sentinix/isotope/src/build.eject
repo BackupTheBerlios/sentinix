@@ -1,0 +1,16 @@
+#!/bin/sh
+
+CWD=`pwd`
+destdir="$CWD/../specials/usr/bin"
+VERSION=2.0.13
+
+rm -rf eject-$VERSION
+tar -xzvf eject-$VERSION.tar.gz &&
+cd eject-$VERSION &&
+chown -R root.root . &&
+CFLAGS=-O2 LDFLAGS="-s -static" ./configure --prefix=/usr --build=i486-sentinix-linux &&
+make &&
+( strip eject
+  cp eject $destdir/
+  chown -R root.root $destdir/eject
+  chmod 0755 $destdir/eject )

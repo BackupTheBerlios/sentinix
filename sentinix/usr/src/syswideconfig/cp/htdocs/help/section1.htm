@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+
+<html>
+<head>
+	<title>Cacti Manual</title>
+	<link href="main.css" rel="stylesheet">
+</style>
+</head>
+
+<body>
+
+<table bgcolor="#d5d5d5" width="100%">
+	<tr>
+		<td align="left">
+			<strong>&lt;&lt; Previous Section</strong>
+		</td>
+		<td align="center">
+			Getting Started: Cacti as an RRDTool Front-end <strong>[<a href="index.htm">home</a>]</strong>
+		</td>
+		<td align="right">
+			<strong><a href="section2.htm">Next Section &gt;&gt;</a></strong>
+		</td>
+	</tr>
+</table>
+
+<br>
+
+<span class="textPageHeader">Getting Started: Cacti as an RRDTool Front-end</span>
+
+<p>Cacti is a true RRDTool front-end in that it tries to make use of RRDTool's core graph and data storage
+features. Since Cacti relies heavily on RRDTool, there are a few RRDTool specific terms and concepts that it is
+useful to know before diving into Cacti.</p>
+
+<p class="textParagraphHeader">RRAs and RRDs</p>
+
+<p>The basic unit of storage in RRDTool is the round robin archive (RRA). Round robin archives control what kinds of
+data to keep, how often to store that data, and how long to keep that data. Of course a unit of storage is not very
+useful without data, and this is where the data source comes in. A round robin database (RRD) contains both round robin
+archives and data sources and is how you will store all of your data in RRDTool. In Cacti, the "Data Sources" menu option
+directly corresponds to these RRD files and is how to you define data for graphs in Cacti.</p>
+
+<p class="textParagraphHeader">CDEFs and GPRINTs</p>
+
+<p>When making graphs with Cacti, there are two terms that you are destined to run into. The first is a CDEF, which is simply
+a way to mathematically alter the data on the graph. Cacti lets you define CDEFs just as you can in RRDTool, and are
+explained very well in Tobi's <a href="http://people.ee.ethz.ch/~oetiker/webtools/rrdtool/tutorial/rpntutorial.html">RPN</a> 
+or <a href="http://people.ee.ethz.ch/~oetiker/webtools/rrdtool/tutorial/cdeftutorial.html">CDEF</a> tutorials. Secondly,
+you are apt to run into the term GPRINT, which is simply a way to alter the text-output of your graph values. The number
+format defined for GPRINTs is the same as printf() if you are used to c, and is described in the RRDTool 
+<a href="http://people.ee.ethz.ch/~oetiker/webtools/rrdtool/manual/rrdgraph.html">graph manual</a>.</p>
+
+</body>
+</html>

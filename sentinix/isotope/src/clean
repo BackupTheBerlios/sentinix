@@ -1,0 +1,31 @@
+#!/bin/sh
+echo "Cleaning..."
+
+CWD=`pwd`
+isotope="$CWD/.."
+sdir="${isotope}/specials"
+rootfs="${isotope}/rootfs"
+
+
+# clean the specials dir
+rm -rf $sdir/bin/*
+rm -rf $sdir/sbin/*
+rm -rf $sdir/usr/bin/*
+rm -rf $sdir/usr/sbin/*
+
+if [ -d $rootfs ]; then
+	# clean the rootfs dir
+	rm -f ${rootfs}/linuxrc
+	rm -rf ${rootfs}/bin
+	rm -rf ${rootfs}/sbin
+	rm -rf ${rootfs}/usr/bin
+	rm -rf ${rootfs}/usr/sbin
+	( cd $isotope &&
+	  tar -czf rootfs.tar.gz rootfs &&
+	  rm -rf $rootfs
+	)
+fi
+
+sh clean.src
+
+echo "Done."

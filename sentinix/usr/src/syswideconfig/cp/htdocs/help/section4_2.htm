@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+
+<html>
+<head>
+	<title>Cacti Manual</title>
+	<link href="main.css" rel="stylesheet">
+</style>
+</head>
+
+<body>
+
+<table bgcolor="#d5d5d5" width="100%">
+	<tr>
+		<td align="left">
+			<strong><a href="section3.htm">&lt;&lt; Previous Section</a></strong>
+		</td>
+		<td align="center">
+			How Templates Will Save You Time <strong>[<a href="index.htm">home</a>]</strong>
+		</td>
+		<td align="right">
+			<strong><a href="section5.htm">Next Section &gt;&gt;</a></strong>
+		</td>
+	</tr>
+</table>
+
+<br>
+
+<span class="textPageHeader">Data Templates</span>
+
+<p>Creating a data template is very similar to creating a new data source as you will see. To create a new data template,
+select "Data Templates" under the "Templates" heading and click "Add".</p>
+
+<p>The first thing you must do is give the template a name. This name has nothing to do with the data source name, but is what
+you will use to identify the template throughout Cacti. Second, you will notice a list of data source/data source item field 
+names with <em>Use Per-Data Source Value</em> checkboxes next to each one. The nice thing about templates in Cacti is that you 
+can choose whether to template each field on a per-field basis. If you leave the checkbox unchecked, every data source attached
+to the template will inherit its value from the template. If the checkbox is checked, every data source attached to the 
+template will contain its own value for that particular field.</p>
+
+<p><strong>Note</strong>: For most data templates, you will want to check the <em>Use Per-Graph Value</em> checkbox for
+the name field so each data source using this template has its own unique name. It also makes sense to enter an inital value
+in this field that includes the variable <em>|host_description|</em> for organizational purposes.</p>
+
+<p><strong>Note</strong>: For data templates, the "Data Input Source" field will always be part of the template. Checking
+or unchecking the <em>Use Per-Data Source Value</em> checkbox will have no effect on this field.</p>
+
+<p>When you are finished filling in values for the data template, click "Create" and you will be presented with a screen
+similar to the data source edit screen.</p>
+
+<p>Assuming you selected a data input source on the previous screen, you should now be presented with a "Custom Data" box.
+Each custom data field is per-field templatable as all of the other data source fields are. Even if you select the
+<em>Use Per-Data Source Value</em> checkbox, it might be useful to specify a value that will be used as an "inital value"
+for any data source using this data template.</p>
+
+<p class="textParagraphHeader">Applying Data Templates to Data Sources</p>
+
+<p>Applying a data template to a data source is a very simple process. The first thing you must do is select the data source you want
+to apply the template to under "Data Sources". Under the "Data Template Selection" box, select the data template
+that you want to apply to the data source and click "Save".</p>
+
+<p>Once the template is applied to the data source, you will notice that you can only change values for the fields that you
+checked <em>Use Per-Data Source Value</em> for.</p>
+
+<p><strong>Now any time a change is made to the data template, it will be automatically propagated to the data sources 
+attached to it.</strong></p>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+
+                                  ?#|                       ,#o\
+                                  HMF     .__               +MM+
+                            ,d#oooHMb..   MMM|   .             ,o,       o\
+     ._oooo_           .o.  &HM##HMRMMMMD `"'  ,MM#HMH#b.   ob,?MM#.    ?MM-
+   ,dMMM#HMM|  ,#HMM#? TMHdMMMM#, `MMT`"' ,b.  |MMM*"*MMM, .MM| `MMM,  ?HMP
+ .&MM""   `'  ,MM?.9MM'|MMMH'"9MM  HMb    MM|  |MM|   4MM|  MM|  `9MMbdMM*
+ |MMboooooo,\_9MMMMM?' `RMM   :MM| |M6   :MM:  :MH:   {MMT `HM|   `HMMMM?
+  `#HHH###HMMM6M6"     ,MHMi  |MM| |MM   :MM:  |MM    JMM|  MMF    :HMMH.
+  ,oo_      ]MMMMbooodHMMMM|  .MM- ``'   :MM.  `##    `'"   HM|   ?MMHHMM|
+  *MMMM##ddHMH#`#MHMMMH? ?*'             |MM.                    dMM*'`H6Mb.
+    """****""    `"'"'                   |MM'                   |MH?    ?MMb
+                                         `**                     `       `HMH
+                                                                           `
+
+ABOUT NETWORK INTERFACE BONDING
+
+The Linux kernel provides something called "bonding" or "channel
+bonding", which is called "Etherchannel" by Cisco and "Trunking" by Sun.
+
+If you have two Ethernet connections to some other computer, you can
+make them behave like one double speed connection using this driver.
+Naturally, this has to be supported at the other end as well, either
+with a similar Bonding Linux driver, a Cisco 5500 switch or a
+SunTrunking SunSoft driver.
+
+HOW TO SET UP CHANNEL BONDING IN SENTINIX
+
+First add a "bond0" virtual interface by selecting "Add a virtual
+interface to the list". Then, in the IP address field for eth0 and eth1
+(or two other Ethernet interfaces) write "bonding" and in the
+netmask/master fields for eth0 and eth1 write "bond0". Now enter the IP
+address (or "dhcp") and netmask (if IP="dhcp", leave netmask blank) you
+want for the bond0 interface. Save and exit.
+
+May the source be with you!
+http://sentinix.org
+

@@ -1,0 +1,117 @@
+<HTML>
+<HEAD>
+<TITLE>The Nessus Project: [Demonstration : The First Step ] </TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" BACKGROUND="images/n.png" BGPROPERTIES="fixed">
+<table width="100%">
+<tr>
+<td background="images/bg-bold.png">Demonstration : </td>
+<td background="images/bg.png" bgcolor="#999999">Step 1</td>
+<td background="images/bg.png" bgcolor="#999999"><a href="second.htm">Step 2</a></td>
+<td background="images/bg.png" bgcolor="#999999"><a href="third.htm">Step 3</a></td>
+</tr>
+</table>
+
+<table width="100%" BORDER="0">
+<tr><td>
+<FONT SIZE=+2>
+First step : Install Nessus<p>
+</FONT>
+</td><td>
+<IMG SRC="images/mini_tnp.jpg" width="124" height="120" ALIGN="RIGHT">
+</td></tr>
+</table>
+
+Nessus is made up of two parts : a client and a server. You need a Unix-like
+system to use the server (Linux is just fine). In this test, I used the standard
+client <i>nessus</i>, mainly because I wrote it and because it is the only one
+that supports the cipher layer.
+
+<li> First : download and install <i>nessusd</i> and <i>nessus</i> 
+<ul>
+You can download the latest version of Nessus <a href="http://www.nessus.org/nessus_2_0.html">here</a>.
+See the installation instructions to find out how to compile it.
+</ul>
+
+<li> Second : create a nessusd account
+<ul>
+
+
+The nessusd server has its own users database, each user having a 
+a set of restrictions. This allows you to share a single nessusd server
+for a whole network and different administrators who will only test
+their part of the network.<p>
+The utility <i>nessus-adduser</i> takes care of the creation of a new account :
+<blockquote>
+<pre>
+# nessus-adduser
+
+Addition of a new nessusd user
+------------------------------
+
+Login : renaud
+Authentication (pass/cert) [pass] : pass
+Password : secret
+
+User rules
+----------
+nessusd has a rules system which allows you to restrict the hosts
+that renaud2 has the right to test. For instance, you may want
+him to be able to scan his own host only.
+
+Please see the nessus-adduser(8) man page for the rules syntax
+
+Enter the rules for this user, and hit ctrl-D once you are done : 
+(the user can have an empty rules set)
+
+deny 10.163.156.1
+allow 10.163.156.0/24
+default deny
+
+Login            : renaud
+Password         : secret
+DN		 :
+Rules            :
+
+deny 10.163.156.1
+allow 10.163.156.0/24
+default deny
+
+
+Is that ok (y/n) ? [y] y
+
+user added.
+</pre></blockquote>
+
+
+
+</ul>
+
+
+
+<li> Third : configure your nessus daemon
+<ul>
+In the file /usr/local/etc/nessus/nessusd.conf, I can set several options for nessusd. 
+Typically this is where you can specify the resources you want nessusd to use, 
+the speed at which it should read data, and so onimages.<br>
+Note that if you don't have a nessusd.conf file,
+nessusd will create one for you !
+</ul>
+
+
+
+<li> Start nessusd
+<ul>
+Once all of this is done, I can safely start nessusd as root :
+<blockquote>
+<pre>
+nessusd -D
+</pre>
+</blockquote>
+</ul>
+
+</FONT>
+<a href="second.htm">Next</a> : the client configuration
+</BODY>
+</HTML>

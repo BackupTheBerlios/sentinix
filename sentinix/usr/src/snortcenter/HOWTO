@@ -1,0 +1,97 @@
+How to update the SnortCenter database (rules, preprocessors, output plugins, etc.)
+-----------------------------------------------------------------------------------
+
+!!! You need a running SENTINIX system to do this.
+
+ 1. mysql, then: drop database snortcenter;
+
+ 2. create database snortcenter;
+
+ 3. grant all privileges on snortcenter.* to snort@localhost identified by "sentinix";
+
+ 4. Click on "SnortCenter" from the SENTINIX web GUI.
+
+ 5. Let SnortCenter create the tables in the database.
+
+ 6. Choose "Admin / Import Update Rules / Update from Internet".
+
+ 7. Choose "Sensor Console / Add Sensor".
+
+ 8. Fill in this:
+
+	Enable sensor:		x
+	Sensor Name:		localhost
+	Sensor IP:		localhost
+	Port #:			2525
+	Sensor Username:	admin
+	Sensor Password:	change
+	Sensor Agent Type:	SnortCenter Agent v.1 (SSL enabled)
+	Interface to sniff:	eth0
+	Snort command line:	(leave blank)
+	Activate default Rules: x
+
+ 9. Save and choose "Sensor Config / Rule selection".
+
+10. Make sure "Activate Default Inactive Snort Ruleset" has a red X in front of it.
+
+11. Make sure "Activate unconfirmed deleted rules" has a red X in front of it.
+
+12. Choose "Resources / Preprocessors / Create preprocessor".
+
+13. Select "PortScan (detect a variety of portscans)".
+
+14. Fill in this:
+
+	Monitor network:	0.0.0.0/0
+	# of ports:		5
+	Detection period:	3
+	Logfile:		portscan.log
+
+15. Save.
+
+16. Choose "Resources / Output Plugins / Create Output Plugin".
+
+17. Select "Database (log to a variety of databases)".
+
+18. Fill in this:
+
+	Sensor Name:	[AUTO]
+	DB Name:	snort
+	DB Type:	mysql
+	DB Host:	localhost
+	DB Port:	3306
+	User:		snort
+	Password:	sentinix
+	Ruletype:	alert
+	Encoding:	(leave blank)
+	Detail:		(leave blank)
+	ignore bpf:	(leave empty)
+
+19. Save and choose "Sensor Config / Preprocessor selection".
+
+20. Click the red X to activate "preprocessor portscan:...".
+
+21. Choose "Sensor Config / Output Plugin selection".
+
+22. Click the red X and activate "output database: alert, mysql".
+
+23. Choose "Sensor Console / View sensors".
+
+24. Click "start" to start the localhost eth0 sensor.
+
+25. Wait until started, then click "stop" to stop the sensor.
+
+26. Almost done, now do this:
+
+	cd into /usr/local/snort
+	tar -czf sensor.tgz sensor
+	tar -czf snortcenter.tgz snortcenter
+	mysqldump snortcenter > snortcenter.sql
+
+27. Make sure to edit snortcenter.sql and put the usual "drop" and "create" SQL lines on top.
+
+28. Merge (untar) sensor.tgz and snortcenter.tgz into sentinix-snortcenter.tar.gz
+    (/usr/src/snortcenter).
+
+29. That's it.
+

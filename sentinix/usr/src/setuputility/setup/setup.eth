@@ -1,0 +1,192 @@
+#!/bin/sh
+savefile=/etc/ETHERNETS
+TMP=/usr/local/setup/tmp/eth.temp
+EXTRAIF=/usr/local/setup/tmp/setup.eth-extra_interfaces
+
+if [ ! "$1" = "-dontloadconfig" ]; then
+    if [ -e /etc/NETCONFIG ]; then
+        source /etc/NETCONFIG
+        export `echo $(cat /etc/NETCONFIG)` 1> /dev/null 2> /dev/null
+    fi
+
+    # set defaults
+
+    RM_fqdn=`cat /etc/HOSTNAME | xargs echo 2> /dev/null`
+    RM_gateway="$SX_GATEWAY"
+    RM_ns1="$SX_NAMESERVER1"
+    RM_ns2="$SX_NAMESERVER2"
+    RM_newinterface="bond0"
+
+    export RM_fqdn RM_gateway RM_ns1 RM_ns2 RM_newinterface
+fi
+
+cat <<EOF > $TMP
+caption=SENTINIX Setup Utility
+text=Here you may configure your network interface(s), host and domain name, name servers and default gateway address. If you want to use a DHCP server for any interface, write "dhcp" into the "IP address"-field instead of an IP address.
+aftertext=
+colorscheme=4
+
+begin item
+    name=testapa
+    bullet=*
+    label=list environ
+    type=pause
+    command=printenv | grep '^RM_'
+end
+
+begin item
+    name=bonding_howto
+    bullet=->
+    label=How to set up Linux bonding (ifenslave)
+    type=regular
+    command=/bin/less /usr/local/setup/howtos/bonding_howto.txt
+end
+
+br
+
+begin item
+    name=fqdn
+    type=var|defaultfromenv
+    label=Specify your fully qualified domain name (e.g. server1.sentinix.org)
+    default=
+end
+
+begin item
+    name=gateway
+    type=var|defaultfromenv
+    label=Specify default gateway IP
+    default=
+end
+
+begin item
+    name=ns1
+    type=var|defaultfromenv
+    label=Name server 1 (DNS)
+    default=
+end
+
+begin item
+    name=ns2
+    type=var|defaultfromenv
+    label=Name server 2 (DNS)
+    default=
+end
+br
+br Configure IP and netmask for your Ethernet device(s) below.
+br
+
+#begin item
+#    name=newinterface
+#    type=var|chain
+#    label=Add a virtual interface to the list (e.g. "bond0")
+#    icaption=Enter an interface (e.g. "bond0") to add. Don't type in\n"eth0" or "lo", they should be added automatically.\nTo delete interfaces added, see further below.
+#    default=bond0
+#end
+#begin item
+#    name=noname1
+#    type=chain|hidden|nocls
+#    command=source /usr/local/setup/ETHERNET
+#end
+
+begin item
+    name=newinterface
+    type=var|defaultfromenv|chain
+    label=Add a virtual interface to the list (e.g. "bond0")
+    icaption=Enter an interface (e.g. "bond0") to add. Don't type in\n"eth0" or "lo", they should be added automatically.\nTo delete interfaces added, see further below.
+    default=
+end
+begin item
+    name=EXEC
+    type=hidden|nocls
+    command=source /usr/local/setup/ETHADDIF -realadd \$RM_newinterface
+end
+br
+EOF
+
+echo -n "" > $savefile
+
+#
+# This if-statement goes through a user defined list of "virtual" interfaces.
+#
+if [ -r $EXTRAIF ]; then
+    cat $EXTRAIF | while read LINE
+    do
+	ETH=`echo $LINE`
+	if [ ! "$ETH" = "" ]; then
+	    echo "begin item" >> $TMP
+	    echo "name=if_${ETH}_ip" >> $TMP
+	    echo "type=var" >> $TMP
+	    echo "bullet=+" >> $TMP
+	    echo "label=Enter IP address for ${ETH}" >> $TMP
+	    echo "default=`printenv SX_NETDEV_${ETH}_IP 2> /dev/null`" >> $TMP
+	    echo "end" >> $TMP
+
+	    echo "begin item" >> $TMP
+	    echo "name=if_${ETH}_netmask" >> $TMP
+	    echo "type=var" >> $TMP
+	    echo "bullet=+" >> $TMP
+	    echo "label=Enter netmask for ${ETH}" >> $TMP
+	    echo "default=`printenv SX_NETDEV_${ETH}_NETMASK 2> /dev/null`" >> $TMP
+	    echo "end" >> $TMP
+
+	    echo "begin item" >> $TMP
+	    echo "name=EXEC" >> $TMP
+	    echo "type=ask|nocls" >> $TMP
+	    echo "bullet=+" >> $TMP
+	    echo "label=Remove \"${ETH}\" " >> $TMP
+	    echo "icaption=Really remove ${ETH} ?" >> $TMP
+	    echo "command=cat $EXTRAIF | grep -v \"^${ETH}\$\" > /usr/local/setup/tmp/setup.eth.$$ ; mv -f /usr/local/setup/tmp/setup.eth.$$ $EXTRAIF ; unset RM_if_${ETH}_ip RM_if_${ETH}_netmask ; exec /usr/local/setup/setup.eth -dontloadconfig" >> $TMP
+	    echo "end" >> $TMP
+
+	    echo "br" >> $TMP
+
+	    echo $ETH >> $savefile
+	fi
+    done
+fi
+
+#
+# This block adds the eth devices listed in /proc/net/dev.
+#
+cat /proc/net/dev | while read LINE
+do
+    ETH=`echo $LINE | grep "^eth" | cut -d: -f1`
+    if [ ! "$ETH" = "" ]; then
+	echo "begin item" >> $TMP
+	echo "name=if_${ETH}_ip" >> $TMP
+	echo "type=var" >> $TMP
+	echo "bullet=+" >> $TMP
+	echo "label=Enter IP address for ${ETH}" >> $TMP
+	echo "default=`printenv SX_NETDEV_${ETH}_IP 2> /dev/null`" >> $TMP
+	echo "end" >> $TMP
+
+	echo "begin item" >> $TMP
+	echo "name=if_${ETH}_netmask" >> $TMP
+	echo "type=var" >> $TMP
+	echo "bullet=+" >> $TMP
+	echo "label=Enter netmask/master for ${ETH}" >> $TMP
+	echo "default=`printenv SX_NETDEV_${ETH}_NETMASK 2> /dev/null`" >> $TMP
+	echo "end" >> $TMP
+	echo "br" >> $TMP
+
+	echo $ETH >> $savefile
+    fi
+done
+
+cat <<EOF >> $TMP
+begin item
+    name=QUIT
+    bullet=<-
+    label=Save and exit
+    command=source /usr/local/setup/ETHERNET
+end
+
+begin item
+    name=QUIT
+    bullet=<-
+    label=Exit without saving
+    command=exit 0
+end
+EOF
+
+exec replimenu -f $TMP

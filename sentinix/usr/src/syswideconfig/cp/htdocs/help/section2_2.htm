@@ -1,0 +1,292 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+
+<html>
+<head>
+	<title>Cacti Manual</title>
+	<link href="main.css" rel="stylesheet">
+</style>
+</head>
+
+<body>
+
+<table bgcolor="#d5d5d5" width="100%">
+	<tr>
+		<td align="left">
+			<strong><a href="section1.htm">&lt;&lt; Previous Section</a></strong>
+		</td>
+		<td align="center">
+			Making Graphs the Manual Way: Graphs and Data Sources <strong>[<a href="index.htm">home</a>]</strong>
+		</td>
+		<td align="right">
+			<strong><a href="section3.htm">Next Section &gt;&gt;</a></strong>
+		</td>
+	</tr>
+</table>
+
+<br>
+
+<span class="textPageHeader">Graphs</span>
+
+<p>Graphs can be accessed in Cacti by selecting the "Graph Management" menu option under "Graph Setup". Graphs in Cacti are
+closely modeled after graphs in RRDTool, which is described in the 
+<a href="http://people.ee.ethz.ch/~oetiker/webtools/rrdtool/manual/rrdgraph.html">RRDTool Graph manual</a>. 
+
+<p>To add a new graph in Cacti, click "Add" in the upper right corner of the window. The first thing you will be prompted 
+for is a graph template and a host. While both of these options provide powerful functionality, you can leave both of 
+these dropdowns set to "None" for now. When you click the "Create" button you will be provided with a bunch of fields:</p>
+
+<table class="field" cellspacing="0">
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Title
+		</td>
+		<td class="fieldDescription">
+			The title of the graph within Cacti and the title that will be printed on the actual graph itself.
+			<br><br>
+			<strong>Note</strong>: You can use the keyword <em>|host_description|</em> in this field, which will be
+			automatically substituted with the current host description.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Image Format
+		</td>
+		<td class="fieldDescription">
+			Choose whether you would prefer to output your graph images in PNG or GIF. According to the RRDTool
+			manual PNG is preferred because it is both smaller and faster.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Height
+		</td>
+		<td class="fieldDescription">
+			The height of the graph area in pixels
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Width
+		</td>
+		<td class="fieldDescription">
+			The width of the graph area in pixels
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Auto Scale
+		</td>
+		<td class="fieldDescription">
+			Enable auto scale for the graph. This option must be check to use the next two options. Upper/Lower 
+			limit values are ignored when using autoscale since these boundaries are determined automatically.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Auto Scale Options
+		</td>
+		<td class="fieldDescription">
+			Choose whether you would like to use <em>--alt-autoscale</em> or <em>--alt-autoscale-max</em> on the graph.
+			The RRDTool graph manuals says: "<em>Where --alt-autoscale will modify both the absolute maximum AND 
+			minimum values, this option will only affect the maximum value. The minimum value, if not defined on 
+			the command line, will be 0. This option can be useful when graphing router traffic when the WAN line 
+			uses compression, and thus the throughput may be higher than the WAN line speed.</em>".
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Logarithmic Auto Scaling
+		</td>
+		<td class="fieldDescription">
+			Choose if you want logarithmic y-axis scaling.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Rigid Boundaries Mode
+		</td>
+		<td class="fieldDescription">
+			From the RRDTool manual "<em>Normally rrdgraph will automatically expand the lower and upper limit if the 
+			graph contains a value outside the valid range. With this option you can disable this behavior</em>".
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Auto Padding
+		</td>
+		<td class="fieldDescription">
+			If you have ever created RRDTool-based graphs manually, you may have realized how annoying it can be 
+			to get text to line up properly. With this option Cacti will do its best to make the columns on your 
+			graph legend line up. This option works best when your graph legend has a consistent number of columns.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Allow Graph Export
+		</td>
+		<td class="fieldDescription">
+			If you choose to use Cacti's static HTML/image export, you can choose whether you want each
+			individual graph to be exported.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Upper Limit
+		</td>
+		<td class="fieldDescription">
+			The maximum value that will be displayed on the y-axis. This value is ignored is auto-scaling is
+			turned on.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Lower Limit
+		</td>
+		<td class="fieldDescription">
+			The minimum value that will be displayed on the y-axis. This value is ignored is auto-scaling is
+			turned on.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Base Value
+		</td>
+		<td class="fieldDescription">
+			Whether you want to base the y-axis labels on 1000 or 1024. This field will typically be set to 1024 
+			for memory and 1000 for traffic measurements.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Unit Value
+		</td>
+		<td class="fieldDescription">
+			Sets the unit value for the y-axis. You should probably keep the unit short as to keep it
+			readable.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Unit Exponent Value
+		</td>
+		<td class="fieldDescription">
+			Sets the 10^e scaling of the y-axis. Valid values for this field are between -18 and 18. For example,
+			you could use 3 to display everything in 'k' (kilo) or -6 to display everything in 'u' (micro).
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Vertical Label
+		</td>
+		<td class="fieldDescription">
+			The text to print on the left edge of the graph. Usually is the units the data on the graph is measured 
+			in.
+		</td>
+	</tr>
+</table>
+
+<p>When you have finished filling in all necessary fields, click "Create" at the bottom of the page. You will be redirected
+back to the edit page, with the graph template/host applied (if applicable). You should now see a new box at the top of
+the window called "Graph Items". This is where you define what to actually place on the graph, such as lines, data sources,
+and text.</p>
+
+<p class="textParagraphHeader">Graph Items</p>
+
+<p>To create your first graph item, simply click "Add" on the right side of the "Graph Items" box. You will be presented
+with a list of fields explained below:</p>
+
+<table class="field" cellspacing="0">
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Data Source
+		</td>
+		<td class="fieldDescription">
+			If this graph item is to represent some sort of data, you must select a your data source here. Keep
+			in mind that not all graph items have a data source. Graph item types such as COMMENT, VRULE, and
+			HRULE typically do not.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Color
+		</td>
+		<td class="fieldDescription">
+			Depending on the graph item type, you can select a color for the graph item. This field only applies
+			to the graph item types AREA, STACK, LINE1, LINE2, and LINE3.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Graph Item Type
+		</td>
+		<td class="fieldDescription">
+			This field is important because it defines what kind of graph item this is. Types such as AREA, STACK,
+			LINE1, LINE2, and LINE3 are used to represent data on the graph, while COMMENT and GPRINT are used
+			put on the legend. The LEGEND type is specific to Cacti only and can be used if you want to Cacti to
+			automatically create a GPRINT-LAST/GPRINT-AVERAGE/GPRINT-MAXIMUM graph item for you.
+			<br><br>
+			<strong>Note</strong>: You must always put an AREA item before using STACK or your graph will not render.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Consolidation Function
+		</td>
+		<td class="fieldDescription">
+			This tells RRDTool which consolidation function to use when representing this data on the graph. You
+			will typically use AVERAGE for most things on the graph area, and LAST/MAXIMUM as well for GPRINT
+			items.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			CDEF Function
+		</td>
+		<td class="fieldDescription">
+			If you want to apply a CDEF function to the graph item, select one here. Check out the <a href="section6_1.htm">CDEF section</a>
+			of the manual for more information.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Value
+		</td>
+		<td class="fieldDescription">
+			This field is only used with the HRULE/VRULE graph item types. Type any valid integer to draw 
+			the line at for HRULE or the time of the day HH:MM for VRULE.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			GPRINT Type
+		</td>
+		<td class="fieldDescription">
+			If this item is a GPRINT, you can choose how you want the number to be formatted. You can add your
+			own in the <a href="section6_2.htm">GPRINT Presets</a> section of Cacti.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Text Format
+		</td>
+		<td class="fieldDescription">
+			You can enter text to be displayed on the legend here. This field is applicable for all graph 
+			item types except for the virtual LEGEND type.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Hard Return
+		</td>
+		<td class="fieldDescription">
+			Check this box to force graph items onto the next line.
+		</td>
+	</tr>
+</table>
+
+<p>When you have finished filling in all necessary fields, click "Create" at the bottom of the page. You will be redirected
+back to the graph edit page. From here you can continue to add additional graph items, reorder graph items, or remove
+graph items.</p>
+
+</body>
+</html>

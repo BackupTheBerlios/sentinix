@@ -1,0 +1,23 @@
+#!/bin/sh
+
+if [ "$1" = "" ]; then
+    echo "Usage: $0 path_to_linux_source"
+    exit 1
+fi
+
+if [ ! -d $1 ]; then
+    echo "Error: argument must be a directory (the linux source tree)."
+    exit 1
+fi
+
+if [ ! -e ../config ]; then
+    echo "../config does not exist!"
+    exit 1
+fi
+
+. ../config &&
+cat ${1}/drivers/video/fbcon.c | \
+sed "s%^#define LOGO_W\([	]*\).*%#define LOGO_W\1330%" > /tmp/logopatch.$$ &&
+cat /tmp/logopatch.$$ > ${1}/drivers/video/fbcon.c &&
+cp linux_logo.h ${1}/include/linux/linux_logo.h &&
+rm -f /tmp/logopatch.$$

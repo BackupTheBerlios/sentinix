@@ -1,0 +1,25 @@
+@ IN SOA ns root (
+	2003031801	; serial
+	4H		; refresh
+	2H		; retry
+	1W		; expiry
+	1D )		; minimum
+
+	TXT	"Compledge SSI cluster running openMosix"
+	NS ns
+	MX 10 mx
+
+	A	195.163.134.226
+
+ns	A	195.163.134.226
+mx	A	195.163.134.226
+
+masternode A	192.168.0.1
+nod01	CNAME	masternode
+nod02	A	192.168.0.2
+nod03	A	192.168.0.3
+nod04	A	192.168.0.4
+nod05	A	192.168.0.5
+nod06	A	192.168.0.6
+fluffy	A	195.163.134.76
+*	A	195.163.134.226

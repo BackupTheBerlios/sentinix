@@ -1,0 +1,57 @@
+#!/bin/sh
+CWD=`pwd`
+
+VERSION=0.9.17
+
+if [ ! -e config ]; then
+	echo "No \"config\" file found"!
+	exit 1
+fi
+
+. config
+
+if [ "$KERNELSRC" = "" ]; then
+	echo "Bad \"KERNELSRC\" variable in \"config\""!
+	exit 1
+fi
+
+if [ -e uclibc ]; then
+	echo -n "Delete \"uclibc\"? [y/n] "
+	read reply
+	if [ "$reply" = "y" -o "$reply" = "Y" -o "$reply" = "yes" ]; then
+		echo "rm -rf uclibc"
+		rm -rf uclibc
+	fi
+fi
+
+echo
+rm -rf uClibc-$VERSION
+tar -xzf uClibc-$VERSION.tar.gz &&
+cd uClibc-$VERSION &&
+chown -R root.root . &&
+
+make defconfig &&
+(
+  sed 's%DEVEL_PREFIX="/usr/$(TARGET_ARCH)-linux-uclibc"%DEVEL_PREFIX="'$CWD'/uclibc"%g' .config > newconfig &&
+  mv newconfig .config &&
+  sed 's%KERNEL_SOURCE="/usr/src/linux"%KERNEL_SOURCE="'$KERNELSRC'"%g' .config > newconfig &&
+  mv newconfig .config
+) &&
+make &&
+make install
+if [ $? -eq 0 ]; then
+	echo "uClibc seems to have been installed successfully."
+	echo "i386-uclibc-gcc is located here:"
+	echo
+	UCLIBC=`find $CWD/uclibc -name i386-uclibc-gcc`
+	echo $UCLIBC
+	echo
+	echo "You may want to add this line to the \"config\" file:"
+	echo
+	echo "UCLIBC=$UCLIBC"
+	echo
+	exit 0
+else
+	echo "Error"!
+	exit 1
+fi

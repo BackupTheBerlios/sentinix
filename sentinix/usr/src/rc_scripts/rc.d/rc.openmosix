@@ -1,0 +1,54 @@
+#!/bin/sh
+#
+# This script can only be run with an openMosix kernel!
+# See manpage openmosix(1) for more information.
+#
+
+omstart()
+{
+	echo -e "\033[1mFiring up openMosix cluster...\033[0m"
+	/sbin/setpe -off
+	sleep 1
+	/sbin/omdiscd
+	if [ ! $? -eq 0 ]; then
+	    # perhaps there's no default gateway, try eth0:
+	    /sbin/omdiscd -i eth0
+	fi
+
+	echo "Mounting oMFS..."
+	if [ ! -e /mfs ]; then
+	    mkdir /mfs
+	else
+	    umount /mfs 2> /dev/null
+	fi
+	mount -t mfs -o dfsa=1 mfs /mfs
+	touch /var/sxrunning/openMosix
+}
+
+omstop()
+{
+	killall omdiscd
+	sleep 1
+	/sbin/setpe -off
+	umount /mfs
+	rm -f /var/sxrunning/openMosix
+}
+
+if [ ! -e /proc/hpc/admin/version ]; then
+	echo -e "\033[1;31mThis kernel is not an openMosix kernel (or /proc is not mounted).\033[0m"
+else
+
+case "$1" in
+	'start')
+		omstart ;;
+	'stop')
+		omstop ;;
+	'restart')
+		omstop
+		sleep 1
+		omstart ;;
+	*)
+		echo "usage: $0 start|stop|restart" ;;
+esac
+
+fi

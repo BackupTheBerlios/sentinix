@@ -1,0 +1,2 @@
+# generate certificate:
+openssl req -new -x509 -nodes -out imapd.pem -keyout imapd.pem -days 3650

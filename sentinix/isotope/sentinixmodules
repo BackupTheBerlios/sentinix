@@ -1,0 +1,444 @@
+#CAP: Processor features
+
+toshiba		# Toshiba Laptop support (Toshiba BIOS)
+i8k		# Dell laptop support (Dell Inspiron and Latitude laptops)
+microcode	# dev/cpu/microcode - Intel IA32 CPU microcode support
+msr		# dev/cpu/*/msr - Model-specific register support
+cpuid		# dev/cpu/*/cpuid - CPU information support
+
+# ethernet 10/100 modules
+
+#CAP: Ethernet 10/100 modules
+
+sunhme		# Sun Happy Meal 10/100baseT
+sungem		# Sun GEM & Apple GMAC
+3c501		# 3c501 "EtherLink"
+3c503		# 3c503 "EtherLink II"
+3c505		# 3c505 "EtherLink Plus"
+3c509		# 3c509/3c529 (MCA)/3c579 "EtherLink III"
+3c515		# 3c515 ISA "Fast EtherLink"
+3c59x		# 3c590/3c900 series (592/595/597) "Vortex/Boomerang"
+typhoon		# 3cr990 series "Typhoon" support
+lance		# AMD LANCE and PCnet (AT1500 and NE2100)
+wd		# WD80*3 support
+smc-ultra	# SMC Ultra
+smc9194		# SMC 9194
+ni52		# Racal-Interlan (Micom) NI5210
+ni65		# Racal-Interlan (Micom) NI6510
+depca		# DEPCA, DE10x, DE200, DE201, DE202, DE422
+hp100		# HP 10/100VG PCLAN (ISA, EISA, PCI)
+e2100		# Cabletron E21xx
+ewrk3		# EtherWORKS 3 (DE203, DE204, DE205)
+eexpress	# EtherExpress 16
+eepro		# EtherExpressPro support/EtherExpress 10 (i82595)
+hp-plus		# HP PCLAN+ (27247B and 27252A)
+hp		# HP PCLAN (27245 and other 27xxx series)
+lp486e		# LP486E on board Ethernet
+eth16i		# ICL EtherTeam 16i/32
+ne		# NE2000/NE1000
+pcnet32		# AMD PCnet32 PCI
+amd8111e	# AMD 8111 (new PCI lance) support
+starfire	# Adaptec Starfire/DuraLAN
+apricot		# Apricot Xen-II on board Ethernet
+cs89x		# CS89x0 support
+tulip		# DECchip Tulip (dc21x4x) PCI
+de4x5		# Generic DECchip & DIGITAL EtherWORKS PCI/EISA
+dgrs		# Digi Intl. RightSwitch SE-X
+dmfe		# Davicom DM910x/DM980x
+eepro100	# EtherExpressPro/100 support (eepro100, original Becker driver)
+#e100		# EtherExpressPro/100 support (e100, Alternate Intel driver)
+fealnx		# Myson MTD-8xx PCI
+natsemi		# National Semiconductor DP8381x series PCI
+ne2k-pci	# PCI NE2000 and clones
+8139too		# RealTek RTL-8139 PCI Fast Ethernet Adapter
+sis900		# SiS 900/7016 PCI Fast Ethernet Adapter
+epic100		# SMC EtherPower II
+sundance	# Sundance Alta
+tlan		# TI ThunderLAN
+
+# don't modprobe tc35815, taints the kernel
+tc35815	# TOSHIBA TC35815 Ethernet support
+
+via-rhine	# VIA Rhine
+winbond-840	# Winbond W89c840 Ethernet
+
+#CAP: Ethernet 1000 (1GBit) modules
+
+acenic		# Alteon AceNIC/3Com 3C985/NetGear GA620 Gigabit
+dl2k		# D-Link DL2000-based Gigabit Ethernet
+e1000		# Intel(R) PRO/1000 Gigabit Ethernet
+ns83820		# National Semiconductor DP83820
+hamachi		# Packet Engines Hamachi GNIC-II
+yellowfin	# Packet Engines Yellowfin Gigabit-NIC support (EXPERIMENTAL)
+r8169		# Realtek 8169 Gigabit Ethernet support
+sk98lin		# SysKonnect SK-98xx
+tg3		# Broadcom Tigon3
+
+#CAP: Pocket and portable Ethernet adapters
+
+atp		# AT-LAN-TEC/RealTek pocket adapter support
+de600		# D-Link DE600 pocket adapter support
+de620		# D-Link DE620 pocket adapter support
+
+#CAP: Wireless LAN
+
+# strip is a radio protocol
+strip          # STRIP (Metricom starmode radio IP)
+airo            # Cisco/Aironet 34X/35X/4500/4800 ISA and PCI cards
+arlan           # Aironet Arlan 655 & IC2200 DS support
+aironet4500_core       # Aironet 4500/4800 series adapters
+aironet4500_card       # Aironet 4500/4800 PCI/PNP
+# aironet proc is not a NIC
+aironet4500_proc       # Aironet 4500/4800 PROC interface
+hermes          # Hermes chipset 802.11b support (Orinoco/Prism2/Symbol)
+
+#CAP: Token Ring driver support
+
+ibmtr		# IBM Tropic chipset based adapter support
+olympic		# IBM Olympic chipset PCI adapter support
+lanstreamer	# IBM Lanstreamer chipset PCI adapter support
+3c359		# 3Com 3C359 Token Link Velocity XL adapter support
+tms380tr	# Generic TMS380 Token Ring ISA/PCI adapter support
+tmspci		# Generic TMS380 PCI support
+tmsisa		# Generic TMS380 ISA support
+abyss		# Madge Smart 16/4 PCI Mk2 support
+smctr		# SMC ISA/MCA adapter support
+
+#CAP: Amateur Radio support
+
+ax25		# Amateur Radio AX.25 Level 2 protocol
+netrom		# Amateur Radio NET/ROM protocol
+rose		# Amateur Radio X.25 PLP (Rose)
+
+#CAP: AX.25 network device drivers
+
+mkiss		# Serial port KISS driver
+6pack		# Serial port 6PACK driver
+bpqether	# BPQ Ethernet driver
+dmascc		# High-speed (DMA) SCC driver for AX.25
+scc		# Z8530 SCC driver
+baycom_ser_fdx	# BAYCOM ser12 fullduplex driver for AX.25
+baycom_ser_hdx	# BAYCOM ser12 halfduplex driver for AX.25
+baycom_par	# BAYCOM picpar and par96 driver for AX.25
+soundmodem	# Soundcard modem driver
+yam		# YAM driver for AX.25
+
+#CAP: IrDA (infrared) support
+
+irda		# IrDA subsystem support
+irlan		# IrLAN protocol
+irnet		# IrNET protocol
+ircomm		# IrCOMM protocol
+ircomm-tty	# IrCOMM serial TTY driver
+
+#CAP: Infrared-port device drivers: SIR device drivers
+
+irtty		# IrTTY (uses Linux serial driver)
+irport		# IrPORT (IrDA serial driver)
+
+#CAP: Infrared-port device drivers: Dongle support
+
+esi		# ESI JetEye PC dongle
+actisys		# ACTiSYS IR-220L and IR220L+ dongle
+tekram		# Tekram IrMate 210B dongle
+girbil		# Greenwich GIrBIL dongle
+litelink	# Parallax LiteLink dongle
+mcp2120		# Microchip MCP2120
+old_belkin	# Old Belkin dongle
+act200l		# ACTiSYS ACT-IR200L dongle driver
+ma600		# Mobile Action MA600 dongle (Experimental)
+irda-usb	# IrDA USB dongles (Experimental)
+nsc-ircc	# NSC PC87108/PC87338
+w83977af_ir	# Winbond W83977AF (IR)
+toshoboe	# Toshiba Type-O IR Port (old driver)
+donauboe	# Toshiba Type-O IR Port
+smc-ircc	# SMC IrCC (Experimental)
+ali-ircc	# ALi M5123 FIR (Experimental)
+vlsi_ir		# VLSI 82C147 SIR/MIR/FIR (Experimental)
+
+#CAP: Integrated Services Digital Networks (ISDN)
+
+isdn		# ISDN support
+isdn_bsdcomp	# Support BSD compression
+isdnloop	# isdnloop support
+dss1_divert	# Support isdn diversion services
+
+#CAP: Passive ISDN cards
+
+hisax		# HiSax SiemensChipSet driver support
+sedlbauer_cs	# Sedlbauer PCMCIA cards
+elsa_cs		# ELSA PCMCIA MicroLink cards
+avma1_cs	# AVM A1 PCMCIA cards
+auerswald	# Auerswald devices ISDN support
+
+#CAP: Active ISDN cards
+
+icn		# ICN 2B and 4B support
+pcbit		# PCBIT-D support
+sc		# Spellcaster support
+act2000		# IBM Active 2000 support
+divas		# Eicon driver standalone
+eicon		# Legacy Eicon driver
+tpam		# Auvertech TurboPAM support
+capi		# CAPI2.0 support
+capidrv		# CAPI2.0 capidrv interface support
+b1isa		# AVM B1 ISA support
+b1pci		# AVM B1 PCI support
+t1isa		# AVM T1/T1-B ISA support
+b1pcmcia	# AVM B1/M1/M2 PCMCIA support
+avm_cs		# AVM B1/M1/M2 PCMCIA cs module
+t1pci		# AVM T1/T1-B PCI support
+c4		# AVM C4/C2 support
+hysdn		# Hypercope HYSDN cards (Champ, Ergo, Metro) support (module only)
+
+#CAP: Character devices
+
+ip2main		# Computone IntelliPort Plus serial support
+rocket		# Comtrol Rocketport support
+cyclades	# Cyclades async mux support
+epca		# Digiboard Intelligent Async Support
+esp		# Hayes ESP serial port support
+moxa		# Moxa Intellio support
+mxser		# Moxa SmartIO support
+isicom		# Multi-Tech multiport card support (EXPERIMENTAL)
+synclink	# Microgate SyncLink card support
+synclinkmp	# SyncLink Multiport support
+n_hdlc		# HDLC line discipline support
+riscom8		# SDL RISCom/8 card support
+specialix	# Specialix IO8+ card support
+sx		# Specialix SX (and SI) card support
+rio		# Specialix RIO system support
+stallion	# Stallion EasyIO or EC8/32 support
+istallion	# Stallion EC8/64, ONboard, Brumby support
+
+lp		# Parallel printer
+ppdev		# Support for user-space parallel port device drivers
+tipar		# Texas Instruments parallel link cable support
+tpqic02		# QIC-02 tape support
+ipmi_msghandler	# IPMI top-level message handler
+ipmi_devintf	# Device interface for IPMI
+ipmi_kcs_drv	# IPMI KCS handler
+ipmi_watchdog	# IPMI Watchdog Timer
+
+scx200_i2c	# NatSemi SCx200 GPIO Support
+amd768_rng	# AMD 768/8111 Random Number Generator support
+i810_rng	# Intel i8x0 Random Number Generator support
+nvram		# dev/nvram support
+dtlk		# Double Talk PC internal speech card support
+n_r3964		# Siemens R3964 line discipline
+applicom	# Applicom intelligent fieldbus card support
+sonypi		# Sony Vaio Programmable I/O Control Device support (EXPERIMENTAL)
+agpgart		# dev/agpgart (AGP Support)
+serial_cs	# PCMCIA serial device support
+synclinkmp	# SyncLink PC Card support
+mwave		# ACP Modem (Mwave) support
+
+#CAP: Watchdog cards
+
+pscwdt		# Acquire SBC Watchdog Timer
+advantechwdt	# Advantech SBC Watchdog Timer
+alim7101_wdt	# ALi M7101 PMU Watchdog Timer
+sc520_wdt	# AMD Elan SC520 Watchdog Timer
+pcwd		# Berkshire Products PC Watchdog
+eurotechwdt	# Eurotech CPU-1220/1410 Watchdog Timer
+ib700wdt	# IB700 SBC Watchdog Timer
+wafer5823wdt	# ICP ELectronics Wafer 5823 Watchdog
+i810-tco	# Intel i810 TCO timer / Watchdog
+mixcomwd	# Mixcom Watchdog
+sbc60xxwdt	# SBC-60XX Watchdog Timer
+sc1200wdt	# SC1200 Watchdog Timer (EXPERIMENTAL)
+scx200_watchdog	# NatSemi SCx200 Watchdog
+softdog		# Software Watchdog
+w83877f_wdt	# W83877F (EMACS) Watchdog Timer
+wdt		# WDT Watchdog timer
+wdt_pci		# WDT PCI Watchdog timer
+machzwd		# ZF MachZ Watchdog
+amd7xx_tco	# AMD 766/768 TCO Timer/Watchdog
+
+#CAP: Ftape, the floppy tape device driver
+
+ftape		# Ftape (QIC-80/Travan) support
+zftape		# Zftape, the VFS interface
+
+#CAP: File systems
+
+autofs		# Kernel automounter support
+autofs4		# Kernel automounter version 4 support (also supports v3)
+cramfs		# Compressed ROM file system support
+jfs		# JFS filesystem support
+minix		# Minix fs support
+freevxfs	# FreeVxFS file system support (VERITAS VxFS(TM) compatible)
+ntfs		# NTFS file system support (read only)
+hpfs		# OS/2 HPFS file system support
+qnx4		# QNX4 file system support (read only)
+sysv		# System V/Xenix/V7/Coherent file system support
+udf		# UDF file system support (read only)
+ufs		# UFS file system support (read only)
+
+#CAP: Network file systems
+
+coda		# Coda file system support (advanced network fs)
+nfsd		# NFS server support
+smbfs		# SMB file system support (to mount Windows shares etc.)
+ncpfs		# NCP file system support (to mount NetWare volumes)
+
+#CAP: PCMCIA core modules
+
+pcmcia_core	# PCMCIA/CardBus
+#ds
+ide-cs		# PCMCIA IDE
+
+#CAP: PCMCIA network modules
+
+3c589_cs	# 3Com 3c589 PCMCIA
+3c574_cs	# 3Com 3c574 PCMCIA
+fmvj18x_cs	# Fujitsu FMV-J18x PCMCIA
+pcnet_cs	# NE2000 compatible PCMCIA
+axnet_cs	# Asix AX88190 PCMCIA
+nmclan_cs	# New Media PCMCIA
+smc91c92_cs	# SMC 91Cxx PCMCIA
+xirc2ps_cs	# Xircom 16-bit PCMCIA
+xircom_cb	# Xircom CardBus (new driver)
+xircom_tulip_cb	# Xircom Tulip-like CardBus (old driver)
+ray_cs		# Aviator/Raytheon 2.4MHz wireless
+netwave_cs	# Xircom Netwave AirSurfer wireless
+wavelan_cs	# AT&T/Lucent Wavelan wireless
+aironet4500_cs	# Aironet 4500/4800 PCMCIA
+airo_cs		# Cisco/Aironet 34X/35X/4500/4800 PCMCIA cards
+orinoco_cs	# Hermes PCMCIA card support
+
+#CAP: SCSI emulation (ide-scsi)
+
+ide-scsi	# SCSI emulation
+
+#CAP: FDDI (Fiber Distributed Data Interface)
+
+defxx		# Digital DEFEA and DEFPA adapter
+skfp		# SysKonnect FDDI PCI
+
+#CAP: Various other network modules
+
+dummy		# Dummy net driver
+bonding		# Bonding driver
+eql		# EQL (serial line load balancing)
+tun		# Universal TUN/TAP device driver support
+plip		# PLIP (parallel port) support
+ppp_generic	# PPP (point-to-point protocol)
+ppp_async	# PPP support for async serial ports
+ppp_synctty	# PPP support for sync tty ports
+ppp_deflate	# PPP Deflate compression
+bsd_comp	# PPP BSD-Compress compression
+slip		# SLIP (serial line) support
+rcpci		# Red Creek Hardware VPN (EXPERIMENTAL)
+shaper		# Traffic Shaper (EXPERIMENTAL)
+
+#CAP: Fibre Channel driver support
+
+iph5526		# Interphase 5526 Tachyon chipset based adapter support
+
+#CAP: Wan interfaces
+
+hostess_sv11	# Comtrol Hostess SV-11 support
+cosa		# COSA/SRP sync serial boards support
+lmc		# LanMedia Corp. SSI/V.35, T1/E1, HSSI, T3 boards
+ASLX		# Aurora Technology, Inc. synchronous asynchronous PCI cards V2
+sealevel	# Sealevel Systems 4021 support
+syncppp		# SyncLink HDLC/SYNCPPP support
+hdlc		# Generic HDLC layer (Raw/Cisco/Frame relay)
+n2		# SDL RISCom/N2 support
+c101		# Moxa C101 support
+farsync		# FarSync T-Series support
+dlci		# Frame relay DLCI support
+sdla		# SDLA (Sangoma S502/S508) support
+
+#CAP: Networking modules
+
+ipx		# The IPX protocol
+appletalk	# Appletalk protocol
+decnet		# DECnet
+
+#CAP: Sound card modules
+
+ali5455		# ALi5455 audio support
+btaudio		# BT878 audio dma
+cmpci		# C-Media PCI (CMI8338/8738)
+emu10k1		# Creative SBLive! (EMU10K1)
+cs46xx		# Crystal SoundFusion (CS4280/461x)
+cs4281		# Crystal Sound CS4281
+es1370		# Ensoniq AudioPCI (ES1370)
+es1371		# Creative Ensoniq AudioPCI 97
+esssolo1	# ESS Technology Solo1 (ES1946)
+maestro		# ESS Maestro, Maestro2, Maestro2E driver
+maestro3	# ESS Maestro3/Allegro driver (EXPERIMENTAL)
+forte		# ForteMedia FM801 driver (EXPERIMENTAL)
+i810_audio	# Intel ICH (i8xx), SiS 7012, NVidia nForce Audio or AMD 768/811x
+rme96xx		# RME Hammerfall (RME96XX) support
+sonicvibes	# S3 SonicVibes
+trident		# Trident 4DWave DX/NX, SiS 7018 or ALi 5451 PCI Audio Core
+via82cxxx_audio	# VIA 82C686 Audio Codec
+
+#CAP: OSS sound modules
+
+sound		# OSS sound modules support
+ad1816		# AD1816(A) based cards (EXPERIMENTAL)
+ad1889		# AD1889 based cards (AD1819 codec) (EXPERIMENTAL)
+sgalaxy		# Aztech Sound Galaxy (non-PnP) cards
+adlib_card	# Adlib Cards (includes ASB 64 4D)
+aci		# ACI mixer (miroSOUND PCM1-pro/PCM12/PCM20)
+cs4232		# Crystal CS4232 based (PnP) cards
+sscape		# Ensoniq SoundScape support
+gus		# Gravis Ultrasound support
+v_midi		# Loopback MIDI device support
+trix		# MediaTrix AudioTrix Pro support
+ad1848		# Microsoft Sound System support
+mpu401		# MPU-401 support (NOT for SB16)
+nm256_audio	# NM256AV/NM256ZX audio support
+mad16		# OPTi MAD16 and/or Mozart based cards
+pas2		# ProAudioSpectrum 16 support
+pss		# PSS (AD1848, ADSP-2115, ESC614) support
+sb		# Sound Blaster compatibles (SB16/32/64, ESS, Jazz16) support
+awe_wave	# AWE32 synth
+kahlua		# XpressAudio Sound Blaster emulation
+wavefront	# Full support Turtle Beach WaveFront (Tropez Plus, Tropez, Maui) synth/soundcards
+maui		# Limited support Turtle Beach Wave Front (Maui, Tropez) synthesizers
+opl3		# Yamaha FM synthesizer (YM3812/OPL-3)
+opl3sa		# Yamaha OPL3-SA1 audio controller
+opl3sa2		# Yamaha OPL3-SA2 and SA3 based PnP cards
+ymfpci		# Yamaha YMF7xx PCI audio (native mode)
+uart6850	# UART support
+aedsp16		# Gallant Audio Cards (SC-6000 and SC-6600 based)
+
+#CAP: USB modules
+
+usbcore		# USB support (usbcore.o)
+ehci-hcd	# EHCI HCD (USB 2.0) support (EXPERIMENTAL)
+usb-uhci	# UHCI (Intel PIIX4, VIA, ...)
+uhci		# UHCI Alternate Driver (JE)
+usb-storage	# USB Mass Storage support
+acm		# USB Modem (CDC ACM) support
+printer		# USB Printer support
+dc2xx		# USB Kodak DC-2xx Camera support
+scanner		# USB Scanner support
+microtek	# Microtek X6USB scanner support
+uss720		# USS720 parport driver
+auerswald	# Auerswald USB ISDN device support
+tiglusb		# Texas Instruments Graph Link USB (aka SilverLink) cable support
+brlvger		# Tieman Voyager USB Braille display support (EXPERIMENTAL)
+usblcd		# USB LCD device support
+
+#CAP: Bluetooth support
+
+bluez		# Bluetooth subsystem support
+l2cap		# L2CAP protocol support
+sco		# SCO links support
+rfcomm		# RFCOMM protocol support
+bnep		# BNEP protocol support
+
+hci_usb		# HCI USB driver
+hci_uart	# HCI UART driver
+dtl1_cs		# HCI DTL1 (PC Card) driver
+bt3c_cs		# HCI BT3C (PC Card) driver
+bluecard_cs	# HCI BlueCard (PC Card) driver
+btuart_cs	# HCI UART (PC Card) driver
+hci_vhci	# HCI VHCI (Virtual HCI device) driver
+

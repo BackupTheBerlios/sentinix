@@ -1,0 +1,23 @@
+#!/bin/sh
+
+echo
+echo "Creating ISO image from SENTINIX tree."
+echo
+
+if [ ! -e .gotrootpasswd ]; then
+    echo
+    echo "Please enter default SENTINIX root password \"sentinix\"."
+    echo
+    passwd root &&
+    touch .gotrootpasswd
+    if [ ! $? -eq 0 ]; then
+	exit 1
+    fi
+fi
+
+sh mkinitrd &&
+sh mksentinixtgz &&
+sh mkiso &&
+( echo
+  echo "You may now run \"./mkrealcd\" or \"./mkcdrw\"."
+  echo )

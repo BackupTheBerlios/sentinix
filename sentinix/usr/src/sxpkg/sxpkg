@@ -1,0 +1,652 @@
+#!/bin/sh
+#
+# sxpkg Copyright (C) 2003 Michel Blomgren
+# This script is distributed under the terms of the GNU General Public License,
+# but WITHOUT ANY WARRANTY WHAT SO EVER!
+#
+# See the /LICENSE file for more details.
+#
+SXPKGVER="0.0.1"
+p=sxpkg
+
+# defaults
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+export PATH
+
+pkgdir=/var/sxpkg
+tmpdir=${pkgdir}/tmpdir
+
+sxpkgurl=""
+sxpkghomeurl="ftp://localhost/sxpkg"
+
+defaultsxpkgurl="ftp://sxpkg.sentinix.org/sxpkg"
+
+verbose=no
+forceflag=noforce
+
+
+# program dependencies
+PROGDEPENDS="date tar curl grep sed tail tr md5sum"
+
+
+
+
+###############################################################################
+# functions
+###############################################################################
+
+#############################################
+# help and syntax functions:
+#
+helpme()
+{
+    echo "sxpkg $SXPKGVER - SENTINIX simple package tool"
+
+cat <<EOF
+Copyright (C) 2003 Michel Blomgren
+
+sxpkg is distributed under the terms of the GNU General Public License, but
+WITHOUT ANY WARRANTY. See the /LICENSE file for more details.
+
+usage: sxpkg [-H site] -{a,g,G,i,I,d} pkg
+
+    NOTE! Options are parsed and executed one at a time.
+
+    -a            Auto-sync (not implemented yet!).
+
+    -g pkg,pkg-3,pkg-48...
+                  Get package(s) from sxpkg ftp site. Variable is a comma
+                  separated list of packages, either with specific sxversion
+		  number or without. If without version number, the latest
+		  package found will be downloaded. A package already
+		  downloaded will not be downloaded twice.
+    -G pkg,pkg... Get package(s) from contrib area at sxpkg site (/contrib).
+
+    -i pkg,pkg... Compile and install package(s), but only local packages.
+    -I pkg,pkg... Compile and install package(s). If not found locally, fetch
+                  them from sxpkg site first, then install them. (-g + -i).
+
+    -H sxpkgurl   By-pass configuration file and retrieve packages from this
+                  site instead, through ftp. Example:
+    sxpkg -H 'ftp://ftp.site.domain:1045/pub/sentinix-devel/sxpkg' -I sendmail
+
+    -d pkg,pkg... Download package(s) from sxpkg site to the current directory
+                  only and don't put it in the install queue either. To install
+		  it use the -i option (e.g. -i package-34.sx.tar.gz) or, of
+                  course, untar it and install it manually.
+    -D pkg,pkg... Download a package from the contrib area.
+
+    -R pkg,pkg... Delete (remove) local package. You must provide sxversion
+                  too!
+
+    -l            List currently installed packages.
+    -L            List packages in the installqueue (if any).
+
+    -c pkgdir     Create SENTINIX package out of directory. Will check if
+                  package is (somewhat) correct.
+
+    -p            Used together with -c. Automatically increment the number in
+                  the sxversion file before creating package.
+
+    -E		  Edit the sxpkgsites file (using GNU nano).
+
+    -v            Be verbose (not yet implemented).
+
+    -V            Report sxpkg version and exit.
+
+sxpkg configuration files and directories:
+
+    /var/sxpkg/                   Directory for package tool.
+
+    /var/sxpkg/packages/          Packages downloaded with -g or -G end up here.
+
+    /var/sxpkg/src/               Holds uncompressed packages.
+
+    /var/sxpkg/installqueue       Packages fetched with -g or -G end up in this
+                                  queue file.
+
+    /var/sxpkg/installedpackages  All installed packages are listed in this
+                                  file.
+
+    /var/sxpkg/sxpkgsites         List of URLs to sxpkg sites (ftp or http).
+                                  format of this file is as this example:
+
+                                  ftp://sxpkg.sentinix.org/pub/sentinix/sxpkg
+
+                                  A site in this list will be selected randomly
+				  using `date +%s`. http:// is not yet
+				  supported!
+
+EOF
+
+    exit 1
+}
+
+syntaxerror()
+{
+    echo "$p: syntax error, type \"sxpkg -h\" for help."
+    exit 1
+}
+
+sxpkgver()
+{
+    echo "sxpkg-$SXPKGVER"
+    exit 0
+}
+
+########################################
+# misc functions:
+#
+
+checkvarsxpkg()
+{
+    #
+    # if /var/sxpkg dir structure doesn't exist, create it
+    #
+    if [ ! -d $pkgdir ]; then
+	mkdir -p $pkgdir/packages $pkgdir/src
+	if [ ! $? -eq 0 ]; then
+	    echo "$p: couldn't mkdir $pkgdir directory/ies!"
+	    return 1
+	fi
+    fi
+
+    [ ! -e $pkgdir/installedpackages ] && touch $pkgdir/installedpackages
+    [ ! -e $pkgdir/sxpkgsites ] && touch $pkgdir/sxpkgsites
+
+    return 0
+}
+
+cleanvarsxpkg()
+{
+    #
+    # clean up the /var/sxpkg dir from temporary files created during this session
+    #
+    rm -f $pkgdir/.list.$$
+    rm -f $pkgdir/.rawlist.$$
+    rm -f $pkgdir/.latestversion.$$
+    return 0
+}
+
+cleanupandexit()
+{
+    cleanvarsxpkg
+    exit $1
+}
+
+
+canonicalurl()
+{
+    #
+    # make sure that the url does have a trailing "/":
+    #
+    if [ "$sxpkghomeurl" = "" ]; then
+	sxpkghomeurl="$defaultsxpkgurl"
+    fi
+
+    sxpkghomeurl=`echo "$sxpkghomeurl" | sed 's%[/]*$%%g'`
+    sxpkghomeurl="${sxpkghomeurl}/"
+}
+
+
+
+#####################################
+# functional, well... functions:
+#
+
+figureoutpkg()
+{
+    #
+    # find out which package and package version to retrieve (the "pkg" variable)
+    # it will also define the "filename" and "md5sumfile" variables
+    # (xfer_packagelist must be invoked before figureoutpkg)
+    #
+    pkg="$1"
+    if [ "$pkg" = "" ]; then
+	return 1
+    fi
+
+    #
+    # make it real nice, in case it's real bad:
+    # FIXME: I think we need better filtering here...
+    pkg=`echo $pkg | grep -o -E "(^[0-9A-Za-z\.-]+([-][[:digit:]]+)?)[^[-]]?" | head -n1`
+
+    #
+    # first, save time and check if package actually is in packagelist
+    #
+    if ! cat $pkgdir/.list.$$ | grep -E "(^${pkg}[-][[:digit:]]+.sx.(tgz|tar.gz|tar.bz2)|^${pkg}.sx.(tgz|tar.gz|tar.bz2))" 1> /dev/null ; then
+	echo "$p: package \"$pkg\" not found!"
+
+	if var=`cat $pkgdir/.rawlist.$$ | grep -E "^${pkg}[-][[:digit:]]+.(tar.gz|tgz|tar.bz2)"` ; then
+	    echo "$p: found \"$var\", but we won't use any file without .sx suffix in it!"
+	fi
+	return 1
+    fi
+
+    #
+    # strip version field from packagename (if any exist)
+    #
+    pkgversion=`echo $pkg | grep -o -E "[-][[:digit:]]+\$" | grep -o -E "[[:digit:]]\$"`
+    if [ "$pkgversion" = "" ]; then
+	# find latest version of package
+	echo "$p: trying to find the latest version of \"$pkg\""
+
+	let highestvalue=0
+	cat $pkgdir/.list.$$ | grep -E "^$pkg" | grep -E "[-][[:digit:]]+.sx.(tar.gz|tgz|tar.bz2)\$" | while read LINE
+	do
+	    thispkgver=`echo "$LINE" | grep -o -E "[-][[:digit:]]+.sx.(tgz|tar.gz|tar.bz2)\$"`
+	    thispkgver=`echo $thispkgver | sed "s/\([-]\)\([[:digit:]]\).sx.\(tgz\|tar.gz\|tar.bz2\)\$/\2/g"`
+
+	    let currentvalue=$thispkgver
+	    if [ $highestvalue -lt $currentvalue ]; then
+		let highestvalue=$currentvalue
+	    fi
+	    # each time, overwrite the .latestversion file
+	    echo $highestvalue > $pkgdir/.latestversion.$$
+	done
+
+	latest=`cat $pkgdir/.latestversion.$$`
+	pkg="${pkg}-${latest}"
+    else
+	# we don't want to find the latest version of the package, the user has specified a specific version
+	if ! cat $pkgdir/.list.$$ | grep -E "^${pkg}.sx.tar.gz\$|^${pkg}.sx.tgz\$|^${pkg}.sx.tar.bz2\$" 1> /dev/null ; then
+	    echo "$p: package \"$pkg\" does not exist under $sxpkgurl!"
+	    if var=`cat $pkgdir/.rawlist.$$ | grep -E "(^${pkg}[-][[:digit:]]+.tar|^${pkg}[-][[:digit:]]+.tgz)"` ; then
+		echo "$p: found \"$var\", but I won't download any files without \".sx.\" in them."
+	    fi
+	    return 1
+	fi
+    fi
+
+    #
+    # get filename and md5sumfile
+    #
+    filename=`cat $pkgdir/.list.$$ | grep -E "^${pkg}.sx.(tar.gz|tgz|tar.bz2)\$"`
+    md5sumfile=`cat $pkgdir/.list.$$ | grep -E "^${pkg}.sx.(tar.gz|tgz|tar.bz2).md5sum\$"`
+
+    if [ "$filename" = "" ]; then
+	return 1
+    fi
+
+    echo -n "$p: found $pkg ($filename)"
+
+    if [ "$md5sumfile" = "" ]; then
+	echo ", but no md5sum file!"
+    else
+	echo
+    fi
+
+    return 0
+}
+
+
+xfer_packagelist()
+{
+    #
+    # retrieves the sxpkgsite's package list
+    #
+    # $1 = "local" or "remote"
+    #       local = list local files only
+    #       remote = list remote files only
+    #       bothlocalandremote = list local files plus remote files
+    #
+
+    xfer_packagelist_way="$1"
+
+    #
+    # retrieve package list from sxpkgurl, if that's what they want to do...
+    #
+    if [ "$xfer_packagelist_way" = "remote" -o "$xfer_packagelist_way" = "bothlocalandremote" ]; then
+	echo "$p: transferring file listing from $sxpkgurl"
+	curl -m20 -sS -l "$sxpkgurl" -o $pkgdir/.rawlist.$$
+	if [ ! $? -eq 0 ]; then
+	    echo "$p: curl failed!"
+	    return 1
+	fi
+
+	#
+        # convert any \r to \n, since ftp standard is \r\n:
+	#
+	cat $pkgdir/.rawlist.$$ | tr -s '\r' '\n' > $pkgdir/.rawlist.$$.new
+	mv -f $pkgdir/.rawlist.$$.new $pkgdir/.rawlist.$$
+    fi
+
+    #
+    # then get the local list, if we're going that way that is...
+    #
+    if [ "$xfer_packagelist_way" = "local" -o "$xfer_packagelist_way" = "bothlocalandremote" ]; then
+	echo "$p: getting local package list (${pkgdir}/packages/)"
+	( cd ${pkgdir}/packages || return 1
+	  for i in *
+	  do
+	    if [ -e $i ]; then
+		echo $i
+		echo "$i" >> $pkgdir/.rawlist.$$
+	    fi
+	  done )
+    fi
+
+    #
+    # see if the server has got an ANNOUNCEMENT file to announce (if going remote)
+    #
+    if [ "$xfer_packagelist_way" = "remote" -o "$xfer_packagelist_way" = "bothlocalandremote" ]; then
+	if cat $pkgdir/.rawlist.$$ | grep -E "^ANNOUNCEMENT\$" 1> /dev/null ; then
+	    echo "$p: ** retrieving ${sxpkgurl}ANNOUNCEMENT"
+	    curl -m8 -sS "${sxpkgurl}ANNOUNCEMENT"
+	    echo "$p: ** end of server announcement"
+	fi
+    fi
+
+    #
+    # filter out all files except .sx tarballs and .sx md5sums from the list.
+    #
+    cat $pkgdir/.rawlist.$$ | while read LINE
+    do
+	# filter out everything but -N.sx.tar.gz, -N.sx.tgz, -N.sx.tar.bz2 or -N.md5sum entries
+	echo $LINE | grep -E "([-][[:digit:]]+.sx.(tgz|tar.gz|tar.bz2)(.md5sum)?\$)" >> $pkgdir/.list.$$
+    done
+    return 0
+}
+
+
+
+download_package()
+{
+    #
+    # downloads the requested package
+    # xfer_packagelist && figureoutpkg must have been executed before this one
+    #
+    # $1 = get  (to download and put it under /var/sxpkg/packages).
+    #      download  (to download it to current working directory only).
+    #
+    # download the package tarfile, but only if DOWNLOAD equals y
+    #
+    echo "$p: downloading $pkg (${sxpkgurl}${filename})"
+    if [ "$1" = "get" ]; then
+	# download to sxpkg packages directory
+	if [ -e $pkgdir/packages/$filename -a ! "$forceflag" = "force" ]; then
+	    echo -n "$p: $pkg ($filename) already exists, overwrite? [y/n] "
+	    read DOWNLOAD
+	else
+	    DOWNLOAD="y"
+	fi
+	if [ "$DOWNLOAD" = "y" -o "$DOWNLOAD" = "Y" ]; then
+	    curl --progress-bar -m20 -o "$pkgdir/packages/$filename" "${sxpkgurl}${filename}"
+	fi
+    else
+        # else download to current working directory
+	if [ -e $filename -a ! "$forceflag" = "force" ]; then
+	    echo -n "$p: `pwd`/$filename already exists, overwrite? [y/n] "
+	    read DOWNLOAD
+	else
+	    DOWNLOAD="y"
+	fi
+	if [ "$DOWNLOAD" = "y" -o "$DOWNLOAD" = "Y" ]; then
+	    curl --progress-bar -m20 -o "$filename" "${sxpkgurl}${filename}"
+	fi
+    fi
+
+    if [ ! $? -eq 0 ]; then
+	echo "$p: download of $pkg ($filename) failed!"
+	rm -f "$pkgdir/packages/$filename"
+	return 1
+    fi
+
+    #
+    # download the md5sum file, if it exists
+    #
+    if [ "$md5sumfile" = "" ]; then
+	echo -e "$p: \033[0;31mWARNING! No md5sum file found, package integrity can not be verified!\033[0m"
+    else
+
+	    echo "$p: downloading ${sxpkgurl}${md5sumfile}"
+
+	    if [ "$1" = "get" ]; then
+		# download to sxpkg packages directory
+		if [ -e $pkgdir/packages/$md5sumfile -a ! "$forceflag" = "force" ]; then
+		    echo -n "$p: $md5sumfile already exists, overwrite? [y/n] "
+		    read DOWNLOAD
+		else
+		    DOWNLOAD="y"
+		fi
+		if [ "$DOWNLOAD" = "y" -o "$DOWNLOAD" = "Y" ]; then
+		    curl --progress-bar -m20 -o "$pkgdir/packages/$md5sumfile" "${sxpkgurl}${md5sumfile}"
+		fi
+	    else
+		# else download to current working directory
+		if [ -e $md5sumfile -a ! "$forceflag" = "force" ]; then
+		    echo -n "$p: `pwd`/$md5sumfile already exists, overwrite? [y/n] "
+		    read DOWNLOAD
+		else
+		    DOWNLOAD="y"
+		fi
+		if [ "$DOWNLOAD" = "y" -o "$DOWNLOAD" = "Y" ]; then
+		    curl --progress-bar -m20 -o "$md5sumfile" "${sxpkgurl}${md5sumfile}"
+		fi
+	    fi
+
+	    if [ ! $? -eq 0 ]; then
+		echo "$p: download of $md5sumfile failed!"
+		rm -f "$pkgdir/packages/$md5sumfile"
+		return 1
+	    fi
+    fi
+
+    #
+    # check md5sum (if md5sumfile exists)
+    #
+    if [ ! "$md5sumfile" = "" ]; then
+	if [ -e $pkgdir/packages/$md5sumfile ]; then
+	    echo -n "$p: checking md5 sum: "
+	    ( cd $pkgdir/packages && md5sum -c $md5sumfile 1> /dev/null 2>&1 )
+	    if [ ! $? -eq 0 ]; then
+		echo -e "\033[0;31mFAILED!\033[0m"
+		return 1
+	    else
+		echo "ok"
+	    fi
+	fi
+    fi
+
+#    #
+#    # if of type "get", update the installqueue
+#    #
+#    if [ "$1" = "get" ]; then
+#	grep -v -E "^${pkg}\$" $pkgdir/installqueue > $pkgdir/.installqueue.$$
+#	mv $pkgdir/.installqueue.$$ $pkdir/installqueue &&
+#	echo "$pkg" > $pkgdir/installqueue
+#	if [ ! $? -eq 0 ]; then
+#	    echo -e "$p: \033[0;33mproblems updating the installqueue!\033[0m"
+#	fi
+#    fi
+
+    return 0
+}
+
+
+
+install_package()
+{
+    #
+    # install a package
+    #
+    # this function uses the following variables:
+    #	$pkg (package name and version)
+    #	$filename (filename
+    #
+
+    #
+    # # continue here
+
+
+
+    #
+    # strip package version from $pkg, so that we get the package name.
+    #
+    pkgname=`echo $pkg | sed "s/[-][[:digit:]]\+\$//g"`
+
+    if [ -e $tmpdir ]; then
+	rm -rf $tmpdir || return 1
+    fi
+
+    mkdir -p $tmpdir || return 1
+    cd $tmpdir || return 1
+
+
+
+
+
+}
+
+
+
+
+
+
+#####################################
+# action functions:
+#
+
+do_packagehandler()
+{
+    #
+    # this is the baggage, I mean, package handler.
+    #
+    # $1 = install, localinstallonly, get, download
+    # $2 = official, contrib
+    # $3 = package name to fetch/install
+    #
+
+    way="$1"
+    rpkg="$3"
+    if [ "$rpkg" = "" ]; then
+	echo "$p: bad syntax, I need a package name to fetch!"
+	cleanupandexit 1
+    fi
+
+    #
+    # first, check /var/sxpkg dir structure, then clean it, then check the sxpkghomeurl
+    #
+    checkvarsxpkg &&
+    cleanvarsxpkg &&
+    canonicalurl
+    if [ ! $? -eq 0 ]; then
+	return 1
+    fi
+
+    if [ "$2" = "contrib" ]; then
+	sxpkgurl="${sxpkghomeurl}contrib/"
+    else
+	sxpkgurl="$sxpkghomeurl"
+    fi
+
+
+    if [ "$way" = "get" -o "$way" = "download" ]; then
+	xfer_packagelist remote || return 1
+    elif [ "$way" = "install" ]; then
+	# get both local and remote
+	xfer_packagelist local || return 1
+	xfer_packagelist remote || return 1
+    else
+	# elif way = localinstallonly
+	xfer_packagelist local || return 1
+    fi
+
+    figureoutpkg "$rpkg" || return 1
+
+    #
+    # we should now have:
+    #
+    #	$pkg = full package name-version
+    #	$filename = package's file name
+    #	$md5sumfile = package's md5sum file
+    #
+
+    #
+    # check which way to go...
+    #
+
+    if [ "$way" = "get" ]; then
+	download_package get || return 1
+    elif [ "$way" = "download" ]; then
+	download_package download || return 1
+    elif [ "$way" = "install" ]; then
+	download_package get || return 1
+	install_package || return 1
+    elif [ "$wat" = "localinstallonly" ]; then
+	install_package || return 1
+    else
+	echo "$p: \"$way\" is an unknown type!"
+	return 1
+    fi
+
+    return 0
+}
+
+
+
+
+#    #
+#    # see if pkg has already been installed or not
+#    #
+#    if grep -E "^${pkg}\$" $pkgdir/installedpackages 1> /dev/null 2>&1 ; then
+#	echo "$p: $pkg has already been installed, skipping!"
+#    fi
+
+
+
+do_autosync()
+{
+    # the autosync function
+    echo "$p: auto-sync is not implemented yet!"
+    exit 1
+}
+
+
+
+
+
+
+
+###############################################################################
+# program "main" section
+###############################################################################
+
+[ "$1" = "" ] && syntaxerror
+
+#
+# check to see if we have some programs needed first:
+#
+for i in $PROGDEPENDS
+do
+    if ! `which $i 1> /dev/null 2>&1` ; then
+	echo "$p: program dependency \"${i}\" could not be found!"
+	exit 1
+    fi
+done
+
+
+while getopts "ag:G:i:I:H:d:D:R:l:L:c:pEv:hV" Option
+do
+    case $Option in
+	a) do_autosync ;;
+	g) do_packagehandler get official "$OPTARG" ;;
+	G) do_packagehandler get contrib "$OPTARG" ;;
+	i) do_packagehandler localinstallonly official "$OPTARG" ;;
+	I) do_packagehandler install official "$OPTARG" ;;
+	d) do_packagehandler download official "$OPTARG" ;;
+	D) do_packagehandler download contrib "$OPTARG" ;;
+	R) do_deletepackage "$OPTARG" ;;
+	l) do_listpackages ;;
+	L) do_listinstallqueue ;;
+	v) verbose=yes ;;
+	V) sxpkgver ;;
+	c) do_createpackage "$OPTARG" ;;
+	h) helpme ;;
+	H) sxpkgurl="$OPTARG" ;;
+	*) syntaxerror ;;
+    esac
+done
+
+cleanupandexit 0
+

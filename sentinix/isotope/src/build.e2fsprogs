@@ -1,0 +1,53 @@
+#!/bin/sh
+
+CWD=`pwd`
+destdir="$CWD/../specials/sbin"
+
+if [ ! -e config ]; then
+	echo "There is no \"config\" file"!
+	exit 1
+fi
+
+. config
+
+
+VERSION=1.34
+
+rm -rf e2fsprogs-$VERSION 2> /dev/null
+tar -xzvf e2fsprogs-$VERSION.tar.gz &&
+cd e2fsprogs-$VERSION &&
+chown -R root:root .
+
+rm -rf $CWD/e2fsprogs-build 2> /dev/null
+
+mkdir $CWD/e2fsprogs-build &&
+cd $CWD/e2fsprogs-build &&
+
+$CWD/e2fsprogs-$VERSION/configure --prefix=/usr \
+	--with-root-prefix="" \
+	--with-cc=$UCLIBC \
+	--with-ccopts="-O2 -s" \
+	--with-ldopts="-static" \
+	i486-sentinix-linux &&
+make &&
+(
+	cp debugfs/debugfs $destdir
+	cp e2fsck/e2fsck $destdir
+	cp misc/badblocks $destdir
+	cp misc/chattr $destdir
+	cp misc/dumpe2fs $destdir
+	cp misc/e2image $destdir
+	cp misc/fsck $destdir
+	cp misc/lsattr $destdir
+	cp misc/mke2fs $destdir
+	cp misc/mklost+found $destdir
+	cp misc/tune2fs $destdir
+	cp misc/uuidgen $destdir
+
+	ln -sf tune2fs $destdir/e2label
+	ln -sf tune2fs $destdir/findfs
+	ln -sf e2fsck $destdir/fsck.ext2
+	ln -sf e2fsck $destdir/fsck.ext3
+	ln -sf mke2fs $destdir/mkfs.ext2
+	ln -sf mke2fs $destdir/mkfs.ext3
+)

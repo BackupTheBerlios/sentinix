@@ -1,0 +1,32 @@
+#!/bin/sh
+CWD=`pwd`
+
+if [ ! -e config ]; then
+	ln -s ../../config config || exit 1
+fi
+
+. config &&
+sh build.plain &&
+sh build.smp &&
+sh build.om &&
+sh build.omsmp &&
+echo "All kernels compiled successfully."
+
+echo -n "Elapsed time (h:mm:ss): "
+
+HOURS=0
+MINUTES=0
+let MINUTES=$SECONDS/60
+let REMSEC=$SECONDS%60
+let HOURS=$MINUTES/60
+let MINUTES=$MINUTES%60
+echo -n "$HOURS:"
+if [ $MINUTES -lt 10 ]; then
+        echo -n "0"
+fi
+echo -n "$MINUTES:"
+if [ $REMSEC -lt 10 ]; then
+        echo -n "0"
+fi
+echo "$REMSEC"
+echo

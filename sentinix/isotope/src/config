@@ -1,0 +1,8 @@
+CWD=`pwd`
+
+source $CWD/../config
+
+# Path to your i386-uclibc-gcc
+UCLIBC=$CWD/uclibc/bin/i386-uclibc-gcc
+
+KERNELSRC=$CWD/kernels/linux-$KVERSION

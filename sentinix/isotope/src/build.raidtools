@@ -1,0 +1,18 @@
+#!/bin/sh
+
+CWD=`pwd`
+destdir="$CWD/../specials"
+VERSION=1.00.3
+
+rm -rf raidtools-$VERSION 2> /dev/null
+tar -xzvf raidtools-$VERSION.tar.gz &&
+cd raidtools-$VERSION &&
+chown -R root:root .
+
+if [ ! $? = 0 ]; then
+	exit 1
+fi
+
+CFLAGS=-O2 ./configure --prefix=/usr &&
+make LDFLAGS="-static -Wall -lpopt" &&
+make ROOTDIR=$destdir install_bin

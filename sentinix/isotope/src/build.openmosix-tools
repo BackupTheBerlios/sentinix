@@ -1,0 +1,57 @@
+#!/bin/sh
+CWD=`pwd`
+VERSION=0.3.4
+
+sbindir="$CWD/../specials/sbin"
+bindir="$CWD/../specials/bin"
+
+if [ ! -e config ]; then
+	echo "There is not \"config\" file"!
+	exit 1
+fi
+
+. config &&
+rm -rf openmosix-tools-$VERSION &&
+tar --use-compress-program=bzip2 -xf openmosix-tools-$VERSION.tar.bz2 &&
+cd openmosix-tools-$VERSION &&
+chown -R root.root . &&
+# we run configure to get the Makefiles right
+LDFLAGS="-s -static" \
+./configure \
+    --prefix=/usr \
+    --bindir=/bin \
+    --sbindir=/sbin \
+    --with-kerneldir=${KERNELSRC}-openmosix-1 \
+    --enable-static \
+    --disable-shared \
+    --build=i486-sentinix-linux &&
+#
+# compile autodiscovery (omdiscd) with UCLIBC:
+( cd autodiscovery &&
+  make CC=$UCLIBC LDFLAGS="-s -all-static" &&
+  cp omdiscd showmap $sbindir
+) &&
+# compile setpe with UCLIBC:
+( cd setpe &&
+  make CC=$UCLIBC LDFLAGS="-s -all-static" &&
+  cp setpe $sbindir
+) &&
+# mosctl need moslib, so we'll compile that one first:
+( cd moslib &&
+  make
+) &&
+# compile mosctl with gcc (needs moslib):
+( cd mosctl &&
+  make LDFLAGS="-s -all-static" &&
+  cp mosctl $bindir
+) &&
+# mon (mosmon) is compiled with gcc, we need ncurses and moslib:
+( cd mon &&
+  make LDFLAGS="-s -all-static -lncurses" &&
+  cp mosmon $bindir
+) &&
+# moslimit is compiled with gcc (needs moslib):
+( cd moslimit &&
+  make LDFLAGS="-s -all-static" &&
+  cp moslimit $bindir
+)

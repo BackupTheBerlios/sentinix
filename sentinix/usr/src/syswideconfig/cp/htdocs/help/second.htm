@@ -1,0 +1,149 @@
+<HTML>
+<HEAD>
+<TITLE>The Nessus Project: [Demonstration : The Second Step ] </TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" BACKGROUND="images/n.png" BGPROPERTIES="fixed">
+<table width="100%">
+<tr>
+<td background="images/bg-bold.png">Demonstration : </td>
+<td background="images/bg.png" bgcolor="#999999"><a href="first.htm">Step 1</a></td>
+<td background="images/bg.png" bgcolor="#999999">Step 2</td>
+<td background="images/bg.png" bgcolor="#999999"><a href="third.htm">Step 3</a></td>
+</tr>
+</table>
+<table width="100%">
+<tr>
+<td>
+<FONT SIZE=+2>
+Second step : the client configuration<p>
+</FONT>
+</td>
+<td>
+<IMG SRC="images/mini_tnp.jpg" width="124" height="120" ALIGN="RIGHT">
+</td>
+</tr></table>
+In the <a href="first.htm">first</a> step, we saw how I configured my
+<i>nessusd</i>, as root, to suit my needs. Now, I connect to it as a simple
+user.
+
+
+<p>
+<li>Fire up <i>nessus</i> : 
+<ul>
+<p>
+<img src="images/start_client.jpg">
+<p>
+I immediately click on <b>Login</b>, since this setup is correct. Since I
+never connected to this server, it will show me its certificate and ask me
+if I accept it. Note that if I wanted to avoid man-in-the-middle attacks, I should
+configure my client so that it uses a recognized Certificate Authority to check
+SSL keys, but this is beyond the scope of the demo.
+<p>
+Once I am connected, the <b>Log in</b> button changes to <b>Log out</b>, and
+a <b>Connected</b> label appears at its left.
+</ul>
+
+<p>
+<li>The security checks configuration
+<ul>
+<p>
+<img src="images/plugins.jpg">
+<p>
+I let all the security check to be performed, except the Denial of Service
+attacks, because I do not need my hosts to crash at this moment <p>
+
+Clicking on a plugin name will pop up a window explaining what the plugin
+does.
+</ul>
+
+<p>
+<li>The plugins preferences
+<ul>
+<p>
+<img src="images/plugins_prefs.jpg">
+<p>
+
+You can give extra information to some security checks so that 
+the audit is more complete. For instance, if you give a SMB login and
+account to nessusd, then you will be given local information about
+the remote Windows host (such as the missing security patches).<br>
+Many options can be set through this panel.
+</ul>
+
+
+<p>
+<li>The scan options
+<ul>
+<p>
+<img src="images/scan_opt.jpg">
+<p>
+
+In this section, I choose which port scanner I want to use, how many hosts
+I want to have scanned at the same time, and how many plugins I want to run
+in parallel against each host. If I were to scan a firewalled web server, I could
+check the option "consider unscanned ports as closed" and only specify
+to scan port 80 - this would greatly speed up the scan.
+</ul>
+<p>
+<li>Define the targets : 
+<ul>
+<p>
+<img src="images/target.jpg">
+<p>
+The hosts of my local network are using private IP adresses, so
+entering '10.163.156.1-10.163.156.1.254' is fine. I do not check the 'Perform a DNS transfer
+zone' option, since it would make DNS transfer on <i>fr.nessus.org</i>
+and <i>nessus.org</i>, and it would be useless, since it would not gain any new
+hosts.
+<p>
+I could use the following options to define my targets:
+<dl>
+  <dt>10.163.156.1</dt>
+  <dd>A single IP address.</dd>
+
+  <dt>10.163.156.1-254</dt>
+  <dd>A range of IP addresses.</dd>
+
+  <dt>10.163.156.1-10.163.159.254</dt>
+  <dd>Another range of IP addresses.</dd>
+
+  <dt>10.163.156.1/24</dt>
+  <dd>Again a range of IP addresses in <a href="http://www.urec.cnrs.fr/autres_techno/BGP4/CIDR_faq.html">CIDR</a> notation.</dd>
+
+  <dt>hope.fr.nessus.org</dt>
+  <dd>A hostname in Full Qualified Domain Name notation.</dd>
+
+  <dt>hope</dt>
+  <dd>A hostname (as long as it is resolvable on the server).</dd>
+
+  <dt>prof, 10.163.156.0/24, images.</dt>
+  <dd>Any combination of the formentioned forms seperated by a comma.</dd>
+</dl>
+</ul>
+
+
+
+
+<p>
+<li>The rules section
+<ul>
+<p><img src="images/rules.jpg">
+<p>
+
+The rules allow a user to restrict his test. For instance, I want to test
+10.163.156.1/24, except 10.163.156.5. The ruleset I entered allows me to do that.
+<p>
+<p>
+Once all of this is done, I can start the test :
+<p>
+<center>
+<img src="images/test.jpg">
+</center>
+<p>
+
+
+</FONT>
+<a href="third.htm">Next</a> : the test results
+</BODY>
+</HTML>

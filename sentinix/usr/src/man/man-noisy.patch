@@ -1,0 +1,20 @@
+--- ./src/gripes.c.orig	2003-03-11 12:01:25.000000000 -0800
++++ ./src/gripes.c	2003-03-11 12:03:13.000000000 -0800
+@@ -46,7 +46,7 @@
+ 		    lg = getenv("LC_MESSAGES");
+ 	    if (!lg)
+ 		    lg = getenv("LC_ALL");
+-	    if ((s || lg) && (!lg || strncmp(lg, "en", 2))) {
++	    /* if ((s || lg) && (!lg || strncmp(lg, "en", 2))) {
+ 		perror(mantexts);
+ 		fprintf(stderr,
+ "Failed to open the message catalog %s on the path NLSPATH=%s\n\n",
+@@ -57,7 +57,7 @@
+ "Looked whether there exists a message catalog %s, but there is none\n"
+ "(and for English messages none is needed)\n\n",
+ 			mantexts);
+-            }
++            } */
+ 	}
+     }
+     cat_is_open = 1;

@@ -1,0 +1,22 @@
+#!/bin/sh
+
+CWD=`pwd`
+destdir="$CWD/../specials/bin"
+VERSION=0.17
+
+if [ ! -e config ]; then
+	echo "No \"config\" file found"!
+	exit 1
+fi
+
+. config
+
+rm -rf netkit-ftp-$VERSION 2> /dev/null
+tar -xzvf netkit-ftp-$VERSION.tar.gz &&
+cd netkit-ftp-$VERSION &&
+chown -R root:root . &&
+
+CFLAGS="-I/usr/include" \
+./configure --prefix=/usr --with-c-compiler=$UCLIBC &&
+make CFLAGS="-march=i486 -mcpu=i686 -O2" LDFLAGS="-s -static" &&
+( cd ftp; strip ftp; cp ftp $destdir )

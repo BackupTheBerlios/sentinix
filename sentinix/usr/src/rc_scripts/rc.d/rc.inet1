@@ -1,0 +1,87 @@
+#!/bin/sh
+#
+# rc.inet1 - Traditionally named after Slackware's interface configuration.
+#            Don't edit this file, run "setup" or edit /etc/NETCONFIG and/or
+#            /etc/ETHERNETS.
+#
+# Author: Michel Blomgren <michel@sentinix.org>
+#
+# 2003-12-28: Added bonding support, script and idea contributed by
+#             Sebastien Bonnegent <sensia@ifrance.com>. The NETMASK variable
+#             is the master interface (bond0, e.g.), while the ETH variable
+#             is the interface to enslave.
+#
+# 2003-12-28: Some fixes.
+#
+
+TMP="/tmp/rc.inet1.temp.$$"
+rm -f $TMP || exit 1
+
+# set up the loopback interface:
+/sbin/ifconfig lo 127.0.0.1
+/sbin/route add -net 127.0.0.0 netmask 255.0.0.0 lo
+
+if [ ! -e /etc/NETCONFIG ]; then
+    echo -e "\033[1;31mCan't configure network devices, /etc/NETCONFIG is missing!\033[0m"
+    exit 1
+fi
+
+if [ ! -f /etc/NETCONFIG ]; then
+    echo -e "\033[1;31m/etc/NETCONFIG isn't a regular file!\033[0m"
+    exit 1
+fi
+
+# first, get the variables from /etc/NETCONFIG:
+
+echo -n "" > $TMP || exit 1
+chmod 0700 $TMP
+cat /etc/NETCONFIG | while read LINE
+do
+    echo "export $LINE" >> $TMP
+done
+
+# execute the tempfile with new "export" prefix
+source $TMP &&
+# ...and remove it.
+rm -f $TMP || exit 1
+
+cat /etc/ETHERNETS 2> /dev/null | while read ETH
+do
+    IP=`printenv SX_NETDEV_${ETH}_IP`
+    NETMASK=`printenv SX_NETDEV_${ETH}_NETMASK`
+
+	if [ "$IP" = "dhcp" -o "$IP" = "DHCP" -o "$IP" = "Dhcp" ]; then
+    	    echo -e "\033[1mConfiguring ${ETH} by contacting a DHCP server.\033[0m"
+	    /usr/sbin/dhcpcd -N -t 10 -d ${ETH}
+	    if [ $? -eq 0 ]; then
+		sleep 1
+		IP=`ifconfig ${ETH} 2> /dev/null | grep "inet addr:" | cut -d: -f2 | cut -d' ' -f1`
+
+		hostsfile=`cat /etc/hosts 2> /dev/null` &&
+		echo "$hostsfile" | grep -v "`cat /etc/HOSTNAME` `cat /etc/HOSTNAME | cut -d. -f1`" > /etc/hosts &&
+		echo "${IP}	`cat /etc/HOSTNAME` `cat /etc/HOSTNAME | cut -d. -f1`" >> /etc/hosts
+	    fi
+	elif [ "$IP" = "bonding" -o "$IP" = "BONDING" -o "$IP" = "Bonding" ]; then
+	    if [ ! "$NETMASK" = "" ]; then
+		echo -e "\033[1mConfiguring $ETH as slave to bonding interface $NETMASK.\033[0m"
+		/sbin/ifenslave $NETMASK $ETH
+	    else
+		echo -e "\033[0;31m$ETH configured as bonding slave, but without a master interface!\033[0m"
+		echo "Run \"setup\" and enter e.g. \"bond0\" in the Netmask/master field for $ETH."
+	    fi
+	elif [ ! "$IP" = "" -a ! "$NETMASK" = "" ]; then
+    	    BROADCAST=`/bin/ipmask $NETMASK $IP | cut -f1 '-d '`
+	    NETWORK=`/bin/ipmask $NETMASK $IP | cut -f2 '-d '`
+	    echo -e "\033[1mConfiguring $ETH with IP $IP and netmask $NETMASK.\033[0m"
+	    /sbin/ifconfig $ETH $IP broadcast $BROADCAST netmask $NETMASK
+
+	    hostsfile=`cat /etc/hosts 2> /dev/null` &&
+	    echo "$hostsfile" | grep -v "`cat /etc/HOSTNAME` `cat /etc/HOSTNAME | cut -d. -f1`" > /etc/hosts &&
+	    echo "${IP}	`cat /etc/HOSTNAME` `cat /etc/HOSTNAME | cut -d. -f1`" >> /etc/hosts
+	fi
+done
+
+if [ ! "${SX_GATEWAY}" = "127.0.0.1" -a ! "${SX_GATEWAY}" = "" ]; then
+    echo -e "\033[1mDefault gateway is ${SX_GATEWAY}.\033[0m"
+    /sbin/route add default gw ${SX_GATEWAY} metric 1
+fi

@@ -1,0 +1,45 @@
+#!/bin/sh
+
+TMP=/usr/local/setup/tmp/netdevices.temp
+MODLIST=/usr/local/setup/networkmodules
+
+cat <<EOF > $TMP
+caption=SENTINIX Setup Utility
+text=Here you may auto-probe for a network interface card. If you rather like to select specific modules, go back to the main menu and select "Choose modules to load at boot-time". If you choose to probe for a NIC, the module(s) will be automatically selected in the boot-time modules list.
+aftertext=
+colorscheme=4
+
+begin item
+    name=QUIT
+    label=Automatically probe for an Ethernet module
+    command=exit 75
+end
+
+br
+
+begin item
+    name=QUIT
+    bullet=<-
+    label=Go back to main menu without probing
+end
+EOF
+
+replimenu -f $TMP
+if [ $? = 75 ]; then
+    #
+    # auto-probe for NIC module
+    #
+    echo "Probing for NIC module(s)..."
+    /sbin/rmmod -a
+    cat $MODLIST | while read LINE
+    do
+	if ! echo $LINE | grep "^#" 1> /dev/null 2>&1 ; then
+	    if [ ! "$LINE" = "" ]; then
+		MOD=`echo $LINE | cut '-d#' -f1`
+		MOD=`echo $MOD`
+		/sbin/modprobe -q -s $MOD
+	    fi
+	fi
+    done
+    /usr/local/setup/setup.modules
+fi

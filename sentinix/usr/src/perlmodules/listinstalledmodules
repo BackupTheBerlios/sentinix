@@ -1,0 +1,10 @@
+#!/usr/bin/perl
+use strict;
+use ExtUtils::Installed;
+
+my $installed = ExtUtils::Installed->new();
+foreach my $module ( grep( !/^Perl$/, $installed->modules() ) )
+{
+    my $version = $installed->version( $module ) || "---";
+    print( "$module [$version]\n" );
+}

@@ -1,0 +1,8 @@
+#!/bin/sh
+CWD=`pwd`
+
+cd src/kernels &&
+./build &&
+cd $CWD/src &&
+./build.uclibc &&
+./build

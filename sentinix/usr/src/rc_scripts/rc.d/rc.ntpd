@@ -1,0 +1,27 @@
+#!/bin/sh
+
+startntpd()
+{
+	echo -e "\033[1mStarting ntpd...\033[0m" &&
+	/usr/sbin/ntpdate `cat /etc/ntp/step-tickers` &&
+	sleep 1 &&
+	/usr/sbin/ntpd &&
+	touch /var/sxrunning/ntpd
+}
+
+case "$1" in
+	'start')
+		startntpd
+		;;
+	'stop')
+		killall ntpd
+		rm -f /var/sxrunning/ntpd
+		;;
+	'restart')
+		killall ntpd
+		sleep 1
+		startntpd
+		;;
+	*)
+		echo "usage: $0 start|stop|restart" ;;
+esac

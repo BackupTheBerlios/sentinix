@@ -1,0 +1,29 @@
+#!/bin/sh
+#
+# rc.firewall - by Michel Blomgren for Sentinix.
+#
+# A basic firewall. All traffic from the outside is blocked, only
+# already established traffic (from the local machine) is let through.
+#
+
+ipt=/usr/sbin/iptables
+
+# flush all chains down the drain..
+$ipt -F
+# delete user-defined chains..
+$ipt -X
+# reset the packet/byte counters..
+$ipt -Z
+
+$ipt -P INPUT DROP
+$ipt -P FORWARD DROP
+$ipt -P OUTPUT ACCEPT
+
+# trust loopback
+$ipt -A INPUT -i lo -j ACCEPT
+
+# only already established traffic is let through...
+$ipt -A INPUT -m state --state ESTABLISHED -j ACCEPT
+
+# just for sake's case...
+$ipt -A INPUT -j DROP

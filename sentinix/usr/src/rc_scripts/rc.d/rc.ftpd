@@ -1,0 +1,26 @@
+#!/bin/sh
+
+start_pureftpd() {
+	/usr/sbin/pure-ftpd -E -A -b -B -c 50 -D -H -L 5000:5 -s -u 100 -i
+}
+
+case "$1" in
+	'start')
+		echo -e "\033[1mStarting pure-ftpd...\033[0m"
+		start_pureftpd &&
+		touch /var/sxrunning/ftpd
+		;;
+	'stop')
+		killall pure-ftpd
+		rm -f /var/sxrunning/ftpd
+		;;
+	'restart')
+		killall pure-ftpd
+		sleep 1
+		echo -e "\033[1mStarting pure-ftpd...\033[0m"
+		start_pureftpd &&
+		touch /var/sxrunning/ftpd
+		;;
+	*)
+		echo "usage: $0 start|stop|restart" ;;
+esac

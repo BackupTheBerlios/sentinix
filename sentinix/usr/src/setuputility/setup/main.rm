@@ -1,0 +1,77 @@
+caption=SENTINIX Setup Utility
+colorscheme=4
+text=Welcome to the SENTINIX Setup Utility\n\nThe steps below are listed in the recommended order of configuration. Network modules has to be configured and loaded before you can configure your Ethernet card(s).
+aftertext=
+
+begin item
+	name=kbdmap
+	label=Choose keyboard map
+	command=/usr/local/setup/setup.kbdmap
+end
+
+begin item
+	name=timezone
+	label=Choose your time zone
+	command=/usr/local/setup/setup.timezone
+end
+
+begin item
+	name=lilo
+	type=pause
+	label=Configure LILO (the boot loader)
+	command=/usr/local/setup/setup.lilo
+end
+
+begin item
+	name=netdevices
+	label=Probe for network device(s)
+	command=/usr/local/setup/setup.netdevices
+end
+
+begin item
+	name=modules
+	label=Choose modules to load at boot-time
+	command=/usr/local/setup/setup.modules
+end
+
+begin item
+	name=eth
+	label=Configure your Ethernet card(s), hostname, gateway & DNS
+	command=/usr/local/setup/setup.eth
+end
+
+begin item
+	name=services
+	label=Choose network services
+	command=/usr/local/setup/setup.services
+end
+
+begin item
+	name = rootpw
+	type = pause | ask
+	label = Set new root password
+	icaption = Really set new root password?
+	command=passwd root
+end
+
+begin item
+	name = nagiospasswd
+	label = Set new password for Nagios/Nagat
+	icaption = Enter new password:
+	type = input | var | notempty | chain | password
+end
+begin item
+	name = nagios2
+	label = none
+	icaption = Continue set password?
+	type = pause | ask | hidden
+	command = /usr/local/setup/setup.nagios
+end
+
+br
+
+begin item
+	name=QUIT
+	bullet=<-
+	label=Quit
+end

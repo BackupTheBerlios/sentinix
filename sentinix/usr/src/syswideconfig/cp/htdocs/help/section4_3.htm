@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+
+<html>
+<head>
+	<title>Cacti Manual</title>
+	<link href="main.css" rel="stylesheet">
+</style>
+</head>
+
+<body>
+
+<table bgcolor="#d5d5d5" width="100%">
+	<tr>
+		<td align="left">
+			<strong><a href="section3.htm">&lt;&lt; Previous Section</a></strong>
+		</td>
+		<td align="center">
+			How Templates Will Save You Time <strong>[<a href="index.htm">home</a>]</strong>
+		</td>
+		<td align="right">
+			<strong><a href="section5.htm">Next Section &gt;&gt;</a></strong>
+		</td>
+	</tr>
+</table>
+
+<br>
+
+<span class="textPageHeader">Host Templates</span>
+
+<p>Host templates in Cacti serve a different purpose then data and graph templates. Instead of abstracting the fields
+of a host, a host template allows you to associate graph templates and data queries with a given host type. This way when
+you assign a host template to a host, all of the relevant graphs to that host type are only one click away from the user.
+To create a new host template in Cacti, select the "Host Templates" option under the "Templates" heading. Once on that screen, 
+click "Add" on the right. You will be presented with a few fields to populate:</p>
+
+<table class="field" cellspacing="0">
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Name
+		</td>
+		<td class="fieldDescription">
+			Give the host template a name that you can use to identify it throughout Cacti. You will see this name
+			on the "Polling Hosts" screen where you can assign a host template with a host.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Associated Graph Templates
+		</td>
+		<td class="fieldDescription">
+			Choose any number of graph templates that are relevant to this host type. When the user applies this host
+			template to a host, they will be given the opportunity to choose which graphs to actually create for
+			that host.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Associated Data Queries
+		</td>
+		<td class="fieldDescription">
+			Choose any number of data queries that are supported by this host type. When this host template is added
+			to a host, all of the data queries selected here will be executed against the current host. The user
+			will then have the opportunity to create graphs based on the results of each data query.
+		</td>
+	</tr>
+</table>
+
+<p>When you are finished filling in these fields, click the "Create" button and you will be redirected back to this page.
+If you selected any associated graph templates, the first thing you will notice is a "Suggested Values" box for each selected
+graph template. Suggested values allow you to "suggest" default values to the user for fields that would otherwise not have a 
+value. For each suggested value, you must enter a field name and corresponding value. For a complete description of valid
+field names and value syntax, check out the section on <a href="section8_1.htm">suggested values</a>. 
+
+<p>Once you are finished with your new host template, you can click "Save" to return to the main host templates screen. From here
+you can either apply your host template to a host, or create another host template.</p>
+
+</body>
+</html>

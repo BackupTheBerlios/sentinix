@@ -1,0 +1,55 @@
+#!/bin/sh
+
+TMP=/usr/local/setup/tmp/services.temp
+
+SERVICES=`cat /usr/local/setup/sentinixservices 2> /dev/null | grep -v "^#" 2> /dev/null`
+
+cat <<EOF > $TMP
+caption=SENTINIX Setup Utility
+text=Choose which services to load at boot-time.
+aftertext=
+colorscheme=4
+runonexit=source /usr/local/setup/SERVICES
+EOF
+
+echo "$SERVICES" | while read LINE
+do
+    if [ ! "$LINE" = "" ]; then
+	SCRIPT=`echo $LINE | cut -d' ' -f1`
+	COMMENT=`echo $LINE | cut -d' ' -f2-`
+
+	echo "begin item" >> $TMP
+	echo "name=$SCRIPT">> $TMP
+	echo "label=$COMMENT" >> $TMP
+	echo "default=yes" >> $TMP
+	if [ -x /etc/rc.d/$SCRIPT ]; then
+	    echo "type=checkbox|selected" >> $TMP
+	else
+	    echo "type=checkbox" >> $TMP
+        fi
+	echo "end" >> $TMP
+    fi
+done
+
+echo "br" >> $TMP
+echo "begin item" >> $TMP
+echo "	name=sxrunMailScanner" >> $TMP
+echo "	label=Run MailScanner+SpamAssassin with Postfix?" >> $TMP
+echo "	default=yes" >> $TMP
+if [ -e /etc/sxrunMailScanner ]; then
+    echo "	type=checkbox|selected" >> $TMP
+else
+    echo "	type=checkbox" >> $TMP
+fi
+echo "end" >> $TMP
+
+cat <<EOF >> $TMP
+br
+begin item
+    name=QUIT
+    bullet=<-
+    label=OK, I'm done
+end
+EOF
+
+exec replimenu -f $TMP

@@ -1,0 +1,102 @@
+#!/bin/sh
+#
+# rc.6 - init script for runlevel 0 and runlevel 6.
+# Originally written by Miquel van Smoorenburg, modified by Patrick J.
+# Volkerding for Slackware Linux. Adapted by Michel Blomgren for Sentinix.
+#
+
+PATH=/sbin:/bin:/usr/bin:/usr/sbin
+
+# Set linefeed mode to avoid staircase effect.
+stty onlcr
+
+echo "Running shutdown script $0:"
+
+# Find out how we were called.
+case "$0" in
+        *0)
+                command=halt
+                ;;
+        *6)
+                command=reboot
+                ;;
+        *)
+                echo "$0: call me as \"rc.0\" or \"rc.6\" please!"
+                exit 1
+                ;;
+esac
+
+
+# Save the system time to the hardware clock using hwclock --systohc.
+# Detect SGI Visual Workstation, since hwclock will make those freeze up:
+if fgrep -l Cobalt-APIC /proc/interrupts 1> /dev/null 2> /dev/null ; then
+  echo "SGI Visual Workstation detected. Not running hwclock."
+elif [ -x /sbin/hwclock ]; then
+#  if grep "^UTC" /etc/hardwareclock 1> /dev/null 2> /dev/null ; then
+#    echo "Saving system time to the hardware clock (UTC)."
+#    /sbin/hwclock --utc --systohc
+#  else
+    echo "Saving system time to the hardware clock (localtime)."
+    /sbin/hwclock --localtime --systohc
+#  fi
+fi
+
+if [ -x /etc/rc.d/rc.openmosix ]; then
+    . /etc/rc.d/rc.openmosix stop
+fi
+sleep 1
+
+# Kill all processes.
+# INIT is supposed to handle this entirely now, but this didn't always
+# work correctly without this second pass at killing off the processes.
+# Since INIT already notified the user that processes were being killed,
+# we'll avoid echoing this info this time around.
+if [ "$1" != "fast" ]; then # shutdown did not already kill all processes
+  killall5 -15
+  sleep 5
+  killall5 -9
+fi
+
+# Before unmounting file systems write a reboot or halt record to wtmp.
+$command -w
+
+# Carry a random seed between reboots.
+# Save 512 bytes, which is the size of the entropy pool.
+echo "Saving random seed from /dev/urandom in /etc/random-seed."
+dd if=/dev/urandom of=/etc/random-seed count=1 bs=512 2> /dev/null
+
+# Clear /var/lock/subsys.
+if [ -d /var/lock/subsys ]; then
+  rm -f /var/lock/subsys/*
+fi
+
+# Turn off swap, then unmount local file systems.
+echo "Turning off swap."
+swapoff -a
+echo "Unmounting local file systems."
+# Don't remount UMSDOS root volumes:
+if [ ! "`mount | head -1 | cut -d ' ' -f 5`" = "umsdos" ]; then
+  umount -a -r -t nonfs
+  echo "Remounting root filesystem read-only."
+  mount -n -o remount,ro /
+else
+  umount -a -r -t nonfs,noumsdos,nosmbfs
+fi
+
+# This never hurts:
+sync
+
+# sleep 1 fixes problems with some hard drives that don't
+# otherwise finish syncing before reboot or poweroff
+sleep 1
+
+# This is to ensure all processes have completed on SMP machines:
+wait
+
+# Now halt (poweroff with APM kernels) or reboot.
+if [ "$command" = "reboot" ]; then
+  echo "Rebooting."
+  reboot
+else
+  poweroff
+fi

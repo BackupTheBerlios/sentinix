@@ -1,0 +1,35 @@
+#!/bin/sh
+# Start/stop/restart samba:
+
+samba_start() {
+  if [ -x /usr/sbin/smbd -a -x /usr/sbin/nmbd -a -r /etc/samba/smb.conf ]; then
+    echo "Starting Samba..."
+    /usr/sbin/smbd -D
+    /usr/sbin/nmbd -D
+  fi
+}
+
+samba_stop() {
+  killall smbd nmbd
+}
+
+samba_restart() {
+  samba_stop
+  sleep 2
+  samba_start
+}
+
+case "$1" in
+'start')
+  samba_start
+  ;;
+'stop')
+  samba_stop
+  ;;
+'restart')
+  samba_restart
+  ;;
+*)
+  echo "usage: $0 start|stop|restart"
+  ;;
+esac

@@ -1,0 +1,26 @@
+damn... GCC 3.3 really makes an attempt to force coders write better code :)
+this patch adds include errno.h to those who miss it...
+
+diff -ur ipaudit-0.95/src/ipaudit.c ipaudit-0.95-modified/src/ipaudit.c
+--- ipaudit-0.95/src/ipaudit.c	2001-01-25 22:04:00.000000000 +0100
++++ ipaudit-0.95-modified/src/ipaudit.c	2003-12-27 03:23:02.000000000 +0100
+@@ -48,6 +48,7 @@
+ #include <fcntl.h>
+ #include <time.h>
+ #include <netinet/in.h>
++#include <errno.h>
+ #include "hash.h"
+ 
+ 
+diff -ur ipaudit-0.95/src/ipstrings.c ipaudit-0.95-modified/src/ipstrings.c
+--- ipaudit-0.95/src/ipstrings.c	2000-12-21 03:18:25.000000000 +0100
++++ ipaudit-0.95-modified/src/ipstrings.c	2003-12-27 03:23:22.000000000 +0100
+@@ -49,7 +49,7 @@
+ #include <limits.h>
+ #include <unistd.h>
+ #include <time.h>
+-
++#include <errno.h>
+ 
+ 
+ /*

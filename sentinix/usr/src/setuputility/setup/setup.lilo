@@ -1,0 +1,515 @@
+#!/bin/sh
+
+TMP=/usr/local/setup/tmp/lilo.temp
+CONFTMP=/usr/local/setup/tmp/lilo.conf
+variablefile=/usr/local/setup/tmp/lilo.variables.save
+PARTTMP=/usr/local/setup/tmp/partitions.temp
+
+ROOT_DEVICE=`cat /etc/fstab | col -bx | tr -s ' ' ' ' | cut '-d ' -f 1,2 | grep "/$" | cut '-d ' -f1`
+CDROM=`readlink /dev/cdrom 2> /dev/null`
+
+#
+# get IDE, SCSI and RAID disks in one list:
+#
+echo -n "" > $PARTTMP
+let COUNT=0
+cat /proc/partitions | while read LINE
+do
+    let COUNT=$COUNT+1
+    # skip the first two rows:
+    if [ $COUNT -gt 2 ]; then
+	DEV=`echo $LINE | cut -d' ' -f4`
+	DEV="/dev/$DEV"
+	# try filter out /dev/cdrom (but other removable media won't be filtered out):
+	if [ ! "$DEV" = "$CDROM" ]; then
+	    echo $DEV >> $PARTTMP
+	fi
+    fi
+done
+
+if [ -f $variablefile ]; then
+    source $variablefile
+else
+    BOOT=""
+    COMPACT=""
+    MODE="lba32"
+    VGA="773"
+    KERNEL="plain"
+fi
+
+cat <<EOF > $TMP
+caption=SENTINIX Setup Utility
+colorscheme=4
+text=Configuration of LILO, the LInux LOader.\n\nFirst, choose which partition you wish to install LILO on. Master Boot Record (MBR) is e.g. hda, hdc, sda, ida/c0d0. The root partition is marked "rootfs" if you want LILO there. MBR is recommended, usually the first hard disk. Please note, the list below can show removable media! Remember to press PAGE DOWN or END to see the bottom of this page. You have to choose "OK, install LILO" in order to actually install it.
+aftertext=
+runonexit=echo -ne "BOOT=\"\$RM_boot\"\nCOMPACT=\"\$RM_compact\"\nMODE=\"\$RM_mode\"\nVGA=\"\$RM_vga\"\nKERNEL=\"\$RM_kernel\"\n" > $variablefile
+br LILO boot target:
+br
+EOF
+
+for i in `cat $PARTTMP`
+do
+    echo "begin item" >> $TMP
+    echo "name=boot" >> $TMP
+
+    if [ "$i" = "$BOOT" ]; then
+	echo "type=radiobutton|selected" >> $TMP
+    else
+	echo "type=radiobutton" >> $TMP
+    fi
+
+    if [ "$i" = "$ROOT_DEVICE" ]; then
+	echo "label=$i (rootfs)" >> $TMP
+    else
+	echo "label=$i" >> $TMP
+    fi
+
+    echo "default=$i" >> $TMP
+    echo "end" >> $TMP
+done
+
+cat <<EOF >> $TMP
+begin item
+    name=boot
+EOF
+if [ "$BOOT" = "/dev/fd0" ]; then
+    echo "type=radiobutton|selected" >> $TMP
+else
+    echo "type=radiobutton" >> $TMP
+fi
+cat <<EOF >> $TMP
+    label=/dev/fd0 (floppy disk)
+    default=/dev/fd0
+end
+br
+br LILO behaviour (leave as is if you don't have a clue):
+br
+begin item
+    name=compact
+EOF
+if [ "$COMPACT" = "y" ]; then
+    echo "type=checkbox|selected" >> $TMP
+else
+    echo "type=checkbox" >> $TMP
+fi
+cat <<EOF >> $TMP
+    label=compact (try only when putting LILO on floppy)
+    default=y
+end
+br
+begin item
+    name=mode
+EOF
+if [ "$MODE" = "lba32" ]; then
+    echo "type=radiobutton|selected" >> $TMP
+else
+    echo "type=radiobutton" >> $TMP
+fi
+cat <<EOF >> $TMP
+    label=lba32: Allows booting past the 1024th cylinder, post-1998 systems
+    default=lba32
+end
+begin item
+    name=mode
+EOF
+if [ "$MODE" = "linear" ]; then
+    echo "type=radiobutton|selected" >> $TMP
+else
+    echo "type=radiobutton" >> $TMP
+fi
+cat <<EOF >> $TMP
+    label=linear: 24-bit linear addresses, partitions <= 1023 cylinders
+    default=linear
+end
+br
+br Choose VGA mode:
+br
+EOF
+
+# vga=ask
+cat <<EOF >> $TMP
+begin item
+    name=vga
+EOF
+if [ "$VGA" = "ask" ]; then
+    echo "type=radiobutton|selected" >> $TMP
+else
+    echo "type=radiobutton" >> $TMP
+fi
+cat <<EOF >> $TMP
+    label=Normal VGA console (ask)
+    default=ask
+end
+EOF
+
+# vga=normal
+cat <<EOF >> $TMP
+begin item
+    name=vga
+EOF
+if [ "$VGA" = "normal" ]; then
+    echo "type=radiobutton|selected" >> $TMP
+else
+    echo "type=radiobutton" >> $TMP
+fi
+cat <<EOF >> $TMP
+    label=Normal VGA console (normal)
+    default=normal
+end
+EOF
+
+# vga=extended
+cat <<EOF >> $TMP
+begin item
+    name=extended
+EOF
+if [ "$VGA" = "extended" ]; then
+    echo "type=radiobutton|selected" >> $TMP
+else
+    echo "type=radiobutton" >> $TMP
+fi
+cat <<EOF >> $TMP
+    label=Extended VGA console (kind of hard to read)
+    default=extended
+end
+EOF
+
+# vga=791
+cat <<EOF >> $TMP
+begin item
+    name=vga
+EOF
+if [ "$VGA" = "791" ]; then
+    echo "type=radiobutton|selected" >> $TMP
+else
+    echo "type=radiobutton" >> $TMP
+fi
+cat <<EOF >> $TMP
+    label=VESA framebuffer console @ 1024x768x64k (791)
+    default=791
+end
+EOF
+
+# vga=790
+cat <<EOF >> $TMP
+begin item
+    name=vga
+EOF
+if [ "$VGA" = "790" ]; then
+    echo "type=radiobutton|selected" >> $TMP
+else
+    echo "type=radiobutton" >> $TMP
+fi
+cat <<EOF >> $TMP
+    label=VESA framebuffer console @ 1024x768x32k (790)
+    default=790
+end
+EOF
+
+# vga=773
+cat <<EOF >> $TMP
+begin item
+    name=vga
+EOF
+if [ "$VGA" = "773" ]; then
+    echo "type=radiobutton|selected" >> $TMP
+else
+    echo "type=radiobutton" >> $TMP
+fi
+cat <<EOF >> $TMP
+    label=VESA framebuffer console @ 1024x768x256 (773)
+    default=773
+end
+EOF
+
+# vga=788
+cat <<EOF >> $TMP
+begin item
+    name=vga
+EOF
+if [ "$VGA" = "788" ]; then
+    echo "type=radiobutton|selected" >> $TMP
+else
+    echo "type=radiobutton" >> $TMP
+fi
+cat <<EOF >> $TMP
+    label=VESA framebuffer console @ 800x600x64k (788)
+    default=788
+end
+EOF
+
+# vga=787
+cat <<EOF >> $TMP
+begin item
+    name=vga
+EOF
+if [ "$VGA" = "787" ]; then
+    echo "type=radiobutton|selected" >> $TMP
+else
+    echo "type=radiobutton" >> $TMP
+fi
+cat <<EOF >> $TMP
+    label=VESA framebuffer console @ 800x600x32k (787)
+    default=787
+end
+EOF
+
+# vga=771
+cat <<EOF >> $TMP
+begin item
+    name=vga
+EOF
+if [ "$VGA" = "771" ]; then
+    echo "type=radiobutton|selected" >> $TMP
+else
+    echo "type=radiobutton" >> $TMP
+fi
+cat <<EOF >> $TMP
+    label=VESA framebuffer console @ 800x600x256 (771)
+    default=771
+end
+EOF
+
+# vga=785
+cat <<EOF >> $TMP
+begin item
+    name=vga
+EOF
+if [ "$VGA" = "785" ]; then
+    echo "type=radiobutton|selected" >> $TMP
+else
+    echo "type=radiobutton" >> $TMP
+fi
+cat <<EOF >> $TMP
+    label=VESA framebuffer console @ 640x480x64k (785)
+    default=785
+end
+EOF
+
+# vga=784
+cat <<EOF >> $TMP
+begin item
+    name=vga
+EOF
+if [ "$VGA" = "784" ]; then
+    echo "type=radiobutton|selected" >> $TMP
+else
+    echo "type=radiobutton" >> $TMP
+fi
+cat <<EOF >> $TMP
+    label=VESA framebuffer console @ 640x480x32k (784)
+    default=784
+end
+EOF
+
+# vga=769
+cat <<EOF >> $TMP
+begin item
+    name=vga
+EOF
+if [ "$VGA" = "769" ]; then
+    echo "type=radiobutton|selected" >> $TMP
+else
+    echo "type=radiobutton" >> $TMP
+fi
+cat <<EOF >> $TMP
+    label=VESA framebuffer console @ 640x480x256 (769)
+    default=769
+end
+EOF
+
+# vga=786
+cat <<EOF >> $TMP
+begin item
+    name=vga
+EOF
+if [ "$VGA" = "786" ]; then
+    echo "type=radiobutton|selected" >> $TMP
+else
+    echo "type=radiobutton" >> $TMP
+fi
+cat <<EOF >> $TMP
+    label=VESA 16M pseudo-color 640x480 display (786)
+    default=786
+end
+EOF
+
+cat <<EOF >> $TMP
+br
+br Select kernel:
+br
+EOF
+
+##
+## start of listing available kernels
+##
+( cd /kernels
+  if [ ! $? -eq 0 ]; then
+    cat <<EOF >> $TMP
+br Error! Couldn't cd to /kernels!
+EOF
+    exit 1
+  fi
+
+    KERNELSFOUND=0
+
+for i in *
+do
+    if [ ! -e $i ]; then
+	cat <<EOF >> $TMP
+br No kernels found under /kernels?
+EOF
+	exit 1
+    fi
+
+    if [ -d $i ]; then
+	let KERNELSFOUND=$KERNELSFOUND+1
+	desc=`cat $i/desc 2> /dev/null`
+        cat <<EOF >> $TMP
+begin item
+    name=kernel
+EOF
+    if [ "$KERNEL" = "$i" ]; then
+	echo "type=radiobutton|selected" >> $TMP
+    else
+	echo "type=radiobutton" >> $TMP
+    fi
+cat <<EOF >> $TMP
+    label=${i}: ${desc}
+    default=$i
+end
+EOF
+    fi
+done
+)
+##
+## end of listing available kernels
+##
+
+cat <<EOF >> $TMP
+br
+begin item
+	name=QUIT
+	type = runonexitfirst|usecommandretval
+	bullet=->
+	label=OK, install LILO
+	command=exit 99
+end
+begin item
+	name=QUIT
+	type = runonexitfirst|usecommandretval
+	bullet=->
+	label=CANCEL, do not install LILO
+	command=exit 0
+end
+
+EOF
+
+replimenu -f $TMP
+if [ ! $? -eq 99 ]; then
+    echo "LILO was not installed!"
+    echo
+    echo "Either you pressed \"Q\", F10 or choose to specifically cancel to process!"
+    echo "You have to choose \"OK, install LILO\" to perform the installation."
+    exit 1
+fi
+
+source $variablefile || exit 1
+
+touch $CONFTMP || exit 1
+chmod 0640 $CONFTMP
+
+cat <<EOF > $CONFTMP
+# LILO configuration file - generated by setup.lilo for SENTINIX
+#
+# Start LILO global section
+#
+EOF
+
+if [ "$MODE" = "lba32" ]; then
+    cat <<EOF >> $CONFTMP
+# Allow booting past 1024th cylinder with a recent BIOS.
+lba32
+EOF
+elif [ "$MODE" = "linear" ]; then
+    cat <<EOF >> $CONFTMP
+# Generate 24-bit linear sector addresses, cylinders are limited to <= 1023.
+linear
+EOF
+fi
+
+if [ "$COMPACT" = "y" ]; then
+    cat <<EOF >> $CONFTMP
+# Try to merge read requests for adjecent sectors into a single read request.
+compact
+EOF
+fi
+
+cat <<EOF >> $CONFTMP
+# Device to boot off (superblock or MBR)
+boot=${BOOT}
+
+# you may add your own boot-options with "append", don't forget to
+# uncomment the line to use it.
+#
+# append="hdc=ide-scsi"
+
+# Override dangerous defaults that rewrite the partition table.
+change-rules
+reset
+
+vga=${VGA}
+
+# Normal VGA console
+# vga=ask
+# vga=normal
+# Extended VGA console (80x50)
+# vga=extended
+# VESA framebuffer console @ 1024x768x64k
+# vga=791
+# VESA framebuffer console @ 1024x768x32k
+# vga=790
+# VESA framebuffer console @ 1024x768x256
+# vga=773
+# VESA framebuffer console @ 800x600x64k
+# vga=788
+# VESA framebuffer console @ 800x600x32k
+# vga=787
+# VESA framebuffer console @ 800x600x256
+# vga=771
+# VESA framebuffer console @ 640x480x64k
+# vga=785
+# VESA framebuffer console @ 640x480x32k
+# vga=784
+# VESA framebuffer console @ 640x480x256
+# vga=769
+# VESA 16M pseudo-color 640x480 display
+# vga=786
+
+# End LILO global section
+# Linux bootable partition configuration begins
+image = /boot/bzImage
+root = ${ROOT_DEVICE}
+label = SENTINIX
+read-only
+# Linux bootable partition configuration ends
+EOF
+
+# copy the kernel + System.map.gz + config + desc to /boot/
+echo "Installing the selected kernel..." &&
+cp /kernels/${KERNEL}/{config,desc,bzImage,System.map.gz} /boot/ &&
+
+# copy the config file to /etc/lilo.conf
+echo "Creating new /etc/lilo.conf..." &&
+cat $CONFTMP > /etc/lilo.conf &&
+chown root.root /etc/lilo.conf &&
+chmod 0640 /etc/lilo.conf &&
+
+echo "Please wait while installing LILO..." &&
+/sbin/lilo -C /etc/lilo.conf &&
+( if [ "$KERNEL" = "omsmp" -o "$KERNEL" = "om" ]; then
+    chmod +x /etc/rc.d/rc.openmosix
+  else
+    chmod -x /etc/rc.d/rc.openmosix
+  fi )
+  

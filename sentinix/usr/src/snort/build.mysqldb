@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+# this script is run from the "syswideconfig" compilation step/directory.
+#
+
+. sxconfig &&
+
+# snort db
+#
+cat <<EOF > /tmp/snort.$$
+drop database if exists snort;
+create database snort;
+grant all privileges on snort.* to snort@localhost identified by "sentinix";
+EOF
+if [ ! $? -eq 0 ]; then
+	exit 1
+fi
+
+mysql -u root < /tmp/snort.$$ &&
+mysql -u root snort < snort-$SNORTVER/contrib/create_mysql &&
+mysql -u root snort < /usr/components/snort/acid/create_acid_tbls_mysql.sql &&
+
+# snort_archive
+#
+cat <<EOF > /tmp/snort.$$
+drop database if exists snort_archive;
+create database snort_archive;
+grant all privileges on snort_archive.* to snort@localhost identified by "sentinix";
+EOF
+if [ ! $? -eq 0 ]; then
+	exit 1
+fi
+
+mysql -u root < /tmp/snort.$$ &&
+mysql -u root snort_archive < snort-$SNORTVER/contrib/create_mysql &&
+mysql -u root snort_archive < /usr/components/snort/acid/create_acid_tbls_mysql.sql &&
+
+rm -f /tmp/snort.$$

@@ -1,0 +1,13 @@
+#!/bin/sh
+CWD=`pwd`
+
+( if [ ! -d /var/run/mysql ]; then
+	mkdir -p /var/run/mysql &&
+	chown mysql.mysql /var/run/mysql
+fi ) &&
+mysql_install_db &&
+chown -R mysql.mysql /var/lib/mysql &&
+( mysqld_safe &
+  sleep 5 ) &&
+( cd /usr/src/snort &&
+  sh build.mysqldb )

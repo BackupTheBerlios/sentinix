@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ ! "$RM_timezone" = "" ]; then
+    rm -f /etc/localtime
+    ln -s ../usr/share/zoneinfo/$RM_timezone /etc/localtime
+fi

@@ -1,0 +1,60 @@
+#!/bin/sh
+
+if [ ! -e config ]; then
+	echo "No \"config\" file found"!
+	exit 1
+fi
+
+. config
+
+CWD=`pwd`
+destdir="$CWD/../specials"
+
+VERSION=2.11z
+
+rm -rf util-linux-$VERSION 2> /dev/null
+tar -xzvf util-linux-$VERSION.tar.gz
+cd $CWD/util-linux-$VERSION
+chown -R root:root .
+
+CC=$UCLIBC \
+LDFLAGS="-s -static" ./configure &&
+(
+	cd sys-utils
+	make
+	cp ctrlaltdel sln $destdir/sbin
+	cp arch $destdir/bin
+	cp cytune ipcrm ipcs setsid $destdir/usr/bin
+	cp readprofile tunelp rdev $destdir/usr/sbin
+
+	cd $CWD/util-linux-$VERSION
+	cd misc-utils
+	make
+	cp ddate cal logger look mcookie namei rename script whereis write $destdir/usr/bin
+
+	cd $CWD/util-linux-$VERSION
+	cd fdisk
+	make
+	cp fdisk sfdisk $destdir/sbin
+
+	cd $CWD/util-linux-$VERSION
+	cd disk-utils
+	make
+	cp mkfs blockdev elvtune fsck.minix mkfs.minix mkfs.bfs $destdir/sbin
+	cp fdformat isosize setfdprm raw $destdir/usr/bin
+
+	cd $CWD/util-linux-$VERSION
+	cd hwclock
+	make
+	cp hwclock $destdir/sbin
+) &&
+#
+# make cfdisk
+#
+cd $CWD/util-linux-$VERSION &&
+LDFLAGS="-s -static" ./configure &&
+( cd fdisk
+  make
+  strip cfdisk
+  cp cfdisk $destdir/sbin
+)

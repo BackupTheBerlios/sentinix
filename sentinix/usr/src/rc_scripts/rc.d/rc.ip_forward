@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+# This script is used to enable IPv4 packet forwarding required to let
+# this box act as a router.
+#
+
+enable_ip_forward() {
+    if [ -f /proc/sys/net/ipv4/ip_forward ]; then
+	echo -e "\033[1mEnabling IPv4 packet forwarding!\033[0m"
+	echo 1 > /proc/sys/net/ipv4/ip_forward
+    else
+	echo "Can't enable IPv4 packet forwarding, it's not in the kernel, or the"
+	echo "/proc file system isn't mounted."
+    fi
+}
+
+disable_ip_forward() {
+    if [ -f /proc/sys/net/ipv4/ip_forward ]; then
+	echo "Disabling IPv4 packet forwarding!"
+	echo 0 > /proc/sys/net/ipv4/ip_forward
+    fi
+}
+
+case "$1" in
+    'start')
+	enable_ip_forward
+	;;
+    'stop')
+	disable_ip_forward
+	;;
+    'restart')
+	disable_ip_forward
+	sleep 1
+	enable_ip_forward
+	;;
+    *)
+	echo "usage: $0 start|stop|restart"
+esac

@@ -1,0 +1,159 @@
+#!/bin/sh
+
+which tempfile 1> /dev/null 2>&1
+if [ ! $? -eq 0 ]; then
+    echo "Can't find \"tempfile\", a tool by Debian needed by this script"!
+    exit 1
+fi
+
+TMP=`tempfile`
+rm -f $TMP 1> /dev/null 2>&1
+touch $TMP
+if [ ! $? -eq 0 ]; then
+    echo "Can't create tempfile \"$TMP\""!
+    exit 1
+fi
+rm -f $TMP
+if [ ! $? -eq 0 ]; then
+    echo "Can't remove tempfile \"$TMP\""!
+    exit 1
+fi
+
+STATE_OK=0
+STATE_WARNING=1
+STATE_CRITICAL=2
+STATE_UNKNOWN=3
+STATE_DEPENDENT=4
+
+SNMPSTR="HOST-RESOURCES-MIB::hrSWRunName"
+
+helpme() {
+    echo
+    echo "check_snmp_runningprocess v0.1"
+    echo "script written by Michel Blomgren for Sentinix."
+    echo "http://sentinix.org - contact: michel@zebra.ath.cx"
+    echo
+    echo "usage:"
+    echo "$0 -H <host_or_ip> -C <community> -p <name_of_process> [-w]"
+    echo
+    echo "host_or_ip	The hostname or IP to do SNMP query on. The host must run an"
+    echo "		SNMP daemon with the HOST-RESOURCES-MIB installed."
+    echo "community	The SNMP community name. Defaults to \"public\"."
+    echo "name_of_process"
+    echo "		The name of the process that must be running."
+    echo "	-w	This option indicates that this script should make warning"
+    echo "		alerts instead of critical alerts if a process isn't running."
+    echo "	-i	This option inverts the check, i.e: if the specified process"
+    echo "		is running, a warning (or a critical) alert occurs."
+    echo
+    exit $STATE_UNKNOWN
+}
+
+syntaxerror() {
+    echo "Syntax error! Type \"$0 -h\" for help"!
+    exit $STATE_UNKNOWN
+}
+
+nosmp() {
+    echo "Could not find \"snmpwalk\", a net-snmp tool"!
+    exit $STATE_UNKNOWN
+}
+
+SNMPWALK=`which snmpwalk 2> /dev/null` || nosnmp
+
+#
+# defaults
+#
+HOSTNAME=""
+COMMUNITY=public
+PROCESS=""
+REPORT_WARNING=0
+WASFOUND=0
+INVERT=0
+
+while getopts "hH:C:p:wi" Option
+do
+    case $Option in
+	h) helpme ;;
+	H) HOSTNAME=$OPTARG ;;
+	C)
+	    if [ ! "$COMMUNITY" = "" ]; then
+		COMMUNITY=$OPTARG
+	    fi
+	    ;;
+	p) PROCESS=$OPTARG ;;
+	w) REPORT_WARNING=1 ;;
+	i) INVERT=1 ;;
+	*) syntaxerror ;;
+    esac
+done
+
+#
+# check variables...
+#
+if [ "$HOSTNAME" = "" ]; then
+    echo "No hostname/IP was specified"!
+    syntaxerror
+fi
+
+if [ "$PROCESS" = "" ]; then
+    echo "No process to check was specified"!
+    syntaxerror
+fi
+
+#
+# run snmpwalk and get processlist.
+#
+SNMPANSWER=`$SNMPWALK -v 1 -Ovq -c $COMMUNITY $HOSTNAME $SNMPSTR 2>&1`
+if [ ! $? -eq 0 ]; then
+    echo $SNMPANSWER
+    exit $STATE_UNKNOWN
+fi
+
+#
+# see if spcified process is in list.
+#
+
+echo "$SNMPANSWER" | while read LINE
+do
+    # remove \"
+    THISPROC=`echo $LINE | tr -d \"`
+
+    if [ "$PROCESS" = "$THISPROC" ]; then
+	touch $TMP
+    fi
+done
+
+if [ -e $TMP ]; then
+    WASFOUND=1
+    rm -f $TMP
+fi
+
+if [ $WASFOUND -eq 0 ]; then
+    echo "Process \"$PROCESS\" is not running on $HOSTNAME"!
+    if [ $REPORT_WARNING -ge 1 ]; then
+	if [ $INVERT -eq 1 ]; then
+	    exit $STATE_OK
+	else
+	    exit $STATE_WARNING
+	fi
+    else
+	if [ $INVERT -eq 1 ]; then
+	    exit $STATE_OK
+	else
+	    exit $STATE_CRITICAL
+	fi
+    fi
+else
+    echo "Process \"$PROCESS\" is running on $HOSTNAME."
+
+    if [ $INVERT -eq 1 ]; then
+	if [ $REPORT_WARNING -eq 1 ]; then
+	    exit $STATE_WARNING
+	else
+	    exit $STATE_CRITICAL
+	fi
+    else
+	exit $STATE_OK
+    fi
+fi

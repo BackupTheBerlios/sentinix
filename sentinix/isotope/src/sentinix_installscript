@@ -1,0 +1,28 @@
+#!/bin/sh
+mykernel=plain
+for i in `cat /proc/cmdline`
+do
+    if [ "`echo $i | cut -f1 -d=`" = "SENTINIX_KERNEL" ]; then
+	mykernel="`echo $i | cut -f2 -d=`"
+    fi
+done
+
+if [ "$mykernel" = "clusterbooter" -a ! "$1" = "-f" ]; then
+cat <<EOF
+
+This machine is currently booted to run as an openMosix node. For security
+reasons the installation process will not start. Please reboot and specifically
+select a kernel to boot.
+
+If you want to choose a keyboard map simply type "setup.kbdmap" and select one.
+You may force installation by running "install -f".
+
+EOF
+    exit 1
+else
+    if [ "$mykernel" = "clusterbooter" ]; then
+	mykernel=omsmp
+    fi
+    export mykernel
+    replimenu -f /var/setup/main.rm
+fi

@@ -1,0 +1,14 @@
+#!/bin/sh
+CWD=`pwd`
+VERSION=2.4.25
+
+destdir=$CWD/../specials
+
+. config &&
+rm -rf modutils-$VERSION &&
+tar -xzf modutils-$VERSION.tar.gz &&
+cd modutils-$VERSION &&
+chown -R root.root . &&
+CC=$UCLIBC LDFLAGS=-static ./configure --enable-strip i486-sentinix-linux &&
+make &&
+make DESTDIR=$destdir install-bin

@@ -1,0 +1,24 @@
+#
+# These two will appear as $SXARCH-$SXSYSNAME-linux in install.sh scripts
+# (the below will expand to i486-sentinix-linux).
+#
+SXARCH=i486
+SXSYSNAME=sentinix
+
+#
+# This will appear in the CFLAGS variable in (some) install.sh scripts
+#
+SXARCHFLAGS="-march=i486 -mcpu=i686"
+
+#
+# IWLOGDIR is the place where all installwatch output files will be placed.
+#
+IWLOGDIR=/usr/src/iwlogs
+
+if [ ! -e $IWLOGDIR ]; then
+    echo "Creating directory $IWLOGDIR for storing installwatch logs..."
+    mkdir -p $IWLOGDIR || exit 1
+elif [ ! -d $IWLOGDIR ]; then
+    echo "$IWLOGDIR exists, but is not a directory, you need to fix this to continue!"
+    exit 1
+fi

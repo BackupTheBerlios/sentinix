@@ -1,0 +1,13 @@
+--- ./conf_script.orig	2003-03-11 12:10:15.000000000 -0800
++++ ./conf_script	2003-03-11 12:12:14.000000000 -0800
+@@ -25,8 +25,8 @@
+ s,@DEFS@, -DSTDC_HEADERS -DPOSIX -DDO_COMPRESS,
+ s,@LIBS@,,
+ s,@LIBOBJS@,,
+-s,@troff@,/usr/bin/groff -Tps -mandoc,
+-s,@nroff@,/usr/bin/nroff -Tlatin1 -mandoc,
++s,@troff@,/usr/bin/groff -S -Tps -mandoc,
++s,@nroff@,/usr/bin/nroff -S -mandoc,
+ s,@jnroff@,/usr/bin/groff -Tnippon -mandocj,
+ s,@eqn@,/usr/bin/geqn -Tps,
+ s,@neqn@,/usr/bin/geqn -Tlatin1,

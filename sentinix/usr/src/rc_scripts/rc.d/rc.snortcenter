@@ -1,0 +1,34 @@
+#!/bin/sh
+
+startsnort() {
+    echo -e "\033[1mStarting the SnortCenter Sensor Agent...\033[0m"
+    touch /var/log/snort/portscan.log
+    chmod 0644 /var/log/snort/portscan.log
+    if [ ! -e /usr/components/snort/sensor/conf/sensor.pem ]; then
+	/usr/local/sbin/mksnortcentersensorcert -f
+    fi
+    /usr/components/snort/sensor/conf/start &&
+    echo -e "\033[0;33mDon't forget to start Snort from within the SnortCenter web GUI.\033[0m"
+}
+
+stopsnort() {
+    echo -e "\033[1mStopping the SnortCenter Sensor Agent...\033[0m"
+    JunkPID=`ps auxww | grep "miniserv.pl" | grep -v grep | awk '{ print $2 }' `
+    if [ ! "$JunkPID" = "" ]; then
+	/usr/components/snort/sensor/conf/stop
+    fi
+}
+
+case "$1" in
+	'start')
+		startsnort ;;
+	'stop')
+		stopsnort ;;
+	'restart')
+		stopsnort
+		sleep 2
+		startsnort
+		;;
+	*)
+		echo "usage: $0 start|stop|restart" ;;
+esac

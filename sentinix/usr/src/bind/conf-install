@@ -1,0 +1,13 @@
+#!/bin/sh
+
+CWD=`pwd`
+
+if [ ! -d /var/named/caching-example ]; then
+	mkdir -p /var/named/caching-example
+fi
+
+cat $CWD/caching-example/named.conf > /etc/named.conf-sample
+cat $CWD/caching-example/localhost.zone > /var/named/caching-example/localhost.zone
+cat $CWD/caching-example/named.ca > /var/named/caching-example/named.ca
+cat $CWD/caching-example/named.local > /var/named/caching-example/named.local
+

@@ -1,0 +1,36 @@
+#!/bin/sh
+CWD=`pwd`
+
+source ../sxarchconfig || exit 1
+source sxconfig || exit 1
+
+if [ ! -d mod_ssl-$MODSSLVER ]; then
+	echo "Please run \"build\" to build Apache+mod_ssl."
+	exit 1
+fi
+
+cd mod_ssl-$MODSSLVER
+
+echo
+echo -e "\033[1mConfiguring mod_ssl $MODSSLVER\033[0m"
+echo
+
+./configure --with-apxs=/usr/sbin/apxs \
+	--with-crt=/etc/apache/mod_ssl/server.crt \
+	--with-key=/etc/apache/mod_ssl/server.key \
+	--with-patch=/usr/bin/patch \
+	--host=$SXARCH-$SXSYSNAME-linux &&
+make
+if [ ! $? = 0 ]; then
+	echo -e "\033[1;31mCompilation of mod_ssl $MODSSLVER failed.\033[0m"
+	exit 1
+fi
+
+echo
+echo -e "\033[1mFixing PIDFILE and HTTPD variables in \"apachectl\"\033[0m"
+echo
+
+( cd $CWD/apache_$APACHEVER/src/support
+cat apachectl | sed -e "s|PIDFILE=/usr/local/apache/logs/httpd.pid|PIDFILE=/var/run/httpd.pid|g" | sed -e "s|HTTPD='/usr/local/apache/src/httpd'|HTTPD=/usr/sbin/httpd|g" > apachectl.new
+mv apachectl.new apachectl )
+

@@ -1,0 +1,18 @@
+--- ./src/conf.sh.orig	1995-06-16 08:19:24.000000000 +0200
++++ ./src/conf.sh	2003-12-14 01:35:36.000000000 +0100
+@@ -77,10 +77,11 @@
+ rm -f a.d &&
+ date >a.d &&
+ chmod 0 a.d &&
+-{ test -w a.d || cp /dev/null a.d 2>/dev/null; } && {
+-	echo >&3 "$n$0: This command should not be run with superuser permissions."
+-	exit 1
+-}
++# why shouldn't this be run as root, I wonder?  the buildsys shouldn't use any other user than root, so we're fucked either way!
++#{ test -w a.d || cp /dev/null a.d 2>/dev/null; } && {
++#	echo >&3 "$n$0: This command should not be run with superuser permissions."
++#	exit 1
++#}
+ echo >&3 OK
+ rm -f a.d || exit
+ 

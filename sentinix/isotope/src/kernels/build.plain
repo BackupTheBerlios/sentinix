@@ -1,0 +1,65 @@
+#!/bin/sh
+#
+# This script compiles and installs the plain (default) Sentinix kernel.
+#
+
+CWD=`pwd`
+kerneldir=$CWD/../../kernels/plain
+modulesdir=$CWD/../..
+
+if [ ! -e config ]; then
+	echo "No \"config\" file found"!
+	exit 1
+fi
+
+. config
+
+DESC="Linux $KVERSION uni-processor, max 4GB RAM"
+
+if [ -e $kerneldir ]; then
+    rm -rf $kerneldir
+fi
+mkdir -p $kerneldir
+
+if [ "$SENTINIXPATH" = "" ]; then
+	echo "Variable SENTINIXPATH is not OK"!
+	exit 1
+fi
+
+if [ ! -d linux-$KVERSION ]; then
+	rm -rf linux-$KVERSION
+	tar --use-compress-program bzip2 -xvf linux-$KVERSION.tar.bz2 &&
+	( cd linux-$KVERSION && cat $CWD/linux-$KVERSION-do_brk_boundscheck.diff | patch -Np1 ) &&
+	( cd $CWD/linux_logo && ./patchkernel ../linux-$KVERSION ) &&
+	cd linux-$KVERSION &&
+	chown -R root.root . &&
+	cd $CWD
+	if [ ! $? -eq 0 ]; then
+	    exit $?
+	fi
+fi
+
+cd linux-$KVERSION &&
+make mrproper &&
+( cp $CWD/config.plain .config &&
+  echo "rm -rf $modulesdir/lib/modules/$KVERSION" &&
+  rm -rf $modulesdir/lib/modules/$KVERSION &&
+  rm -rf $modulesdir/lib/modules/$KVERSION.tar.gz ) &&
+make oldconfig &&
+make dep &&
+make clean &&
+make modules &&
+INSTALL_MOD_PATH=$modulesdir make modules_install &&
+make clean &&
+make bzImage &&
+cp arch/i386/boot/bzImage $kerneldir/bzImage &&
+cat System.map | gzip > $kerneldir/System.map.gz &&
+cp .config $kerneldir/config &&
+rm -f $modulesdir/lib/modules/$KVERSION/build &&
+# compress modules
+tar -C $modulesdir/lib/modules -czf $modulesdir/lib/modules/$KVERSION.tar.gz $KVERSION &&
+rm -rf $modulesdir/lib/modules/${KVERSION}${XTRAVER} &&
+echo "$DESC" > $kerneldir/desc &&
+( echo
+  echo "plain kernel complete."
+  echo )

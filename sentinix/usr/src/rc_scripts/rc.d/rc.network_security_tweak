@@ -1,0 +1,145 @@
+#!/bin/sh
+#
+# This script enforces some network security on your box.
+#
+# General concept, the enable() and disable() functions by Brian Hatch,
+# 2002. Adapted and modified for SENTINIX by Michel Blomgren in 2004.
+#
+# You may want to comment out or uncomment some stuff below.
+#
+# $Id: rc.network_security_tweak,v 1.1 2004/01/11 20:10:21 replikan Exp $
+#
+
+# nice function for putting 1 in multiple files:
+function enable() {
+    for file in $@ ; do
+	echo 1 > $file
+    done
+}
+# nice function for putting 0 in multiple files:
+function disable() {
+    for file in $@ ; do
+	echo 0 > $file
+    done
+}
+
+function start_tweak() {
+    echo -e "\033[1mConfiguring up common IPv4 security tweaks.\033[0m"
+
+    # Make sure we don't accept source routed packets. This is naturally
+    # off by default in Linux, but we disable it here anyway in order to
+    # make people notice it. The IP protocol has an option for letting
+    # the source of a packet describe the path the packet should take
+    # (source routing), thus overriding default routes. There is strict
+    # source routing, which means the packet must travel the path
+    # described in the IP header. Packets coming back must travel in the
+    # reverse order of that path. Loose source routing means the packet
+    # must, at some point, pass through each IP in the packet's source
+    # routing table. An attacker can spoof his/her IP address, set up a
+    # loose source routing option in order to still receive a return
+    # packet, even though the "ultimate" source address is spoofed.
+    #
+    disable /proc/sys/net/ipv4/conf/*/accept_source_route
+
+    # The kernel answers ICMP echo requests by default, and it should
+    # be. The next line says that ignoring all ICMP echo should be
+    # disabled (i.e. allowing ICMP echo).
+    #
+    disable /proc/sys/net/ipv4/icmp_echo_ignore_all
+
+    # Enable ingnoring of all incoming ICMP echo requests that are
+    # broadcasted. This prevents so called Smurf attacks, i.e. source
+    # spoofed ICMP echo requests sent to a broadcast address.
+    #
+    enable /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
+
+    # Enable TCP SYN cookies, a technique to use cryptographic (between
+    # server and client) initial sequence numbers (ISN) to deal with
+    # synfloods, that is, spoofed Denial-of-Service attacks that fill up
+    # the kernel's SYN queue and eventually (if successful) causes the
+    # server to drop connections.
+    #
+    # This is enabled specifically in the rc.tcp_syncookies script. It's
+    # slightly TCP nincompliant according to the RFCs.
+    #
+    #enable /proc/sys/net/ipv4/tcp_syncookies
+
+    # Accept ICMP redirect messages only for gateways (listed in the
+    # default gw list). This is enabled by default, but we enable it
+    # here anyway.
+    #
+    enable /proc/sys/net/ipv4/conf/*/secure_redirects
+
+    # Don't accept ICMP redirects. These control messages can alter your
+    # routing table. Disabling this cuases the box not to dynamically
+    # change it's routing table.
+    #
+    disable /proc/sys/net/ipv4/conf/*/accept_redirects
+
+    # Don't send any ICMP redirects. If you run as a router, you should
+    # "enable" this since you might have to send redirect messages to
+    # other hosts having you as their router.
+    #
+    disable /proc/sys/net/ipv4/conf/*/send_redirects
+
+    # Disable packet forwarding. Forwarding means that packets can
+    # travel across network interfaces. IP forwarding must be enabled if
+    # you want to act as a router/firewall. This is handled by
+    # /etc/rc.d/rc.ip_forward instead of here.
+    #
+    #disable /proc/sys/net/ipv4/ip_forward
+
+    # rp_filter - Reverse Path filter, as described in RFC 1812,
+    # excerpt:
+    #
+    #	5.3.8 Source Address Validation
+    #
+    #	A router SHOULD IMPLEMENT the ability to filter traffic based on
+    #	a comparison of the source address of a packet and the
+    #	forwarding table for a logical interface on which the packet was
+    #	received.  If this filtering is enabled, the router MUST
+    #	silently discard a packet if the interface on which the packet
+    #	was received is not the interface on which a packet would be
+    #	forwarded to reach the address contained in the source address. 
+    #	In simpler terms, if a router wouldn't route a packet containing
+    #	this address through a particular interface, it shouldn't
+    #	believe the address if it appears as a source address in a
+    #	packet read from this interface.
+    #
+    #	If this feature is implemented, it MUST be disabled by default.
+    #
+    #	DISCUSSION
+    #	    This feature can provide useful security improvements in
+    #	    some situations, but can erroneously discard valid packets
+    #	    in situations where paths are asymmetric.
+    #
+    # rp_filter is only available if ip_forward is enabled.
+    #
+    if [ -f /proc/sys/net/ipv4/ip_forward ]; then
+	IPFORWARD=`cat /proc/sys/net/ipv4/ip_forward`
+	if [ ! "$IPFORWARD" = "0" ]; then
+	    enable /proc/sys/net/ipv4/conf/*/rp_filter
+	fi
+    fi
+
+    # Log packets with impossible addresses to kernel log (usually
+    # picked up by klogd and dumped in /var/log/syslog).
+    #
+    enable /proc/sys/net/ipv4/conf/*/log_martians
+
+}
+
+case "$1" in
+    'start')
+	start_tweak
+	;;
+    'stop')
+	echo "Sorry, I can't reset/stop these tweaks."
+	;;
+    'restart')
+	start_tweak
+	;;
+    *)
+	echo "usage: $0 start"
+	;;
+esac

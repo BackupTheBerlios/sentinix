@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+# This script sets a consolefont if configured.
+#
+# see /usr/share/kbd/consolefonts/ for more psfu fonts.
+#
+source /etc/SXCONFIG || echo "$0: couldn't read /etc/SXCONFIG" && exit 1
+[ "$CONSOLEFONT" ] && setfont -v $CONSOLEFONT

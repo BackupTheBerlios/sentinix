@@ -1,0 +1,6 @@
+#!/bin/sh
+CWD=`pwd`
+destdir=$CWD/../specials/bin
+
+cat sentinix_installscript > $destdir/install &&
+chmod 0755 $destdir/install

@@ -1,0 +1,67 @@
+#!/bin/sh
+#
+# This script compiles and installs the SMP Sentinix kernel.
+#
+
+CWD=`pwd`
+XTRAVER=-smp
+
+kerneldir=$CWD/../../kernels/smp
+modulesdir=$CWD/../..
+
+if [ ! -e config ]; then
+	echo "No \"config\" file found"!
+	exit 1
+fi
+
+. config
+
+DESC="Linux $KVERSION multi-processor (SMP), max 4GB RAM"
+
+if [ -e $kerneldir ]; then
+    rm -rf $kerneldir
+fi
+mkdir -p $kerneldir
+
+if [ "$SENTINIXPATH" = "" ]; then
+	echo "Variable SENTINIXPATH is not OK"!
+	exit 1
+fi
+
+if [ ! -d linux-$KVERSION ]; then
+	rm -rf linux-$KVERSION
+	tar --use-compress-program bzip2 -xvf linux-$KVERSION.tar.bz2 &&
+	( cd linux-$KVERSION && cat $CWD/linux-$KVERSION-do_brk_boundscheck.diff | patch -Np1 ) &&
+	( cd $CWD/linux_logo && ./patchkernel ../linux-$KVERSION ) &&
+	cd linux-$KVERSION &&
+	chown -R root.root . &&
+	cd $CWD
+	if [ ! $? -eq 0 ]; then
+	    exit $?
+	fi
+fi
+
+cd linux-$KVERSION &&
+make EXTRAVERSION=${XTRAVER} mrproper &&
+( cp $CWD/config.smp .config &&
+  echo "rm -rf $modulesdir/lib/modules/${KVERSION}${XTRAVER}" &&
+  rm -rf $modulesdir/lib/modules/${KVERSION}${XTRAVER} &&
+  rm -rf $modulesdir/lib/modules/${KVERSION}${XTRAVER}.tar.gz ) &&
+make EXTRAVERSION=${XTRAVER} oldconfig &&
+make EXTRAVERSION=${XTRAVER} dep &&
+make EXTRAVERSION=${XTRAVER} clean &&
+make EXTRAVERSION=${XTRAVER} modules &&
+INSTALL_MOD_PATH=$modulesdir make EXTRAVERSION=${XTRAVER} modules_install &&
+make EXTRAVERSION=${XTRAVER} clean &&
+make EXTRAVERSION=${XTRAVER} bzImage &&
+cp arch/i386/boot/bzImage $kerneldir/bzImage &&
+cat System.map | gzip > $kerneldir/System.map.gz &&
+cp .config $kerneldir/config &&
+rm -f $modulesdir/lib/modules/${KVERSION}${XTRAVER}/build &&
+# compress modules
+tar -C $modulesdir/lib/modules -czf $modulesdir/lib/modules/${KVERSION}${XTRAVER}.tar.gz ${KVERSION}${XTRAVER} &&
+rm -rf $modulesdir/lib/modules/${KVERSION}${XTRAVER} &&
+echo "$DESC" > $kerneldir/desc &&
+( echo
+  echo "smp kernel complete."
+  echo )

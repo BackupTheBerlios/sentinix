@@ -1,0 +1,90 @@
+#!/bin/sh
+#
+# This script compiles and installs the openMosix Sentinix kernel.
+#
+
+CWD=`pwd`
+XTRAVER=-openmosix-1
+XTRAVER2=-smp
+
+kerneldir=$CWD/../../kernels/omsmp
+modulesdir=$CWD/../..
+
+if [ ! -e config ]; then
+	echo "No \"config\" file found"!
+	exit 1
+fi
+
+. config
+
+DESC="Linux $KVERSION and openMosix SMP, max 4GB RAM"
+
+if [ -e $kerneldir ]; then
+    rm -rf $kerneldir
+fi
+mkdir -p $kerneldir
+
+if [ "$SENTINIXPATH" = "" ]; then
+	echo "Variable SENTINIXPATH is not OK"!
+	exit 1
+fi
+
+if [ ! -d linux-${KVERSION}${XTRAVER} ]; then
+	rm -rf linux-${KVERSION}${XTRAVER}
+
+	( if [ -e tmp ]; then
+		echo "\"./tmp\" exists, to continue you must delete it."
+		echo -n "Want me to delete it? [y/n] "
+		read reply
+		if [ "$reply" = "y" -o "$reply" = "Y" -o "$reply" = "yes" ]; then
+			rm -rf tmp
+		else
+			exit 1
+		fi
+	  fi
+	  mkdir tmp &&
+	  cd tmp &&
+	  tar --use-compress-program bzip2 -xvf $CWD/linux-$KVERSION.tar.bz2 &&
+	  ( cd linux-$KVERSION && cat $CWD/linux-$KVERSION-do_brk_boundscheck.diff | patch -Np1 ) &&
+	  mv linux-$KVERSION $CWD/linux-${KVERSION}${XTRAVER} )
+	if [ ! $? -eq 0 ]; then
+		echo "Will not continue"!
+		exit 1
+	fi
+	rmdir tmp
+	( cd linux-${KVERSION}${XTRAVER} &&
+	  chown -R root.root . &&
+	  bzcat $CWD/openMosix-$KVERSION-1.bz2 | patch -Np1 &&
+	  ## cat $CWD/patch-Migshm-$KVERSION.diff | patch -Np1
+	  ( cd $CWD/linux_logo && ./patchkernel ../linux-${KVERSION}${XTRAVER} )
+	)
+	if [ ! $? -eq 0 ]; then
+		echo "An error occured"!
+		exit 1
+	fi
+fi
+
+cd linux-${KVERSION}${XTRAVER} &&
+make EXTRAVERSION=${XTRAVER}${XTRAVER2} mrproper &&
+( cp $CWD/config.omsmp .config &&
+  echo "rm -rf $modulesdir/lib/modules/${KVERSION}${XTRAVER}${XTRAVER2}" &&
+  rm -rf $modulesdir/lib/modules/${KVERSION}${XTRAVER}${XTRAVER2} &&
+  rm -rf $modulesdir/lib/modules/${KVERSION}${XTRAVER}${XTRAVER2}.tar.gz ) &&
+make EXTRAVERSION=${XTRAVER}${XTRAVER2} oldconfig &&
+make EXTRAVERSION=${XTRAVER}${XTRAVER2} dep &&
+make EXTRAVERSION=${XTRAVER}${XTRAVER2} clean &&
+make EXTRAVERSION=${XTRAVER}${XTRAVER2} modules &&
+INSTALL_MOD_PATH=$modulesdir make EXTRAVERSION=${XTRAVER}${XTRAVER2} modules_install &&
+make EXTRAVERSION=${XTRAVER}${XTRAVER2} clean &&
+make EXTRAVERSION=${XTRAVER}${XTRAVER2} bzImage &&
+cp arch/i386/boot/bzImage $kerneldir/bzImage &&
+cat System.map | gzip > $kerneldir/System.map.gz &&
+cp .config $kerneldir/config &&
+rm -f $modulesdir/lib/modules/${KVERSION}${XTRAVER}${XTRAVER2}/build &&
+# compress modules
+tar -C $modulesdir/lib/modules -czf $modulesdir/lib/modules/${KVERSION}${XTRAVER}${XTRAVER2}.tar.gz ${KVERSION}${XTRAVER}${XTRAVER2} &&
+rm -rf $modulesdir/lib/modules/${KVERSION}${XTRAVER}${XTRAVER2} &&
+echo "$DESC" > $kerneldir/desc &&
+( echo
+  echo "omsmp kernel complete."
+  echo )

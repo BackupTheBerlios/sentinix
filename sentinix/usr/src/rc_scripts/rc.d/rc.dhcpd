@@ -1,0 +1,29 @@
+#!/bin/sh
+#
+# starts dhcpd - the DHCP protocol daemon
+# $Id: rc.dhcpd,v 1.1 2004/01/11 20:10:21 replikan Exp $
+#
+
+function start_dhcpd() {
+    /usr/sbin/dhcpd
+}
+
+function stop_dhcpd() {
+    killall dhcpd
+}
+
+case "$1" in
+    'start')
+	start_dhcpd
+	;;
+    'stop')
+	stop_dhcpd
+	;;
+    'restart')
+	stop_dhcpd
+	sleep 1
+	start_dhcpd
+    *)
+	echo "usage: $0 start|stop|restart"
+	;;
+esac

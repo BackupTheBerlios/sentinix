@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+
+<html>
+<head>
+	<title>Cacti Manual</title>
+	<link href="main.css" rel="stylesheet">
+</style>
+</head>
+
+<body>
+
+<table bgcolor="#d5d5d5" width="100%">
+	<tr>
+		<td align="left">
+			<strong><a href="section1.htm">&lt;&lt; Previous Section</a></strong>
+		</td>
+		<td align="center">
+			Making Graphs the Manual Way: Graphs and Data Sources <strong>[<a href="index.htm">home</a>]</strong>
+		</td>
+		<td align="right">
+			<strong><a href="section3.htm">Next Section &gt;&gt;</a></strong>
+		</td>
+	</tr>
+</table>
+
+<br>
+
+<span class="textPageHeader">Data Sources</span>
+
+<p>Data sources can be accessed in Cacti by selecting the "Data Sources" menu option under "Data Gathering". Any piece of data that
+you put on a graph in Cacti will have a data source associated with it. Like RRD files, a single data source can represent more
+than one piece fo data as you will see further down.</p>
+
+<p>Creating a new data source is simple. Once you are in the "Data Sources" screen within Cacti, select "Add" in the upper
+right corner of the window. The first thing you will be prompted for is a data template and a host. While both of these
+options provide powerful functionality, you can leave both of these dropdowns set to "None" for now. When you click the
+"Create" button you will be provided with a bunch of fields:</p>
+
+<table class="field" cellspacing="0">
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Name
+		</td>
+		<td class="fieldDescription">
+			This is the name that cacti uses to identify this data source. You must type something here, but you
+			may include spaces and other non-alphanumeric characters.
+			<br><br>
+			<strong>Note</strong>: You can use the keyword <em>|host_description|</em> in this field, which will be
+			automatically substituted with the current host description.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Data Source Path
+		</td>
+		<td class="fieldDescription">
+			The full path to the RRD file associated with this data source. When creating a new data source you
+			will typically leave this field blank as Cacti will generate one for you. If you are using an RRD
+			file generated outside of Cacti, you need to specify it here.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Data Input Source
+		</td>
+		<td class="fieldDescription">
+			Here is where you tell cacti how it is supposed to fetch data for this data source. There are several
+			data input sources that come with cacti, and you can add your own by going to <a href="section5_1.htm">Data Input Methods</a>.
+			If this RRD file is being populated outside of cacti, make sure to leave this field set to "None".
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Associated RRA's
+		</td>
+		<td class="fieldDescription">
+			You need to associate the data source with at least one RRA so RRDTool knows how often and for how
+			long to keep its data. You will almost always want to select all of these values however so you
+			can render daily, weekly, monthly, and yearly graphs.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Step
+		</td>
+		<td class="fieldDescription">
+			This tells RRDTool how many seconds there will be between updates. The default is 300 seconds 
+			(5 minutes), and is sufficient for most installations.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Data Source Active
+		</td>
+		<td class="fieldDescription">
+			This is a quick and easy to tell Cacti to stop gathering data for this data source. The data source
+			can still be used on graphs, but no data will be fed to it until it is made active again.
+		</td>
+	</tr>
+</table>
+
+<p>While the fields above apply to the entire data source, the fields under "Data Source Item" are specific to each item
+contained within the data source. Every data source must have at least one item, but can have many more than that.</p>
+
+<table class="field" cellspacing="0">
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Internal Data Source Name
+		</td>
+		<td class="fieldDescription">
+			This is the name used by RRDTool to identify this particular data source within the RRD file. RRDTool
+			places a limit of 19 alphanumeric characters (plus '_' and '-') on this field.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Minimum Value
+		</td>
+		<td class="fieldDescription">
+			Here is where you specify the minimum value that is expected for this data source in the RRD file. If
+			a value lower than the minimum is given, it will be stored as Unknown (U).
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Maximum Value
+		</td>
+		<td class="fieldDescription">
+			Here is where you specify the maximum value that is expected for this data source in the RRD file. If
+			a value higher than the maximum is given, it will be stored as Unknown (U).
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Data Source Type
+		</td>
+		<td class="fieldDescription">
+			There are four types of data that RRDTool can represent for any given data source: COUNTER, GAUGE,
+			ABSOLUTE, and DERIVE. A gauge is for numbers that are not continuously incrementing. A counter is
+			for continuously incrementing values that might overflow, while a derive does not overflow. The
+			absolute type is used for counters that are reset upon reading.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Heartbeat
+		</td>
+		<td class="fieldDescription">
+			As defined by RRDTool: The maximum amount of time that can pass before data is entered as 
+			"unknown". This field is usually '600' or 2 data gathering intervals.
+		</td>
+	</tr>
+</table>
+
+<p>When you have finished filling in all necessary fields, click "Create" at the bottom of the page. You will be redirected
+back to the edit page, with the data template/host applied (if applicable). You will also see a new box at the bottom of
+the page called "Custom Data". This is where you can give additional data to your selected data input source. Depending
+on your host/data template selection some or all of these fields may not be available for editing. If they are, you will
+want to fill in the fields with the appropriate values.</p>
+
+<p>If you are not using a data template, you will notice the "New" link in the upper right corner of the "Data Source Item"
+box. You can use this to add additional data source items to the data source, which will appear as a tab for each data
+source item. Each data source item has its own settings (min, max, type, etc) that need to specified on a per-item basis.</p>
+
+</body>
+</html>

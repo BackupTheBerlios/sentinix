@@ -1,0 +1,19 @@
+#!/bin/sh
+CWD=`pwd`
+destdir="$CWD/../specials/usr/bin"
+
+VERSION=0.8
+
+if [ ! -e config ]; then
+	echo "No \"config\" file found"!
+	exit 1
+fi
+
+. config
+
+rm -rf replimenu-$VERSION
+tar -xzf replimenu-$VERSION.tar.gz &&
+cd replimenu-$VERSION &&
+chown -R root.root . &&
+make CC=$UCLIBC DOSTATIC=true &&
+cp src/replimenu $destdir

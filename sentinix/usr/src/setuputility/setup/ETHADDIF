@@ -1,0 +1,17 @@
+#!/bin/sh
+EXTRAIF=/usr/local/setup/tmp/setup.eth-extra_interfaces
+
+[ ! "$1" = "-realadd" ] && exit 1
+
+if [ ! "$2" = "" ]; then
+    [ ! -e $EXTRAIF ] && touch $EXTRAIF
+    # remove this interface if it already exists,
+    # we can't have two interfaces with the same name anyway
+    cat $EXTRAIF | grep -v "^${2}\$" > /usr/local/setup/tmp/ETHADDIF.ethaddif.$$
+    mv -f /usr/local/setup/tmp/ETHADDIF.ethaddif.$$ $EXTRAIF &&
+    # add interface
+    echo $2 >> $EXTRAIF
+fi
+
+# re-run setup.eth
+exec /usr/local/setup/setup.eth -dontloadconfig

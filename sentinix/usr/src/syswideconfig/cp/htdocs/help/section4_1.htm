@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+
+<html>
+<head>
+	<title>Cacti Manual</title>
+	<link href="main.css" rel="stylesheet">
+</style>
+</head>
+
+<body>
+
+<table bgcolor="#d5d5d5" width="100%">
+	<tr>
+		<td align="left">
+			<strong><a href="section3.htm">&lt;&lt; Previous Section</a></strong>
+		</td>
+		<td align="center">
+			How Templates Will Save You Time <strong>[<a href="index.htm">home</a>]</strong>
+		</td>
+		<td align="right">
+			<strong><a href="section5.htm">Next Section &gt;&gt;</a></strong>
+		</td>
+	</tr>
+</table>
+
+<br>
+
+<span class="textPageHeader">Graph Templates</span>
+
+<p>Creating a graph template is very similar to creating a new graph as you will see. To create a new graph template,
+select "Graph Templates" under the "Templates" heading and click "Add".</p>
+
+<p>The first thing you must do is give the template a name. This name has nothing to do with the graph title, but is what
+you will use to identify the template throughout Cacti. Second, you will notice a list of graph field names with 
+<em>Use Per-Graph Value</em> checkboxes next to each one. The nice thing about templates in Cacti is 
+that you can choose whether to template each field on a per-field basis. If you leave the checkbox uncheked, every graph attached
+to the template will inherit its value from the template. If the checkbox is checked, every graph attached to the template 
+will contain its own value for that particular field.</p>
+
+<p><strong>Note</strong>: For most graph templates, you will want to check the <em>Use Per-Graph Value</em> checkbox for
+the title field so each graph using this template has its own unique title. It also makes sense to enter an initial value
+in this field that includes the variable <em>|host_description|</em> for organizational purposes.</p>
+
+<p>When you are finished filling in values for the graph template, click "Create" and you will be presented with a screen
+similar to the graph edit screen.</p>
+
+<p>The first thing you should do is create graph items for this graph template, just like for a regular graph. One difference
+you will notice is that the "Data Sources" dropdown will contain a list of data template items rather than data source items.
+It is important that Cacti can make this association here, so that Cacti doesn't have to make unnecessary assumptions later.</p>
+
+<p class="textParagraphHeader">Graph Item Inputs</p>
+
+<p>After creating graph items for your template, you will need to create some graph item inputs. Graph item inputs are
+unique to graph templates because of the large number of items they sometimes contain. Graph item inputs enable you to
+take one graph item field, and associate it with multiple graph items.</p>
+
+<p>To create a new graph item input, click "Add" on the right of the "Graph Item Inputs" box. There are various fields that
+must be filled in for every graph item input:</p>
+
+<table class="field" cellspacing="0">
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Name
+		</td>
+		<td class="fieldDescription">
+			This will be the name used to identify the graph item input on both the graph template and graph
+			edit pages.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Description
+		</td>
+		<td class="fieldDescription">
+			(Optional) This description will be displayed on the graph edit page of any graph using this template
+			if specified.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Field Type
+		</td>
+		<td class="fieldDescription">
+			You must choose the field that you are going to associate with one or more graph items.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Associated Graph Items
+		</td>
+		<td class="fieldDescription">
+			Choose one or more graph items to associate with the field selected for "Field Type". When the
+			user specifies a value for the field, it will be applied to all of the items you select here.
+		</td>
+	</tr>
+</table>
+
+<p class="textParagraphHeader">Applying Graph Templates to Graphs</p>
+
+<p>Applying a graph template to a graph is a very simple process. The first thing you must do is select the graph you want
+to apply the template to under "Graph Management". Under the "Graph Template Selection" box, select the graph template
+that you want to apply to the graph and click "Save". If this is a new graph or the graph and graph template contains an
+equal number of graph items, the graph template will be automatically applied. If number of graph items varies from the
+graph to the target graph template, you will be propmted with a warning that your graph will be changed.</p>
+
+<p>Once the template is applied to the graph, you will notice that you can only change values for the fields that you
+checked <em>Use Per-Graph Value</em> for. You will also notice a new box, called "Graph Item Inputs". This is where you
+can specify values for the graph items inputs that you defined in the graph template. The values specified here will be 
+applied to each graph item tied to the graph item input.</p>
+
+<p><strong>Now any time a change is made to the graph template, it will be automatically propagated to the graphs 
+attached to it.</strong></p>
+
+</body>
+</html>

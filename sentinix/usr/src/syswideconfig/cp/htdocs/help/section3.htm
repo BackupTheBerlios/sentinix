@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+
+<html>
+<head>
+	<title>Cacti Manual</title>
+	<link href="main.css" rel="stylesheet">
+</style>
+</head>
+
+<body>
+
+<table bgcolor="#d5d5d5" width="100%">
+	<tr>
+		<td align="left">
+			<strong><a href="section2.htm">&lt;&lt; Previous Section</a></strong>
+		</td>
+		<td align="center">
+			Making Graphs the Easy Way: Polling Hosts <strong>[<a href="index.htm">home</a>]</strong>
+		</td>
+		<td align="right">
+			<strong><a href="section4.htm">Next Section &gt;&gt;</a></strong>
+		</td>
+	</tr>
+</table>
+
+<br>
+
+<span class="textPageHeader">Making Graphs the Easy Way: Polling Hosts</span>
+
+<p>Polling hosts are organizationally at the center of Cacti and provide a way to store information about hosts that
+you are graphing. Not only does Cacti allow you to keep your graphs organized using hosts, but provides an interface to
+create new graphs through each host. Remember "SNMP Interfaces" from Cacti 0.6.x? Polling hosts is where this functionality
+has moved plus so much more. To create a new host in Cacti, select "Polling Hosts" on the menu under the "Data Gathering"
+heading. Click "Add" to the right, and you will be presented with some fields:</p>
+
+<table class="field" cellspacing="0">
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Description
+		</td>
+		<td class="fieldDescription">
+			This is the field that you will typically use to identify this host within Cacti. It is recommended
+			that you keep this short for formatting reasons, but something identifiable as well. The hostname
+			usually works well here, if the host has one.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Host Template
+		</td>
+		<td class="fieldDescription">
+			If you want to associate this host with a <a href="section4_3.htm">host template</a>, select one here. Host templates will not
+			enforce field values like graph or data templates will. Instead they will provide a list of graph
+			templates and data queries that belong to this host type upon applying the template.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Hostname
+		</td>
+		<td class="fieldDescription">
+			If you want to enter the complete DNS hostname for this host, enter it here. Currently this field is
+			not used for data gathering, so you can really enter anything here that you wish.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Management IP
+		</td>
+		<td class="fieldDescription">
+			You must enter the IP address of the host here. The value of this field determines how data is gathered
+			from this host where necessary.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			SNMP Community
+		</td>
+		<td class="fieldDescription">
+			If this host has SNMP capabilities, enter the read only community string here.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			SNMP Username
+		</td>
+		<td class="fieldDescription">
+			If this host has SNMP version 3 capabilities, enter the SNMP username for the host here.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			SNMP Password
+		</td>
+		<td class="fieldDescription">
+			If this host has SNMP version 3 capabilities, enter the SNMP password for the host here.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			SNMP Version
+		</td>
+		<td class="fieldDescription">
+			Choose the version to use when retrieving SNMP information from this host. If you are using 64-bit
+			counters, you must select version 2. If you are relying on the SNMP username/password fields, you must
+			select version 3.
+		</td>
+	</tr>
+</table>
+
+<p>When you are finished filling in these fields for your host, click the "Create" button. You will will be redirected back to
+the host edit page, where you will notice a few changes. First of all, one additional field appears.</p>
+
+<table class="field" cellspacing="0">
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Associated Data Query
+		</td>
+		<td class="fieldDescription">
+			You can choose to associate a data query with the host by selecting it from the list and clicking the "Add"
+			button. Once you click the "Add" button, the query will be executed against this host, and the results
+			will be displayed in a new box after being redirected back to this page.
+		</td>
+	</tr>
+</table>
+
+<p>There will also be a few new boxes depending on if you selected a host template on the initial create screen.</p> 
+
+<p class="textParagraphHeader">[box] Create Graphs + Data Sources</p>
+
+<p>This box enables you to create new graphs from a graph template based on this host. You will see a dropdown with a list of
+available graph templates to choose from. If you want to create a graph that you select in this dropdown, you must make sure
+to check the checkbox to the right of it. If the host is associated with a host template, you may see additional graph templates
+already listed in this box. This enables you to easily create graphs that are based on this host type.</p>
+
+<p class="textParagraphHeader">[box] Data Query [...]</p>
+
+<p>For each data query that is associated with the host, you will see a box containing the results of that query. You will notice
+a checkbox to the right of each row that is returned from the query, enabling you to create graphs. Also make sure to pay attention
+to the dropdown below each data query box. Since a data query can potentially output many different things, you will sometimes
+have to choose what you want to graph from this dropdown.
+
+<p class="textParagraphHeader">Creating Graphs Using Hosts</p>
+
+<p>To create new graphs from the polling hosts screen, select each relevant checkbox in the "Create Graphs + Data Sources" or 
+"Data Query" boxes. You can also use the "check all" checkbox to the right of the header in each of these boxes. When you are
+finished checking boxes, or marking graphs for creation, click the "Save" button.</p>
+
+<p>You will be redirected to a screen that is used to gather any needed information from the user before creating the
+graphs. If you selected any graphs from the "Create Graphs + Data Sources" box, you will see a box with each field that
+has a suggested value. These fields will of course already be filled in with the suggested value, and since it is only
+"suggested", the user will have the opportunity to change it here.</p>
+
+<p>You will also see one box for each data query you are creating graphs from. You will be presented with a list of input 
+fields from that data query, and asked to choose which one you want to base the query on. You typically want to choose 
+something here that does not change often. You will also be asked for the values of any fields that Cacti cannot derive 
+the values of.</p>
+
+<p>When you are finished with all of the fields on this page, click the "Create" button at the bottom. All of your selected
+graphs will be created, and you will be redirected back to the main polling hosts page.</p>
+
+</body>
+</html>

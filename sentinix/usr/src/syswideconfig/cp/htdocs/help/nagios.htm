@@ -1,0 +1,1815 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Template-Based Object Data Configuration File Options</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<STYLE type=text/css>.PageTitle {
+	FONT-SIZE: large; FONT-FAMILY: arial,serif
+}
+.Default {
+	FONT-SIZE: small; FONT-FAMILY: arial,serif
+}
+.SectionHeader {
+	FONT-WEIGHT: bold; FONT-SIZE: medium; FONT-FAMILY: arial,serif; BACKGROUND-COLOR: #cbcbcb
+}
+.SectionTitle {
+	FONT-WEIGHT: bold; FONT-SIZE: small; FONT-FAMILY: arial,serif; TEXT-DECORATION: underline
+}
+.Definition {
+	FONT-SIZE: x-small; COLOR: #3333cc; FONT-FAMILY: arial,serif; TEXT-ALIGN: left
+}
+.Required {
+	FONT-SIZE: x-small; COLOR: red; FONT-FAMILY: arial,serif; TEXT-ALIGN: left
+}
+.Optional {
+	FONT-SIZE: x-small; FONT-FAMILY: arial,serif; TEXT-ALIGN: left
+}
+.RetentionNotes {
+	FONT-WEIGHT: bold; FONT-SIZE: medium; COLOR: red; FONT-FAMILY: arial,serif; TEXT-ALIGN: left
+}
+</STYLE>
+
+<META content="MSHTML 6.00.2600.0" name=GENERATOR></HEAD>
+<BODY class=Default text=black bgColor=#ffffff>
+<P>
+<P><STRONG><U>Index</U></STRONG> </P>
+<P><A href="nagios.htm#host">Host 
+definitions</A><BR><A 
+href="nagios.htm#service">Service 
+definitions</A><BR><A 
+href="nagios.htm#contact">Contact 
+definitions</A><BR><A 
+href="nagios.htm#hostgroup">Host 
+group definitions</A><BR><A 
+href="nagios.htm#contactgroup">Contact 
+group definitions</A><BR><A 
+href="nagios.htm#timeperiod">Time 
+period definitions</A><BR><A 
+href="nagios.htm#command">Command 
+definitions</A><BR><A 
+href="nagios.htm#servicedependency">Service 
+dependency definitions</A><BR><A 
+href="nagios.htm#serviceescalation">Service 
+escalation definitions</A><BR><A 
+href="nagios.htm#hostdependency">Host 
+dependency definitions</A><BR><A 
+href="nagios.htm#hostescalation">Host 
+escalation definitions</A><BR><A 
+href="nagios.htm#hostgroupescalation">Hostgroup 
+escalation definitions</A><BR></P>
+<P><A name=host></A>
+<TABLE width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD class=SectionHeader>Host Definition</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Description:</DIV>
+<P></P>
+<P>A host definition is used to define a physical server, workstation, device, 
+etc. that resides on your network. </P>
+<P>
+<DIV class=SectionTitle>Definition Format:</DIV>
+<P></P>
+<P class=SectionBody>Note: Directives in red are required, while those in black 
+are optional. </P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD class=Definition colSpan=3>define host{</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>host_name</TD>
+    <TD class=Required><I>host_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>alias</TD>
+    <TD class=Required><I>alias</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>address</TD>
+    <TD class=Required><I>address</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>parents</TD>
+    <TD class=Optional><I>host_names</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>check_command</TD>
+    <TD class=Optional><I>command_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>max_check_attempts</TD>
+    <TD class=Required>#</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>checks_enabled</TD>
+    <TD class=Optional>[0/1]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>event_handler</TD>
+    <TD class=Optional><I>command_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>event_handler_enabled</TD>
+    <TD class=Optional>[0/1]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>low_flap_threshold</TD>
+    <TD class=Optional>#</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>high_flap_threshold</TD>
+    <TD class=Optional>#</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>flap_detection_enabled</TD>
+    <TD class=Optional>[0/1]</TD></TR><!--<tr><td></td><td class="Optional">failure_prediction_enabled</td><td class="Optional">[0/1]</td></tr>//-->
+  <TR>
+    <TD></TD>
+    <TD class=Optional>process_perf_data</TD>
+    <TD class=Optional>[0/1]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>retain_status_information</TD>
+    <TD class=Optional>[0/1]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>retain_nonstatus_information</TD>
+    <TD class=Optional>[0/1]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>notification_interval</TD>
+    <TD class=Required>#</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>notification_period</TD>
+    <TD class=Required><I>timeperiod_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>notification_options</TD>
+    <TD class=Required>[d,u,r]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>notifications_enabled</TD>
+    <TD class=Optional>[0/1]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>stalking_options</TD>
+    <TD class=Optional>[o,d,u]</TD></TR>
+  <TR>
+    <TD>&nbsp;&nbsp;&nbsp;</TD>
+    <TD class=Definition colSpan=2>}</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Example Definition:</DIV>
+<P></P>
+<P class=SectionBody><PRE>define host{
+	host_name			bogus-router
+	alias				Bogus Router #1
+	address				192.168.1.254
+	parents				server-backbone
+	check_command			check-host-alive
+	max_check_attempts		5
+	process_perf_data		0
+	retain_nonstatus_information	0
+	notification_interval		30
+	notification_period		24x7
+	notification_options		d,u,r
+	}
+</PRE>
+<P></P>
+<P>
+<DIV class=SectionTitle>Directive Descriptions:</DIV>
+<P></P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top><STRONG>host_name</STRONG>:</TD>
+    <TD>This directive is used to define a short name used to identify the 
+      host. It is used in host group and service definitions to reference this 
+      particular host. Hosts can have multiple services (which are monitored) 
+      associated with them. When used properly, the $HOSTNAME$ <A 
+      href="http://nagios.sourceforge.net/docs/1_0/macros.html">macro</A> will 
+      contain this short name. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>alias</STRONG>:</TD>
+    <TD>This directive is used to define a longer name or description used to 
+      identify the host. It is provided in order to allow you to more easily 
+      identify a particular host. When used properly, the $HOSTALIAS$ <A 
+      href="http://nagios.sourceforge.net/docs/1_0/macros.html">macro</A> will 
+      contain this alias/description. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>address</STRONG>:</TD>
+    <TD>This directive is used to define the address of the host. Normally, 
+      this is an IP address, although it could really be anything you want (so 
+      long as it can be used to check the status of the host). You can use a 
+      FQDN to identify the host instead of an IP address, but if DNS services 
+      are not availble this could cause problems. When used properly, the 
+      $HOSTADDRESS$ <A 
+      href="http://nagios.sourceforge.net/docs/1_0/macros.html">macro</A> will 
+      contain this address. <B>Note:</B> If you do not specify an address 
+      directive in a host definition, the name of the host will be used as its 
+      address. A word of caution about doing this, however - if DNS fails, most 
+      of your service checks will fail because the plugins will be unable to 
+      resolve the host name. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>parents</STRONG>:</TD>
+    <TD>This directive is used to define a comma-delimited list of short names 
+      of the "parent" hosts for this particular host. Parent hosts are typically 
+      routers, switches, firewalls, etc. that lie between the monitoring host 
+      and a remote hosts. A router, switch, etc. which is closest to the remote 
+      host is considered to be that host's "parent". Read the "Determining 
+      Status and Reachability of Network Hosts" document located <A 
+      href="http://nagios.sourceforge.net/docs/1_0/networkreachability.html">here</A> 
+      for more information. If this host is on the same network segment as the 
+      host doing the monitoring (without any intermediate routers, etc.) the 
+      host is considered to be on the local network and will not have a parent 
+      host. Leave this value blank if the host does not have a parent host (i.e. 
+      it is on the same segment as the Nagios host). The order in which you 
+      specify parent hosts has no effect on how things are monitored. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>check_command</STRONG>:</TD>
+    <TD>This directive is used to specify the <I>short name</I> of the <A 
+      href="nagios.htm#command">command</A> 
+      that should be used to check if the host is up or down. Typically, this 
+      command would try and ping the host to see if it is "alive". The command 
+      must return a status of OK (0) or Nagios will assume the host is down. If 
+      you leave this argument blank, the host will <I>not</I> be checked - 
+      Nagios will always assume the host is up. This is useful if you are 
+      monitoring printers or other devices that are frequently turned off. The 
+      maximum amount of time that the notification command can run is controlled 
+      by the <A 
+      href="http://nagios.sourceforge.net/docs/1_0/configmain.html#host_check_timeout">host_check_timeout</A> 
+      option. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>max_check_attempts</STRONG>:</TD>
+    <TD>This directive is used to define the number of times that Nagios will 
+      retry the host check command if it returns any state other than an OK 
+      state. Setting this value to 1 will cause Nagios to generate an alert 
+      without retrying the host check again. Note: If you do not want to check 
+      the status of the host, you must still set this to a minimum value of 1. 
+      To bypass the host check, just leave the <I>check_command</I> option 
+      blank. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>checks_enabled <A class=RetentionNotes 
+      href="nagios.htm#retention_notes">*</A></STRONG>:</TD>
+    <TD>This directive is used to determine whether or not checks of this host 
+      are enabled. Values: 0 = disable host checks, 1 = enable host checks. 
+  </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>event_handler</STRONG>:</TD>
+    <TD>This directive is used to specify the <I>short name</I> of the <A 
+      href="nagios.htm#command">command</A> 
+      that should be run whenever a change in the state of the host is detected 
+      (i.e. whenever it goes down or recovers). Read the documentation on <A 
+      href="http://nagios.sourceforge.net/docs/1_0/eventhandlers.html">event 
+      handlers</A> for a more detailed explanation of how to write scripts for 
+      handling events. The maximum amount of time that the event handler command 
+      can run is controlled by the <A 
+      href="http://nagios.sourceforge.net/docs/1_0/configmain.html#event_handler_timeout">event_handler_timeout</A> 
+      option. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>event_handler_enabled <A class=RetentionNotes 
+      href="nagios.htm#retention_notes">*</A></STRONG>:</TD>
+    <TD>This directive is used to determine whether or not the event handler 
+      for this host is enabled. Values: 0 = disable host event handler, 1 = 
+      enable host event handler. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>low_flap_threshold</STRONG>:</TD>
+    <TD>This directive is used to specify the low state change threshold used 
+      in flap detection for this host. More information on flap detection can be 
+      found <A 
+      href="http://nagios.sourceforge.net/docs/1_0/flapping.html">here</A>. If 
+      you set this directive to a value of 0, the program-wide value specified 
+      by the <A 
+      href="http://nagios.sourceforge.net/docs/1_0/configmain.html#low_host_flap_threshold">low_host_flap_threshold</A> 
+      directive will be used. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>high_flap_threshold</STRONG>:</TD>
+    <TD>This directive is used to specify the high state change threshold used 
+      in flap detection for this host. More information on flap detection can be 
+      found <A 
+      href="http://nagios.sourceforge.net/docs/1_0/flapping.html">here</A>. If 
+      you set this directive to a value of 0, the program-wide value specified 
+      by the <A 
+      href="http://nagios.sourceforge.net/docs/1_0/configmain.html#high_host_flap_threshold">high_host_flap_threshold</A> 
+      directive will be used. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>flap_detection_enabled <A class=RetentionNotes 
+      href="nagios.htm#retention_notes">*</A></STRONG>:</TD>
+    <TD>This directive is used to determine whether or not flap detection is 
+      enabled for this host. More information on flap detection can be found <A 
+      href="http://nagios.sourceforge.net/docs/1_0/flapping.html">here</A>. 
+      Values: 0 = disable host flap detection, 1 = enable host flap detection. 
+    </TD></TR><!--
+<tr>
+<td valign="top"><strong>failure_prediction_enabled</strong>:</td>
+<td>
+This directive is used to determine whether or not failure prediction is enabled for this host.  Values: 0 = disable host failure prediction, 1 = enable host failure prediction.
+</td>
+</tr>
+//-->
+  <TR>
+    <TD vAlign=top><STRONG>process_perf_data <A class=RetentionNotes 
+      href="nagios.htm#retention_notes">*</A></STRONG>:</TD>
+    <TD>This directive is used to determine whether or not the processing of 
+      performance data is enabled for this host. Values: 0 = disable performance 
+      data processing, 1 = enable performance data processing. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>retain_status_information</STRONG>:</TD>
+    <TD>This directive is used to determine whether or not status-related 
+      information about the host is retained across program restarts. This is 
+      only useful if you have enabled state retention using the <A 
+      href="http://nagios.sourceforge.net/docs/1_0/configmain.html#retain_state_information">retain_state_information</A> 
+      directive. Value: 0 = disable status information retention, 1 = enable 
+      status information retention. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>retain_nonstatus_information</STRONG>:</TD>
+    <TD>This directive is used to determine whether or not non-status 
+      information about the host is retained across program restarts. This is 
+      only useful if you have enabled state retention using the <A 
+      href="http://nagios.sourceforge.net/docs/1_0/configmain.html#retain_state_information">retain_state_information</A> 
+      directive. Value: 0 = disable non-status information retention, 1 = enable 
+      non-status information retention. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>notification_interval</STRONG>:</TD>
+    <TD>This directive is used to define the number of "time units" to wait 
+      before re-notifying a contact that this server is <I>still</I> down or 
+      unreachable. Unless you've changed the <A 
+      href="http://nagios.sourceforge.net/docs/1_0/configmain.html#interval_length">interval_length</A> 
+      directive from the default value of 60, this number will mean minutes. If 
+      you set this value to 0, Nagios will <I>not</I> re-notify contacts about 
+      problems for this host - only one problem notification will be sent out. 
+    </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>notification_period</STRONG>:</TD>
+    <TD>This directive is used to specify the short name of the <A 
+      href="nagios.htm#timeperiod">time 
+      period</A> during which notifications of events for this host can be sent 
+      out to contacts. If a host goes down, becomes unreachable, or recoveries 
+      during a time which is not covered by the time period, no notifications 
+      will be sent out. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>notifications_options</STRONG>:</TD>
+    <TD>This directive is used to determine when notifications for the host 
+      should be sent out. Valid options are a combination of one or more of the 
+      following: <B>d</B> = send notifications on a DOWN state, <B>u</B> = send 
+      notifications on an UNREACHABLE state, and <B>r</B> = send notifications 
+      on recoveries (OK state). If you specify <B>n</B> (none) as an option, no 
+      host notifications will be sent out. Example: If you specify <B>d,r</B> in 
+      this field, notifications will only be sent out when the host goes DOWN 
+      and when it recovers from a DOWN state. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>notifications_enabled <A class=RetentionNotes 
+      href="nagios.htm#retention_notes">*</A></STRONG>:</TD>
+    <TD>This directive is used to determine whether or not notifications for 
+      this host are enabled. Values: 0 = disable host notifications, 1 = enable 
+      host notifications. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>stalking_options</STRONG>:</TD>
+    <TD>This directive determines which host states "stalking" is enabled for. 
+      Valid options are a combination of one or more of the following: <B>o</B> 
+      = stalk on UP states, <B>d</B> = stalk on DOWN states, and <B>u</B> = 
+      stalk on UNREACHABLE states. More information on state stalking can be 
+      found <A 
+      href="http://nagios.sourceforge.net/docs/1_0/stalking.html">here</A>. 
+  </TD></TR></TBODY></TABLE></P>
+<P><A name=service></A>
+<TABLE width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD class=SectionHeader>Service Definition</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Description:</DIV>
+<P></P>
+<P>A service definition is used to identify a "service" that runs on a host. The 
+term "service" is used very loosely. It can mean an actual service that runs on 
+the host (POP, SMTP, HTTP, etc.) or some other type of metric associated with 
+the host (response to a ping, number of logged in users, free disk space, etc.). 
+The different arguments to a service definition are outlined below. </P>
+<P>
+<DIV class=SectionTitle>Definition Format:</DIV>
+<P></P>
+<P class=SectionBody>Note: Directives in red are required, while those in black 
+are optional. </P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD class=Definition colSpan=3>define service{</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>host_name</TD>
+    <TD class=Required><I>host_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>service_description</TD>
+    <TD class=Required><I>service_description</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>is_volatile</TD>
+    <TD class=Optional>[0/1]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>check_command</TD>
+    <TD class=Required><I>command_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>max_check_attempts</TD>
+    <TD class=Required>#</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>normal_check_interval</TD>
+    <TD class=Required>#</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>retry_check_interval</TD>
+    <TD class=Required>#</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>active_checks_enabled</TD>
+    <TD class=Optional>[0/1]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>passive_checks_enabled</TD>
+    <TD class=Optional>[0/1]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>check_period</TD>
+    <TD class=Required><I>timeperiod_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>parallelize_check</TD>
+    <TD class=Optional>[0/1]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>obsess_over_service</TD>
+    <TD class=Optional>[0/1]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>check_freshness</TD>
+    <TD class=Optional>[0/1]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>freshness_threshold</TD>
+    <TD class=Optional>#</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>event_handler</TD>
+    <TD class=Optional><I>command_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>event_handler_enabled</TD>
+    <TD class=Optional>[0/1]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>low_flap_threshold</TD>
+    <TD class=Optional>#</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>high_flap_threshold</TD>
+    <TD class=Optional>#</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>flap_detection_enabled</TD>
+    <TD class=Optional>[0/1]</TD></TR><!--<tr><td></td><td class="Optional">failure_prediction_enabled</td><td class="Optional">[0/1]</td></tr>//-->
+  <TR>
+    <TD></TD>
+    <TD class=Optional>process_perf_data</TD>
+    <TD class=Optional>[0/1]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>retain_status_information</TD>
+    <TD class=Optional>[0/1]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>retain_nonstatus_information</TD>
+    <TD class=Optional>[0/1]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>notification_interval</TD>
+    <TD class=Required>#</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>notification_period</TD>
+    <TD class=Required><I>timeperiod_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>notification_options</TD>
+    <TD class=Required>[w,u,c,r]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>notifications_enabled</TD>
+    <TD class=Optional>[0/1]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>contact_groups</TD>
+    <TD class=Required><I>contact_groups</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>stalking_options</TD>
+    <TD class=Optional>[o,w,u,c]</TD></TR>
+  <TR>
+    <TD>&nbsp;&nbsp;&nbsp;</TD>
+    <TD class=Definition colSpan=2>}</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Example Definition:</DIV>
+<P></P>
+<P class=SectionBody><PRE>define service{
+	host_name		linux-server
+	service_description	check-disk-sda1
+	check_command		check-disk!/dev/sda1
+	max_check_attempts	5
+	normal_check_interval	5
+	retry_check_interval	3
+	check_period		24x7
+	notification_interval	30
+	notification_period	24x7
+	notification_options	w,c,r
+	contact_groups		linux-admins
+	}
+</PRE>
+<P></P>
+<P>
+<DIV class=SectionTitle>Directive Descriptions:</DIV>
+<P></P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top><STRONG>host_name</STRONG>:</TD>
+    <TD>This directive is used to specify the <I>short name</I> of the <A 
+      href="nagios.htm#host">host</A> 
+      that the service "runs" on or is associated with. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>service_description;</STRONG>:</TD>
+    <TD>This directive is used to define the description of the service, which 
+      may contain spaces, dashes, and colons (semicolons, apostrophes, and 
+      quotation marks should be avoided). No two services associated with the 
+      same host can have the same description. Services are uniquely identified 
+      with their <I>host_name</I> and <I>service_description</I> directives. 
+  </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>is_volatile</STRONG>:</TD>
+    <TD>This directive is used to denote whether the service is "volatile". 
+      Services are normally <I>not</I> volatile. More information on volatile 
+      service and how they differ from normal services can be found <A 
+      href="http://nagios.sourceforge.net/docs/1_0/volatileservices.html">here</A>. 
+      Value: 0 = service is not volatile, 1 = service is volatile. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>check_command</STRONG>:</TD>
+    <TD>
+      <P>This is the command that Nagios will run in order to check the status 
+      of the service. There are three command formats that can be used: </P>
+      <P>
+      <TABLE border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=top><STRONG>1. "Vanilla" Command:</STRONG></TD>
+          <TD>The command name is just the name of <A 
+            href="nagios.htm#command">command</A> 
+            that was previously defined. </TD></TR>
+        <TR>
+          <TD vAlign=top><STRONG>2. Command w/ Arguments:</STRONG></TD>
+          <TD>This is basically the same as the "vanilla" command style, but 
+            with command options separated by a <B>!</B> character. The example 
+            above uses this type of definition. Command arguments are placed 
+            into $ARGx$ <A 
+            href="http://nagios.sourceforge.net/docs/1_0/macros.html">macros</A> 
+            before the command is executed. In the example above, the $ARG1$ 
+            macro would resolve to "/dev/sda1" (without quotes). </TD></TR>
+        <TR>
+          <TD vAlign=top><STRONG>3. "Raw" Command Line:</STRONG></TD>
+          <TD>You may optionally specify an actual command line to be 
+            executed. To do so you must enclose the entire command line in 
+            double quotes. The outer double quotes will be stripped off before 
+            the command is actually executed. No macros are processed inside of 
+            raw command lines. </TD></TR></TBODY></TABLE>The maximum amount of time 
+      that the service check command can run is controlled by the <A 
+      href="http://nagios.sourceforge.net/docs/1_0/configmain.html#service_check_timeout">service_check_timeout</A> 
+      option.</P></TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>max_check_attempts</STRONG>:</TD>
+    <TD>This directive is used to define the number of times that Nagios will 
+      retry the service check command if it returns any state other than an OK 
+      state. Setting this value to 1 will cause Nagios to generate an alert 
+      without retrying the service check again. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>normal_check_interval</STRONG>:</TD>
+    <TD>This directive is used to define the number of "time units" to wait 
+      before scheduling the next "regular" check of the service. "Regular" 
+      checks are those that occur when the service is in an OK state or when the 
+      service is in a non-OK state, but has already been rechecked 
+      <B>max_attempts</B> number of times. Unless you've changed the <A 
+      href="http://nagios.sourceforge.net/docs/1_0/configmain.html#interval_length">interval_length</A> 
+      directive from the default value of 60, this number will mean minutes. 
+      More information on this value can be found in the <A 
+      href="http://nagios.sourceforge.net/docs/1_0/checkscheduling.html">check 
+      scheduling</A> documentation. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>retry_check_interval</STRONG>:</TD>
+    <TD>This directive is used to define the number of "time units" to wait 
+      before scheduling a re-check of the service. Services are rescheduled at 
+      the retry interval when the have changed to a non-OK state. Once the 
+      service has been retried <B>max_attempts</B> times without a change in its 
+      status, it will revert to being scheduled at its "normal" rate as defined 
+      by the <B>check_interval</B> value. Unless you've changed the <A 
+      href="http://nagios.sourceforge.net/docs/1_0/configmain.html#interval_length">interval_length</A> 
+      directive from the default value of 60, this number will mean minutes. 
+      More information on this value can be found in the <A 
+      href="http://nagios.sourceforge.net/docs/1_0/checkscheduling.html">check 
+      scheduling</A> documentation. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>active_checks_enabled <A class=RetentionNotes 
+      href="nagios.htm#retention_notes">*</A></STRONG>:</TD>
+    <TD>This directive is used to determine whether or not active checks of 
+      this service are enabled. Values: 0 = disable active service checks, 1 = 
+      enable active service checks. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>passive_checks_enabled <A class=RetentionNotes 
+      href="nagios.htm#retention_notes">*</A></STRONG>:</TD>
+    <TD>This directive is used to determine whether or not passive checks of 
+      this service are enabled. Values: 0 = disable passive service checks, 1 = 
+      enable passive service checks. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>check_period</STRONG>:</TD>
+    <TD>This directive is used to specify the short name of the <A 
+      href="nagios.htm#timeperiod">time 
+      period</A> during which active checks of this service can be made. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>parallelize_check</STRONG>:</TD>
+    <TD>This directive is used to determine whether or not the service check 
+      can be parallelized. By default, all service checks are parallelized. 
+      Disabling parallel checks of services can result in serious performance 
+      problems. More information on service check parallelization can be found 
+      <A 
+      href="http://nagios.sourceforge.net/docs/1_0/parallelization.html">here</A>. 
+      Values: 0 = service check cannot be parallelized (use with caution!), 1 = 
+      service check can be parallelized. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>obsess_over_service <A class=RetentionNotes 
+      href="nagios.htm#retention_notes">*</A></STRONG>:</TD>
+    <TD></TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>check_freshness <A class=RetentionNotes 
+      href="nagios.htm#retention_notes">*</A></STRONG>:</TD>
+    <TD>This directive is used to determine whether or not freshness checks 
+      are enabled for this service. Values: 0 = disable freshness checks, 1 = 
+      enable freshness checks. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>freshness_threshold</STRONG>:</TD>
+    <TD>This directive is used to specify the freshness threshold (in seconds) 
+      for this service. If you set this directive to a value of 0, Nagios will 
+      determine a freshness threshold to use automatically. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>event_handler_enabled</STRONG>:</TD>
+    <TD>This directive is used to determine whether or not the event handler 
+      for this service is enabled. Values: 0 = disable service event handler, 1 
+      = enable service event handler. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>low_flap_threshold</STRONG>:</TD>
+    <TD>This directive is used to specify the low state change threshold used 
+      in flap detection for this service. More information on flap detection can 
+      be found <A 
+      href="http://nagios.sourceforge.net/docs/1_0/flapping.html">here</A>. If 
+      you set this directive to a value of 0, the program-wide value specified 
+      by the <A 
+      href="http://nagios.sourceforge.net/docs/1_0/configmain.html#low_service_flap_threshold">low_service_flap_threshold</A> 
+      directive will be used. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>high_flap_threshold</STRONG>:</TD>
+    <TD>This directive is used to specify the high state change threshold used 
+      in flap detection for this service. More information on flap detection can 
+      be found <A 
+      href="http://nagios.sourceforge.net/docs/1_0/flapping.html">here</A>. If 
+      you set this directive to a value of 0, the program-wide value specified 
+      by the <A 
+      href="http://nagios.sourceforge.net/docs/1_0/configmain.html#high_service_flap_threshold">high_service_flap_threshold</A> 
+      directive will be used. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>flap_detection_enabled <A class=RetentionNotes 
+      href="nagios.htm#retention_notes">*</A></STRONG>:</TD>
+    <TD>This directive is used to determine whether or not flap detection is 
+      enabled for this service. More information on flap detection can be found 
+      <A href="http://nagios.sourceforge.net/docs/1_0/flapping.html">here</A>. 
+      Values: 0 = disable service flap detection, 1 = enable service flap 
+      detection. </TD></TR><!--
+<tr>
+<td valign="top"><strong>failure_prediction_enabled</strong>:</td>
+<td>
+This directive is used to determine whether or not failure prediction is enabled for this service.  Values: 0 = disable service failure prediction, 1 = enable service failure prediction.
+</td>
+</tr>
+//-->
+  <TR>
+    <TD vAlign=top><STRONG>process_perf_data <A class=RetentionNotes 
+      href="nagios.htm#retention_notes">*</A></STRONG>:</TD>
+    <TD>This directive is used to determine whether or not the processing of 
+      performance data is enabled for this service. Values: 0 = disable 
+      performance data processing, 1 = enable performance data processing. 
+</TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>retain_status_information</STRONG>:</TD>
+    <TD>This directive is used to determine whether or not status-related 
+      information about the service is retained across program restarts. This is 
+      only useful if you have enabled state retention using the <A 
+      href="http://nagios.sourceforge.net/docs/1_0/configmain.html#retain_state_information">retain_state_information</A> 
+      directive. Value: 0 = disable status information retention, 1 = enable 
+      status information retention. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>retain_nonstatus_information</STRONG>:</TD>
+    <TD>This directive is used to determine whether or not non-status 
+      information about the service is retained across program restarts. This is 
+      only useful if you have enabled state retention using the <A 
+      href="http://nagios.sourceforge.net/docs/1_0/configmain.html#retain_state_information">retain_state_information</A> 
+      directive. Value: 0 = disable non-status information retention, 1 = enable 
+      non-status information retention. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>notification_interval</STRONG>:</TD>
+    <TD>This directive is used to define the number of "time units" to wait 
+      before re-notifying a contact that this service is <I>still</I> in a 
+      non-OK state. Unless you've changed the <A 
+      href="http://nagios.sourceforge.net/docs/1_0/configmain.html#interval_length">interval_length</A> 
+      directive from the default value of 60, this number will mean minutes. If 
+      you set this value to 0, Nagios will <I>not</I> re-notify contacts about 
+      problems for this service - only one problem notification will be sent 
+      out. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>notification_period</STRONG>:</TD>
+    <TD>This directive is used to specify the short name of the <A 
+      href="nagios.htm#timeperiod">time 
+      period</A> during which notifications of events for this service can be 
+      sent out to contacts. No service notifications will be sent out during 
+      times which is not covered by the time period. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>notification_options</STRONG>:</TD>
+    <TD>This directive is used to determine when notifications for the service 
+      should be sent out. Valid options are a combination of one or more of the 
+      following: <B>w</B> = send notifications on a WARNING state, <B>u</B> = 
+      send notifications on an UNKNOWN state, <B>c</B> = send notifications on a 
+      CRITICAL state, and <B>r</B> = send notifications on recoveries (OK 
+      state). If you specify <B>n</B> (none) as an option, no service 
+      notifications will be sent out. Example: If you specify <B>w,r</B> in this 
+      field, notifications will only be sent out when the service goes into a 
+      WARNING state and when it recovers from a WARNING state. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>notifications_enabled <A class=RetentionNotes 
+      href="nagios.htm#retention_notes">*</A></STRONG>:</TD>
+    <TD>This directive is used to determine whether or not notifications for 
+      this service are enabled. Values: 0 = disable service notifications, 1 = 
+      enable service notifications. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>contact_groups</STRONG>:</TD>
+    <TD>This is a list of the <I>short names</I> of the <A 
+      href="nagios.htm#contactgroup">contact 
+      groups</A> that should be notified whenever there are problems (or 
+      recoveries) with this service. Multiple contact groups should be separated 
+      by commas. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>stalking_options</STRONG>:</TD>
+    <TD>This directive determines which service states "stalking" is enabled 
+      for. Valid options are a combination of one or more of the following: 
+      <B>o</B> = stalk on OK states, <B>w</B> = stalk on WARNING states, 
+      <B>u</B> = stalk on UNKNOWN states, and <B>c</B> = stalk on CRITICAL 
+      states. More information on state stalking can be found <A 
+      href="http://nagios.sourceforge.net/docs/1_0/stalking.html">here</A>. 
+  </TD></TR></TBODY></TABLE></P>
+<P><A name=contact></A>
+<TABLE width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD class=SectionHeader>Contact Definition</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Description:</DIV>
+<P></P>
+<P>A contact definition is used to identify someone who should be contacted in 
+the event of a problem on your network. The different arguments to a contact 
+definition are described below. </P>
+<P>
+<DIV class=SectionTitle>Definition Format:</DIV>
+<P></P>
+<P class=SectionBody>Note: Directives in red are required, while those in black 
+are optional. </P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD class=Definition colSpan=3>define contact{</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>contact_name</TD>
+    <TD class=Required><I>contact_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>alias</TD>
+    <TD class=Required><I>alias</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>host_notification_period</TD>
+    <TD class=Required><I>timeperiod_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>service_notification_period</TD>
+    <TD class=Required><I>timeperiod_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>host_notification_options</TD>
+    <TD class=Required>[d,u,r,n]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>service_notification_options</TD>
+    <TD class=Required>[w,u,c,r,n]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>host_notification_commands</TD>
+    <TD class=Optional><I>command_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>service_notification_commands</TD>
+    <TD class=Optional><I>command_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>email</TD>
+    <TD class=Optional><I>email_address</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>pager</TD>
+    <TD class=Optional><I>pager_number or pager_email_gateway</I></TD></TR>
+  <TR>
+    <TD>&nbsp;&nbsp;&nbsp;</TD>
+    <TD class=Definition colSpan=2>}</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Example Definition:</DIV>
+<P></P>
+<P class=SectionBody><PRE>define contact{
+	contact_name                    jdoe
+	alias                           John Doe
+	service_notification_period     24x7
+	host_notification_period        24x7
+	service_notification_options    w,u,c,r
+	host_notification_options       d,u,r
+	service_notification_commands   notify-by-email
+	host_notification_commands      host-notify-by-email
+	email				jdoe@localhost.localdomain
+	pager				555-5555@pagergateway.localhost.localdomain
+	}
+</PRE>
+<P></P>
+<P>
+<DIV class=SectionTitle>Directive Descriptions:</DIV>
+<P></P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top><STRONG>contact_name</STRONG>:</TD>
+    <TD>This directive is used to define a short name used to identify the 
+      contact. It is referenced in <A 
+      href="nagios.htm#contactgroup">contact 
+      group</A> definitions. Under the right circumstances, the $CONTACTNAME$ <A 
+      href="http://nagios.sourceforge.net/docs/1_0/macros.html">macro</A> will 
+      contain this value. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>alias</STRONG>:</TD>
+    <TD>This directive is used to define a longer name or description for the 
+      contact. Under the rights circumstances, the $CONTACTALIAS$ <A 
+      href="http://nagios.sourceforge.net/docs/1_0/macros.html">macro</A> will 
+      contain this value. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>host_notification_period</STRONG>:</TD>
+    <TD>This directive is used to specify the short name of the <A 
+      href="nagios.htm#timeperiod">time 
+      period</A> during which the contact can be notified about host problems or 
+      recoveries. You can think of this as an "on call" time for host 
+      notifications for the contact. Read the documentation on <A 
+      href="http://nagios.sourceforge.net/docs/1_0/timeperiods.html">time 
+      periods</A> for more information on how this works and potential problems 
+      that may result from improper use. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>service_notification_period</STRONG>:</TD>
+    <TD>This directive is used to specify the short name of the <A 
+      href="nagios.htm#timeperiod">time 
+      period</A> during which the contact can be notified about service problems 
+      or recoveries. You can think of this as an "on call" time for service 
+      notifications for the contact. Read the documentation on <A 
+      href="http://nagios.sourceforge.net/docs/1_0/timeperiods.html">time 
+      periods</A> for more information on how this works and potential problems 
+      that may result from improper use. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>host_notification_commands</STRONG>:</TD>
+    <TD>This directive is used to define a list of the <I>short names</I> of 
+      the <A 
+      href="nagios.htm#command">commands</A> 
+      used to notify the contact of a <I>host</I> problem or recovery. Multiple 
+      notification commands should be separated by commas. All notification 
+      commands are executed when the contact needs to be notified. The maximum 
+      amount of time that a notification command can run is controlled by the <A 
+      href="http://nagios.sourceforge.net/docs/1_0/configmain.html#notification_timeout">notification_timeout</A> 
+      option. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>host_notification_options</STRONG>:</TD>
+    <TD>This directive is used to define the host states for which 
+      notifications can be sent out to this contact. Valid options are a 
+      combination of one or more of the following: <B>d</B> = notify on DOWN 
+      host states, <B>u</B> = notify on UNREACHABLE host states, and <B>r</B> = 
+      notify on host recoveries (UP states). If you specify <B>n</B> (none) as 
+      an option, the contact will not receive any type of host notifications. 
+  </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>service_notification_options</STRONG>:</TD>
+    <TD>This directive is used to define the service states for which 
+      notifications can be sent out to this contact. Valid options are a 
+      combination of one or more of the following: <B>w</B> = notify on WARNING 
+      service states, <B>u</B> = notify on UNKNOWN service states, <B>c</B> = 
+      notify on CRITICAL service states, and <B>r</B> = notify on service 
+      recoveries (OK states). If you specify <B>n</B> (none) as an option, the 
+      contact will not receive any type of service notifications. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>service_notification_commands</STRONG>:</TD>
+    <TD>This directive is used to define a list of the <I>short names</I> of 
+      the <A 
+      href="nagios.htm#command">commands</A> 
+      used to notify the contact of a <I>service</I> problem or recovery. 
+      Multiple notification commands should be separated by commas. All 
+      notification commands are executed when the contact needs to be notified. 
+      The maximum amount of time that a notification command can run is 
+      controlled by the <A 
+      href="http://nagios.sourceforge.net/docs/1_0/configmain.html#notification_timeout">notification_timeout</A> 
+      option. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>email</STRONG>:</TD>
+    <TD>This directive is used to define an email address for the contact. 
+      Depending on how you configure your notification commands, it can be used 
+      to send out an alert email to the contact. Under the right circumstances, 
+      the $CONTACTEMAIL$ <A 
+      href="http://nagios.sourceforge.net/docs/1_0/macros.html">macro</A> will 
+      contain this value. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>pager</STRONG>:</TD>
+    <TD>This directive is used to define a pager number for the contact. It 
+      can also be an email address to a pager gateway (i.e. 
+      pagejoe@pagenet.com). Depending on how you configure your notification 
+      commands, it can be used to send out an alert page to the contact. Under 
+      the right circumstances, the $CONTACTPAGER$ <A 
+      href="http://nagios.sourceforge.net/docs/1_0/macros.html">macro</A> will 
+      contact this value. </TD></TR></TBODY></TABLE></P>
+<P><A name=hostgroup></A>
+<TABLE width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD class=SectionHeader>Host Group Definition</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Description:</DIV>
+<P></P>
+<P>A host group definition is used to group one or more hosts together for the 
+purposes of simplifying notifications. Each host that you define must be a 
+member of at least one host group - even if it is the only host in that group. 
+Hosts can be in more than one host group. When a host goes down, becomes 
+unreachable, or recovers, Nagios will find which host group(s) the host is a 
+member of, get the <A 
+href="nagios.htm#contactgroup">contact 
+group</A> for each of those hostgroups, and notify all <A 
+href="nagios.htm#contact">contacts</A> 
+associated with those contact groups. This may sound complex, but for most 
+people it doesn't have to be. It does, however, allow for flexibility in 
+determining who gets paged for what kind of problems. </P>
+<P>
+<DIV class=SectionTitle>Definition Format:</DIV>
+<P></P>
+<P class=SectionBody>Note: Directives in red are required, while those in black 
+are optional. </P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD class=Definition colSpan=3>define hostgroup{</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>hostgroup_name</TD>
+    <TD class=Required><I>hostgroup_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>alias</TD>
+    <TD class=Required><I>alias</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>contact_groups</TD>
+    <TD class=Required><I>contact_groups</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>members</TD>
+    <TD class=Required><I>members</I></TD></TR>
+  <TR>
+    <TD>&nbsp;&nbsp;&nbsp;</TD>
+    <TD class=Definition colSpan=2>}</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Example Definition:</DIV>
+<P></P>
+<P class=SectionBody><PRE>define hostgroup{
+	hostgroup_name		novell-servers
+	alias			Novell Servers
+	contact_groups		novell-admins
+	members			netware1,netware2,netware3,netware4
+	}
+</PRE>
+<P></P>
+<P>
+<DIV class=SectionTitle>Directive Descriptions:</DIV>
+<P></P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top><STRONG>hostgroup_name</STRONG>:</TD>
+    <TD>This directive is used to define a short name used to identify the 
+      host group. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>alias</STRONG>:</TD>
+    <TD>This directive is used to define is a longer name or description used 
+      to identify the host group. It is provided in order to allow you to more 
+      easily identify a particular host group. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>contact_groups</STRONG>:</TD>
+    <TD>This is a list of the <I>short names</I> of the <A 
+      href="nagios.htm#contactgroup">contact 
+      groups</A> that should be notified whenever there are problems (or 
+      recoveries) with any of the hosts in this host group. Multiple contact 
+      groups should be separated by commas. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>members</STRONG>:</TD>
+    <TD>This is a list of the <I>short names</I> of <A 
+      href="nagios.htm#host">hosts</A> 
+      that should be included in this group. Multiple host names should be 
+      separated by commas. </TD></TR></TBODY></TABLE></P>
+<P><A name=contactgroup></A>
+<TABLE width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD class=SectionHeader>Contact Group Definition</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Description:</DIV>
+<P></P>
+<P>A contact group definition is used to group one or more <A 
+href="nagios.htm#contact">contacts</A> 
+together for the purpose of sending out alert/recovery notifications. When a 
+host or service has a problem or recovers, Nagios will find the appropriate 
+contact groups to send notifications to, and notify all contacts in those 
+contact groups. This may sound complex, but for most people it doesn't have to 
+be. It does, however, allow for flexibility in determining who gets notified for 
+particular events. The different arguments to a contact group definition are 
+outlined below. </P>
+<P>
+<DIV class=SectionTitle>Definition Format:</DIV>
+<P></P>
+<P class=SectionBody>Note: Directives in red are required, while those in black 
+are optional. </P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD class=Definition colSpan=3>define contactgroup{</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>contactgroup_name</TD>
+    <TD class=Required><I>contactgroup_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>alias</TD>
+    <TD class=Required><I>alias</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>members</TD>
+    <TD class=Required><I>members</I></TD></TR>
+  <TR>
+    <TD>&nbsp;&nbsp;&nbsp;</TD>
+    <TD class=Definition colSpan=2>}</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Example Definition:</DIV>
+<P></P>
+<P class=SectionBody><PRE>define contactgroup{
+	contactgroup_name		novell-admins
+	alias			Novell Administrators
+	members			jdoe,rtobert,tzach
+	}
+</PRE>
+<P></P>
+<P>
+<DIV class=SectionTitle>Directive Descriptions:</DIV>
+<P></P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top><STRONG>contactgroup_name</STRONG>:</TD>
+    <TD>This directive is a short name used to identify the contact group. 
+  </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>alias</STRONG>:</TD>
+    <TD>This directive is used to define a longer name or description used to 
+      identify the contact group. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>members</STRONG>:</TD>
+    <TD>This directive is used to define a list of the <I>short names</I> of 
+      <A 
+      href="nagios.htm#contact">contacts 
+      </A>that should be included in this group. Multiple contact names should 
+      be separated by commas. </TD></TR></TBODY></TABLE></P>
+<P><A name=timeperiod></A>
+<TABLE width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD class=SectionHeader>Time Period Definition</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Description:</DIV>
+<P></P>
+<P>A time period is a list of times during various days that are considered to 
+be "valid" times for notifications and service checks. It consists one or more 
+time periods for each day of the week that "rotate" once the week has come to an 
+end. Exceptions to the normal weekly time range rotations are not suported. </P>
+<P>
+<DIV class=SectionTitle>Definition Format:</DIV>
+<P></P>
+<P class=SectionBody>Note: Directives in red are required, while those in black 
+are optional. </P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD class=Definition colSpan=3>define timeperiod{</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>timeperiod_name</TD>
+    <TD class=Required><I>timeperiod_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>alias</TD>
+    <TD class=Required><I>alias</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>sunday</TD>
+    <TD class=Optional><I>timeranges</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>monday</TD>
+    <TD class=Optional><I>timeranges</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>tuesday</TD>
+    <TD class=Optional><I>timeranges</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>wednesday</TD>
+    <TD class=Optional><I>timeranges</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>thursday</TD>
+    <TD class=Optional><I>timeranges</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>friday</TD>
+    <TD class=Optional><I>timeranges</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>saturday</TD>
+    <TD class=Optional><I>timeranges</I></TD></TR>
+  <TR>
+    <TD>&nbsp;&nbsp;&nbsp;</TD>
+    <TD class=Definition colSpan=2>}</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Example Definition:</DIV>
+<P></P>
+<P class=SectionBody><PRE>define timeperiod{
+	timeperiod_name		nonworkhours
+	alias			Non-Work Hours
+	sunday			00:00-24:00
+	monday			00:00-09:00,17:00-24:00
+	tuesday			00:00-09:00,17:00-24:00
+	wednesday		00:00-09:00,17:00-24:00
+	thursday		00:00-09:00,17:00-24:00
+	friday			00:00-09:00,17:00-24:00
+	saturday		00:00-24:00
+	}
+</PRE>
+<P></P>
+<P>
+<DIV class=SectionTitle>Directive Descriptions:</DIV>
+<P></P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top><STRONG>timeperiod_name</STRONG>:</TD>
+    <TD>This directives is the short name used to identify the time period. 
+  </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>alias</STRONG>:</TD>
+    <TD>This directive is a longer name or description used to identify the 
+      time period. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG><I>some</I>day</STRONG>:</TD>
+    <TD>The <I>sunday</I> through <I>saturday</I> directives are 
+      comma-delimited lists of time ranges that are "valid" times for a 
+      particular day of the week. Notice that there are seven different days for 
+      which you can define time ranges (Sunday through Saturday). Each time 
+      range is in the form of <B>HH:MM-HH:MM</B>, where hours are specified on a 
+      24 hour clock. For example, <B>00:15-24:00</B> means 12:15am in the 
+      morning for this day until 12:20am midnight (a 23 hour, 45 minute total 
+      time range). If you wish to exclude an entire day from the timeperiod, 
+      simply do not include it in the timeperiod definition. 
+</TD></TR></TBODY></TABLE></P>
+<P><A name=command></A>
+<TABLE width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD class=SectionHeader>Command Definition</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Description:</DIV>
+<P></P>
+<P>A command definition is just that. It defines a command. Commands that can be 
+defined include service checks, service notifications, service event handlers, 
+host checks, host notifications, and host event handlers. Command definitions 
+can contain <A 
+href="http://nagios.sourceforge.net/docs/1_0/macros.html">macros</A>, but you 
+must make sure that you include only those macros that are "valid" for the 
+circumstances when the command will be used. More information on what macros are 
+available and when they are "valid" can be found <A 
+href="http://nagios.sourceforge.net/docs/1_0/macros.html">here</A>. The 
+different arguments to a command definition are outlined below. </P>
+<P>
+<DIV class=SectionTitle>Definition Format:</DIV>
+<P></P>
+<P class=SectionBody>Note: Directives in red are required, while those in black 
+are optional. </P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD class=Definition colSpan=3>define command{</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>command_name</TD>
+    <TD class=Required><I>command_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>command_line</TD>
+    <TD class=Required><I>command_line</I></TD></TR>
+  <TR>
+    <TD>&nbsp;&nbsp;&nbsp;</TD>
+    <TD class=Definition colSpan=2>}</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Example Definition:</DIV>
+<P></P>
+<P class=SectionBody><PRE>define command{
+	command_name	check_pop
+	command_line	/usr/local/nagios/libexec/check_pop -H $HOSTADDRESS$	
+	}
+</PRE>
+<P></P>
+<P>
+<DIV class=SectionTitle>Directive Descriptions:</DIV>
+<P></P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top><STRONG>command_name</STRONG>:</TD>
+    <TD>This directive is the short name used to identify the command. It is 
+      referenced in <A 
+      href="nagios.htm#contact">contact</A>, 
+      <A 
+      href="nagios.htm#host">host</A>, 
+      and <A 
+      href="nagios.htm#service">service</A> 
+      definitions, among other places. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>command_line</STRONG>:</TD>
+    <TD>This directive is used to define what is actually executed by Nagios 
+      when the command is used for service or host checks, notifications, or <A 
+      href="http://nagios.sourceforge.net/docs/1_0/eventhandlers.html">event 
+      handlers</A>. Before the command line is executed, all valid <A 
+      href="http://nagios.sourceforge.net/docs/1_0/macros.html">macros</A> are 
+      replaced with their respective values. See the documentation on macros for 
+      determining when you can use different macros. Note that the command line 
+      is <I>not</I> surrounded in quotes. Also, if you want to pass a dollar 
+      sign ($) on the command line, you have to escape it with another dollar 
+      sign. </TD></TR></TBODY></TABLE></P>
+<P><A name=servicedependency></A>
+<TABLE width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD class=SectionHeader>Service Dependency 
+Definition</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Description:</DIV>
+<P></P>
+<P class=SectionBody>Service dependencies are an advanced feature of Nagios that 
+allow you to suppress notifications and active checks of services based on the 
+status of one or more other services. Service dependencies are optional and are 
+mainly targeted at advanced users who have complicated monitoring setups. More 
+information on how service dependencies work (read this!) can be found <A 
+href="http://nagios.sourceforge.net/docs/1_0/dependencies.html">here</A>. </P>
+<P>
+<DIV class=SectionTitle>Definition Format:</DIV>
+<P></P>
+<P class=SectionBody>Note: Directives in red are required, while those in black 
+are optional. However, you must supply at least one type of criteria for the 
+definition to be of much use. </P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD class=Definition colSpan=3>define servicedependency{</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>dependent_host_name</TD>
+    <TD class=Required><I>host_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>dependent_service_description</TD>
+    <TD class=Required><I>service_description</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>host_name</TD>
+    <TD class=Required><I>host_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>service_description</TD>
+    <TD class=Required><I>service_description</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>execution_failure_criteria</TD>
+    <TD class=Optional>[o,w,u,c,n]</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Optional>notification_failure_criteria</TD>
+    <TD class=Optional>[o,w,u,c,n]</TD></TR>
+  <TR>
+    <TD>&nbsp;&nbsp;&nbsp;</TD>
+    <TD class=Definition colSpan=2>}</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Example Definition:</DIV>
+<P></P>
+<P class=SectionBody><PRE>define servicedependency{
+	host_name			WWW1
+	service_description		Apache Web Server
+	dependent_host_name		WWW1
+	dependent_service_description	Main Web Site
+	execution_failure_criteria	n
+	notification_failure_criteria	w,u,c
+	}
+</PRE>
+<P></P>
+<P>
+<DIV class=SectionTitle>Directive Descriptions:</DIV>
+<P></P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top><STRONG>dependent_host</STRONG>:</TD>
+    <TD>This directive is used to identify the <I>short name</I> of the <A 
+      href="nagios.htm#host">host</A> 
+      that the <I>dependent</I> service "runs" on or is associated with. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>dependent_service_description</STRONG>:</TD>
+    <TD>This directive is used to identify the <I>description</I> of the 
+      <I>dependent</I> <A 
+      href="nagios.htm#service">service</A>. 
+    </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>host_name</STRONG>:</TD>
+    <TD>This directive is used to identify the <I>short name</I> of the <A 
+      href="nagios.htm#host">host</A> 
+      that the service <I>that is being depended upon</I> "runs" on or is 
+      associated with. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>service_description</STRONG>:</TD>
+    <TD>This directive is used to identify the <I>description</I> of the <A 
+      href="nagios.htm#service">service</A> 
+      <I>that is being depended upon</I>. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>execution_failure_criteria</STRONG>:</TD>
+    <TD>This directive is used to specify the criteria that determine when the 
+      dependent service should <I>not</I> be executed. If the service <I>that is 
+      being depended upon</I> is in one of the failure states we specify, the 
+      <I>dependent</I> service will not be executed. Valid options are a 
+      combination of one or more of the following (multiple options are 
+      seperated with commas): <B>o</B> = fail on an OK state, <B>w</B> = fail on 
+      a WARNING state, <B>u</B> = fail on an UNKNOWN state, and <B>c</B> = fail 
+      on a CRITICAL state. If you specify <B>n</B> (none) as an option, the 
+      execution dependency will never fail and checks of the dependent service 
+      will always be executed. Example: If you specify <B>o,c,u</B> in this 
+      field, the <I>dependent</I> service will not be executed if the service 
+      <I>that's being depended upon</I> is in either an OK, a CRITICAL, or an 
+      UNKNOWN state. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>notification_failure_criteria</STRONG>:</TD>
+    <TD>This directive is used to define the criteria that determine when 
+      notifications for the dependent service should <I>not</I> be sent out. If 
+      the service <I>that is being depended upon</I> is in one of the failure 
+      states we specify, notifications for the <I>dependent</I> service will not 
+      be sent to contacts. Valid options are a combination of one or more of the 
+      following: <B>o</B> = fail on an OK state, <B>w</B> = fail on a WARNING 
+      state, <B>u</B> = fail on an UNKNOWN state, and <B>c</B> = fail on a 
+      CRITICAL state. If you specify <B>n</B> (none) as an option, the 
+      notification dependency will never fail and notifications for the 
+      dependent service will always be sent out. Example: If you specify 
+      <B>w</B> in this field, the notifications for the <I>dependent</I> service 
+      will not be sent out if the service <I>that is being depended upon</I> is 
+      in a WARNING state. </TD></TR></TBODY></TABLE></P>
+<P><A name=serviceescalation></A>
+<TABLE width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD class=SectionHeader>Service Escalation 
+Definition</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Description:</DIV>
+<P></P>
+<P>Service escalations are <I>completely optional</I> and are used to escalate 
+notifications for a particular service. More information on how notification 
+escalations work can be found <A 
+href="http://nagios.sourceforge.net/docs/1_0/escalations.html">here</A>. </P>
+<P>
+<DIV class=SectionTitle>Definition Format:</DIV>
+<P></P>
+<P class=SectionBody>Note: Directives in red are required, while those in black 
+are optional. </P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD class=Definition colSpan=3>define serviceescalation{</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>host_name</TD>
+    <TD class=Required><I>host_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>service_description</TD>
+    <TD class=Required><I>service_description</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>contact_groups</TD>
+    <TD class=Required><I>contactgroup_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>first_notification</TD>
+    <TD class=Required>#</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>last_notification</TD>
+    <TD class=Required>#</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>notification_interval</TD>
+    <TD class=Required>#</TD></TR>
+  <TR>
+    <TD>&nbsp;&nbsp;&nbsp;</TD>
+    <TD class=Definition colSpan=2>}</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Example Definition:</DIV>
+<P></P>
+<P class=SectionBody><PRE>define serviceescalation{
+	host_name		nt-3
+	service_description	Processor Load
+	first_notification	4
+	last_notification	0
+	notification_interval	30
+	contact_groups		all-nt-admins,themanagers
+	}
+</PRE>
+<P></P>
+<P>
+<DIV class=SectionTitle>Directive Descriptions:</DIV>
+<P></P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top><STRONG>host_name</STRONG>:</TD>
+    <TD>This directive is used to identify the <I>short name</I> of the <A 
+      href="nagios.htm#host">host</A> 
+      that the <A 
+      href="nagios.htm#service">service</A> 
+      the escalation should apply to is associated with. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>service_description</STRONG>:</TD>
+    <TD>This directive is used to identify the <I>description</I> of the <A 
+      href="nagios.htm#service">service</A> 
+      the escalation should apply to. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>first_notification</STRONG>:</TD>
+    <TD>This directive is a number that identifies the <I>first</I> 
+      notification for which this escalation is effective. For instance, if you 
+      set this value to 3, this escalation will only be used if the service is 
+      in a non-OK state long enough for a third notification to go out. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>last_notification</STRONG>:</TD>
+    <TD>This directive is a number that identifies the <I>last</I> 
+      notification for which this escalation is effective. For instance, if you 
+      set this value to 5, this escalation will not be used if more than five 
+      notifications are sent out for the service. Setting this value to 0 means 
+      to keep using this escalation entry forever (no matter how many 
+      notifications go out). </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>contact_groups</STRONG>:</TD>
+    <TD>This directive is used to identify the <I>short name</I> of the <A 
+      href="nagios.htm#contactgroup">contact 
+      group</A> that should be notified when the service notification is 
+      escalated. Multiple contact groups should be separated by commas. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>notification_interval</STRONG>:</TD>
+    <TD>This directive is used to determine the interval at which 
+      notifications should be made while this escalation is valid. If you 
+      specify a value of 0 for the interval, Nagios will send the first 
+      notification when this escalation definition is valid, but will then 
+      prevent any more problem notifications from being sent out for the host. 
+      Notifications are sent out again until the host recovers. This is useful 
+      if you want to stop having notifications sent out after a certain amount 
+      of time. Note: If multiple escalation entries for a host overlap for one 
+      or more notification ranges, the smallest notification interval from all 
+      escalation entries is used. </TD></TR></TBODY></TABLE></P>
+<P><A name=hostdependency></A>
+<TABLE width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD class=SectionHeader>Host Dependency Definition</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Description:</DIV>
+<P></P>
+<P class=SectionBody>Host dependencies are an advanced feature of Nagios that 
+allow you to suppress notifications for hosts based on the status of one or more 
+other hosts. Host dependencies are optional and are mainly targeted at advanced 
+users who have complicated monitoring setups. More information on how host 
+dependencies work (read this!) can be found <A 
+href="http://nagios.sourceforge.net/docs/1_0/dependencies.html">here</A>. </P>
+<P>
+<DIV class=SectionTitle>Definition Format:</DIV>
+<P></P>
+<P class=SectionBody>Note: Directives in red are required, while those in black 
+are optional. </P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD class=Definition colSpan=3>define hostdependency{</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>dependent_host_name</TD>
+    <TD class=Required><I>host_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>host_name</TD>
+    <TD class=Required><I>host_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>notification_failure_criteria</TD>
+    <TD class=Required>[o,d,u,n]</TD></TR>
+  <TR>
+    <TD>&nbsp;&nbsp;&nbsp;</TD>
+    <TD class=Definition colSpan=2>}</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Example Definition:</DIV>
+<P></P>
+<P class=SectionBody><PRE>define hostdependency{
+	host_name			WWW1
+	dependent_host_name		DBASE1
+	notification_failure_criteria	d,u
+	}
+</PRE>
+<P></P>
+<P>
+<DIV class=SectionTitle>Directive Descriptions:</DIV>
+<P></P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top><STRONG>dependent_host</STRONG>:</TD>
+    <TD>This directive is used to identify the <I>short name</I> of the 
+      <I>dependent</I> <A 
+      href="nagios.htm#host">host</A>. 
+    </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>host_name</STRONG>:</TD>
+    <TD>This directive is used to identify the <I>short name</I> of the <A 
+      href="nagios.htm#host">host</A> 
+      <I>that is being depended upon</I>. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>notification_failure_criteria</STRONG>:</TD>
+    <TD>This directive is used to define the criteria that determine when 
+      notifications for the dependent host should <I>not</I> be sent out. If the 
+      host <I>that is being depended upon</I> is in one of the failure states we 
+      specify, notifications for the <I>dependent</I> host will not be sent to 
+      contacts. Valid options are a combination of one or more of the following: 
+      <B>o</B> = fail on an UP state, <B>d</B> = fail on a DOWN state, and 
+      <B>u</B> = fail on an UNREACHABLE state. If you specify <B>n</B> (none) as 
+      an option, the notification dependency will never fail and notifications 
+      for the dependent host will always be sent out. Example: If you specify 
+      <B>d</B> in this field, the notifications for the <I>dependent</I> host 
+      will not be sent out if the host <I>that is being depended upon</I> is in 
+      a DOWN state. </TD></TR></TBODY></TABLE></P>
+<P><A name=hostescalation></A>
+<TABLE width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD class=SectionHeader>Host Escalation Definition</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Description:</DIV>
+<P></P>
+<P>Host escalations are <I>completely optional</I> and are used to escalate 
+notifications for a particular host. More information on how notification 
+escalations work can be found <A 
+href="http://nagios.sourceforge.net/docs/1_0/escalations.html">here</A>. </P>
+<P>
+<DIV class=SectionTitle>Definition Format:</DIV>
+<P></P>
+<P class=SectionBody>Note: Directives in red are required, while those in black 
+are optional. </P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD class=Definition colSpan=3>define hostescalation{</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>host_name</TD>
+    <TD class=Required><I>host_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>contact_groups</TD>
+    <TD class=Required><I>contactgroup_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>first_notification</TD>
+    <TD class=Required>#</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>last_notification</TD>
+    <TD class=Required>#</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>notification_interval</TD>
+    <TD class=Required>#</TD></TR>
+  <TR>
+    <TD>&nbsp;&nbsp;&nbsp;</TD>
+    <TD class=Definition colSpan=2>}</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Example Definition:</DIV>
+<P></P>
+<P class=SectionBody><PRE>define hostescalation{
+	host_name		router-34
+	first_notification	5
+	last_notification	8
+	notification_interval	60
+	contact_groups		all-router-admins
+	}
+</PRE>
+<P></P>
+<P>
+<DIV class=SectionTitle>Directive Descriptions:</DIV>
+<P></P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top><STRONG>host_name</STRONG>:</TD>
+    <TD>This directive is used to identify the <I>short name</I> of the <A 
+      href="nagios.htm#host">host</A> 
+      that the escalation should apply to. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>first_notification</STRONG>:</TD>
+    <TD>This directive is a number that identifies the <I>first</I> 
+      notification for which this escalation is effective. For instance, if you 
+      set this value to 3, this escalation will only be used if the host is down 
+      or unreachable long enough for a third notification to go out. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>last_notification</STRONG>:</TD>
+    <TD>This directive is a number that identifies the <I>last</I> 
+      notification for which this escalation is effective. For instance, if you 
+      set this value to 5, this escalation will not be used if more than five 
+      notifications are sent out for the host. Setting this value to 0 means to 
+      keep using this escalation entry forever (no matter how many notifications 
+      go out). </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>contact_groups</STRONG>:</TD>
+    <TD>This directive is used to identify the <I>short name</I> of the <A 
+      href="nagios.htm#contactgroup">contact 
+      group</A> that should be notified when the host notification is escalated. 
+      Multiple contact groups should be separated by commas. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>notification_interval</STRONG>:</TD>
+    <TD>This directive is used to determine the interval at which 
+      notifications should be made while this escalation is valid. If you 
+      specify a value of 0 for the interval, Nagios will send the first 
+      notification when this escalation definition is valid, but will then 
+      prevent any more problem notifications from being sent out for the host. 
+      Notifications are sent out again until the host recovers. This is useful 
+      if you want to stop having notifications sent out after a certain amount 
+      of time. Note: If multiple escalation entries for a host overlap for one 
+      or more notification ranges, the smallest notification interval from all 
+      escalation entries is used. </TD></TR></TBODY></TABLE></P>
+<P><A name=hostgroupescalation></A>
+<TABLE width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD class=SectionHeader>Host Group Escalation 
+Definition</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Description:</DIV>
+<P></P>
+<P>Hostgroup escalations are <I>completely optional</I> and are used to escalate 
+notifications for all hosts in a particular hostgroup. More information on how 
+notification escalations work can be found <A 
+href="http://nagios.sourceforge.net/docs/1_0/escalations.html">here</A>. </P>
+<P>
+<DIV class=SectionTitle>Definition Format:</DIV>
+<P></P>
+<P class=SectionBody>Note: Directives in red are required, while those in black 
+are optional. </P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD class=Definition colSpan=3>define hostgroupescalation{</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>hostgroup_name</TD>
+    <TD class=Required><I>hostgroup_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>contact_groups</TD>
+    <TD class=Required><I>contactgroup_name</I></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>first_notification</TD>
+    <TD class=Required>#</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>last_notification</TD>
+    <TD class=Required>#</TD></TR>
+  <TR>
+    <TD></TD>
+    <TD class=Required>notification_interval</TD>
+    <TD class=Required>#</TD></TR>
+  <TR>
+    <TD>&nbsp;&nbsp;&nbsp;</TD>
+    <TD class=Definition colSpan=2>}</TD></TR></TBODY></TABLE></P>
+<P>
+<DIV class=SectionTitle>Example Definition:</DIV>
+<P></P>
+<P class=SectionBody><PRE>define hostgroupescalation{
+	hostgroup_name		netware-servers
+	first_notification	5
+	last_notification	0
+	notification_interval	30
+	contact_groups		netware-admins,themanagers
+	}
+</PRE>
+<P></P>
+<P>
+<DIV class=SectionTitle>Directive Descriptions:</DIV>
+<P></P>
+<P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top><STRONG>hostgroup_name</STRONG>:</TD>
+    <TD>This directive is used to identify the <I>short name</I> of the <A 
+      href="nagios.htm#hostgroup">host 
+      group</A> that the escalation should apply to. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>first_notification</STRONG>:</TD>
+    <TD>This directive is a number that identifies the <I>first</I> 
+      notification for which this escalation is effective. For instance, if you 
+      set this value to 3, this escalation will only be used if a host in the 
+      hostgroup is down or unreachable long enough for a third notification to 
+      go out. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>last_notification</STRONG>:</TD>
+    <TD>This directive is a number that identifies the <I>last</I> 
+      notification for which this escalation is effective. For instance, if you 
+      set this value to 5, this escalation will not be used if more than five 
+      notifications are sent out for any particular host in the specified 
+      hostgroup. Setting this value to 0 means to keep using this escalation 
+      entry forever (no matter how many notifications go out). </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>contact_groups</STRONG>:</TD>
+    <TD>This directive is used to identify the <I>short name</I> of the <A 
+      href="nagios.htm#contactgroup">contact 
+      group</A> that should be notified when a host notification is escalated. 
+      Multiple contact groups should be separated by commas. </TD></TR>
+  <TR>
+    <TD vAlign=top><STRONG>notification_interval</STRONG>:</TD>
+    <TD>This directive is used to determine the interval at which 
+      notifications should be made while this escalation is valid. If you 
+      specify a value of 0 for the interval, Nagios will send the first 
+      notification when this escalation definition is valid, but will then 
+      prevent any more problem notifications from being sent out for the host. 
+      Notifications are sent out again until the host recovers. This is useful 
+      if you want to stop having notifications sent out after a certain amount 
+      of time. Note: If multiple escalation entries for a hostgroup overlap for 
+      one or more notification ranges, the smallest notification interval from 
+      all escalation entries is used. </TD></TR></TBODY></TABLE></P>
+<HR>
+</BODY></HTML>

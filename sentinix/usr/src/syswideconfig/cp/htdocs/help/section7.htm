@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+
+<html>
+<head>
+	<title>Cacti Manual</title>
+	<link href="main.css" rel="stylesheet">
+</style>
+</head>
+
+<body>
+
+<table bgcolor="#d5d5d5" width="100%">
+	<tr>
+		<td align="left">
+			<strong><a href="section6.htm">&lt;&lt; Previous Section</a></strong>
+		</td>
+		<td align="center">
+			User Management in Cacti <strong>[<a href="index.htm">home</a>]</strong>
+		</td>
+		<td align="right">
+			<strong><a href="section8.htm">Next Section &gt;&gt;</a></strong>
+		</td>
+	</tr>
+</table>
+
+<br>
+
+<span class="textPageHeader">User Management in Cacti</span>
+
+<p>Cacti provides the tools necessary to create and manage very sophisticated graphs. Part of this includes user management
+functionality which enables the creation of different users, each with unique permissions. Out of the box, Cacti has two users,
+'admin' and 'guest'. The 'admin' user has rights to all areas of Cacti including the ability to make new users. The 'guest' user
+is the user that is inherited if a user views 'graph_view.php' without first logging in to Cacti.</p>
+
+<p>To create a new user, select the "User Management" item under the "Utilities" heading. Once at the user management screen,
+click "Add" towards the right. Depending on your configured view, you will initially see either two or four boxes. Each are
+described in more detail below:</p>
+
+<p class="textParagraphHeader">[box] User Management</p>
+
+<table class="field" cellspacing="0">
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			User Name
+		</td>
+		<td class="fieldDescription">
+			This field contains the actual login name for the user. There are no character limits this field, but
+			it would make sense to keep it to alphanumeric characters to maintain simplicity.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Full Name
+		</td>
+		<td class="fieldDescription">
+			(Optional) You can use this field as a more descriptive identifier for the user. It is currently only
+			used for display on the user management page.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Password
+		</td>
+		<td class="fieldDescription">
+			Enter the password for the user twice, once in each text box. Keep in mind that passwords are case
+			sensitive and the password will remain unchanged if the boxes are both left empty.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Account Options
+		</td>
+		<td class="fieldDescription">
+			There are currently two account related options that can be set for each user. The first, 'User Must 
+			Change Password at Next Login', forces a password change immediately after the user logs in. The second
+			option, 'Allow this User to Keep Custom Graph Settings', dictates whether the user can maintain their
+			own custom graph viewing settings which includes expanding and collapsing trees.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Graph Options
+		</td>
+		<td class="fieldDescription">
+			There are three permission related options that can be set for each user here. The 'User Has Rights to
+			{Tree,List,Preview} View' checkboxes dictate which graph viewing areas the user can see.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Login Options
+		</td>
+		<td class="fieldDescription">
+			These options dictate what occurs immediately after the user logs in. The first option, 'Show the page that 
+			user pointed their browser to.' will point the user to whatever page they were heading to before being
+			interrupted by the login page. The 'Show the default console screen.' option will always point the user
+			to 'index.php' after a successful login. The last option, 'Show the default graph screen.' will point the
+			user to 'graph_view.php' after a successful login.
+		</td>
+	</tr>
+</table>
+
+<p class="textParagraphHeader">[box] Realm Permissions</p>
+
+<p>These settings dictate what a user has permissions to do within Cacti. If a user is to only look at graphs, they only need
+rights to the 'View Graphs' realm. If the user is to be able to access any part of the console, they need rights to the
+'Console Access' realm. The remaining realms can be granted or revoked on a per-user basis, and will take effect immediately
+after a save.</p>
+
+<p class="textParagraphHeader">[box] Graph Permissions</p>
+
+<table class="field" cellspacing="0">
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Default Policy
+		</td>
+		<td class="fieldDescription">
+			This field specifies the default policy to use when viewing graphs for the user. An 'ALLOW' policy means
+			that the user automatically has rights to view all graphs unless specifically stated otherwise. A 'DENY'
+			policy means that the user cannot view any graphs unless specifically stated otherwise.
+		</td>
+	</tr>
+</table>
+
+<p>Based on the default policy you select for the user, choose the graphs that you want to allow or deny from the user by
+checking the box next to the graph title.</p>
+
+<p class="textParagraphHeader">[box] Graph Settings</p>
+
+<p>There are certain graph settings that can be manipulated on a per-user basis. These settings can either be changed on the
+user management screen, or by the actual user in the graph view section if they are granted permission to do so. Each setting
+is described in more detail below:</p>
+
+<table class="field" cellspacing="0">
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Default RRA
+		</td>
+		<td class="fieldDescription">
+			When no round robin archive is specified, give Cacti a default one to use. This is primarily used
+			in graph preview mode.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Height
+		</td>
+		<td class="fieldDescription">
+			The height of the graph area (in pixels) of the thumbnail graphs
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Width
+		</td>
+		<td class="fieldDescription">
+			The width of the graph area (in pixels) of the thumbnail graphs
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Default View Mode
+		</td>
+		<td class="fieldDescription">
+			When the user visits 'graph_view.php', this is the mode that is selected.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Timespan
+		</td>
+		<td class="fieldDescription">
+			The timespan in seconds that is passed to RRDTool when rendering thumbnail graphs. The default,
+			60000 is less then a full a day, while 86400 is a full day.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Columns
+		</td>
+		<td class="fieldDescription">
+			The number of columns to display on both the graph tree and graph preview modes.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Graphs Per-Page
+		</td>
+		<td class="fieldDescription">
+			The number of single graphs to show on one page while in preview mode. 
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Page Refresh
+		</td>
+		<td class="fieldDescription">
+			Auto-refresh the graph pages after the number of seconds specified here.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Default Graph Hierarchy
+		</td>
+		<td class="fieldDescription">
+			When in graph tree view, you can choose the default tree that will be selected.
+		</td>
+	</tr>
+</table>
+
+<p>When you are finished filling in all necessary fields, click the "Create" button to create your new user. You will be
+redirected back to the "User Management" page where you can add additional users if necessary.</p>
+
+</body>
+</html>

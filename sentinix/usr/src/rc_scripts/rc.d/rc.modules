@@ -1,0 +1,24 @@
+#!/bin/sh
+#
+# This script loads the modules selected using `setup.modules'.
+# Type `setup' to configure your loadable modules.
+#
+
+echo -e "\033[1mUpdating module dependencies...\033[0m"
+/sbin/depmod -A
+
+echo -e "\033[1mLoading modules...\033[0m"
+# remove unused modules
+/sbin/rmmod -a
+
+cat /etc/MODULES | while read LINE
+do
+    if ! echo $LINE | grep "^#" 1> /dev/null 2>&1 ; then
+	if [ ! "$LINE" = "" ]; then
+	    MOD=`echo $LINE | cut -d' ' -f1`
+	    if ! /sbin/lsmod | grep -vw "^Module" | grep -w $MOD 1> /dev/null 2>&1 ; then
+		    /sbin/modprobe -s $MOD
+	    fi
+	fi
+    fi
+done

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# start incoming
+postconf -e "defer_transports = smtp local virtual relay" "myhostname = sandbox.homelinux.com"
+postfix start
+
+# start outgoing
+postconf -c /etc/postfix.mailscanner.out -e "myhostname = sandbox.homelinux.com"
+postfix -c /etc/postfix.mailscanner.out start
+
+/opt/MailScanner/bin/check_mailscanner

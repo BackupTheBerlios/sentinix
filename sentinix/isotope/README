@@ -1,0 +1,27 @@
+ABOUT ISOTOPE
+
+This package (/isotope) will make a SENTINIX installation CD (ISO-image)
+similar (or exactly) as one available on http://sentinix.org/.
+
+You may want to look through the "config" file and, perhaps, change these
+default values:
+
+# Below, the speed of your CD recorder (speed to record in):
+CDRSPEED=16
+# Speed to record CDRW discs:
+CDRWSPEED=4
+# SCSI (or scsi-generic) device to use:
+CDRDEV=0,0
+
+Important! You have to have compiled SENTINIX (/usr/src/build-all) in order to
+compile the "isotope" software or create an ISO.
+
+After having compiled SENTINIX (the /usr/src/build-all script) do this:
+
+1. cd to /isotope
+2. Run ./build.sources
+3. Run ./build.iso
+4. If all is well, insert a blank CD-R(W) and run ./mkrealcd or ./mkcdrw
+
+SENTINIX is Copyright © 2003 Michel Blomgren, http://sentinix.org/.
+

@@ -1,0 +1,38 @@
+#!/bin/sh
+
+if [ ! -e config ]; then
+	echo "No \"config\" file found"!
+	exit 1
+fi
+
+. config
+
+CWD=`pwd`
+destdir="$CWD/../specials/usr/bin"
+
+VERSION=2.0
+rm -rf sh-utils-$VERSION
+tar -xzf sh-utils-$VERSION.tar.gz
+cd sh-utils-$VERSION
+chown -R root.root .
+
+CC=$UCLIBC \
+CFLAGS="-march=i486 -mcpu=i686 -O2" \
+LDFLAGS="-s -static" \
+./configure --prefix=/usr --build=i486-sentinix-linux &&
+make &&
+(
+	cd src
+	strip date echo false pwd stty true uname basename chroot \
+dirname env expr factor groups hostid id logname nice \
+nohup pathchk pinky printenv printf seq sleep tee test \
+tty users who whoami yes
+	cd ..
+
+	# we only need a few programs...
+
+	cp src/printenv $destdir
+	cp src/date $destdir
+	cp src/nice $destdir
+	cp src/sleep $destdir
+)

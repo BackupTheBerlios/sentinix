@@ -1,0 +1,76 @@
+#!/bin/sh
+
+startpostfix()
+{
+	if [ "$MS" = "y" ]; then
+	    echo -e "\033[1mStarting Postfix+MailScanner...\033[0m"
+	    if [ ! -e /opt/MailScanner/bin/check_mailscanner ]; then
+		echo "MailScanner does not appear to exist (I checked under /opt/MailScanner)!"
+		exit 1
+	    fi
+	    postconf -e "defer_transports = smtp local virtual relay" "myhostname = $myhostname" &&
+	    postfix start &&
+	    postconf -c /etc/postfix.mailscanner.out -e "myhostname = $myhostname" &&
+	    postfix -c /etc/postfix.mailscanner.out start &&
+	    /opt/MailScanner/bin/check_mailscanner
+	else
+	    echo -e "\033[1mStarting Postfix...\033[0m"
+	    postconf -e "defer_transports =" "myhostname = $myhostname" &&
+	    postfix start
+	fi
+}
+
+stoppostfix()
+{
+	if [ "$MS" = "y" ]; then
+	    postfix stop &&
+	    postfix -c /etc/postfix.mailscanner.out stop &&
+	    if [ -e /opt/MailScanner/var/MailScanner.pid ]; then
+		kill `cat /opt/MailScanner/var/MailScanner.pid`
+	    fi
+	else
+	    postfix stop
+	fi
+}
+
+myhostname=`cat /etc/HOSTNAME`
+
+if [ -e /etc/sxrunMailScanner ]; then
+    MS=y
+else
+    MS=n
+fi
+
+case "$1" in
+    'start')
+	startpostfix
+	if [ ! $? -eq 0 ]; then
+	    echo -e "\033[1;31mStart of mailsystem seem to have failed!\033[0m"
+	    exit 1
+	fi
+	;;
+    'stop')
+	stoppostfix
+	;;
+    'restart')
+	stoppostfix &&
+	sleep 4 &&
+	startpostfix
+	if [ ! $? -eq 0 ]; then
+	    echo -e "\033[1;31mRestart of mailsystem seem to have failed!\033[0m"
+	    exit 1
+	fi
+	;;
+    'reload')
+	if [ "$MS" = "y" ]; then
+	    postfix reload &&
+	    postfix -c /etc/postfix.mailscanner.out reload
+	else
+	    postfix reload
+	fi
+	;;
+    *)
+	echo "usage: $0 start|stop|restart|reload"
+	;;
+esac
+

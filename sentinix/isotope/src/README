@@ -1,0 +1,13 @@
+
+These programs are already compiled and installed. If you'd like to 
+recompile them, you'll need uclibc. You also want to edit the path to 
+i386-uclibc-gcc in the "config" file.
+
+uClibc-0.9.17.tar.gz is included in this source tree.
+You can try to execute "sh build.uclibc" in order to build it, if that 
+doesn't work, edit "build.uclibc" or compile and install it manually. 
+Please note; /usr/src/linux is the default Linux source code directory, 
+change this in the "config" file. Linux has to be configured (not
+"make mrproper", but "make menuconfig" or "make config").
+/usr/src/linux/include/linux/autoconf.h must be present!
+

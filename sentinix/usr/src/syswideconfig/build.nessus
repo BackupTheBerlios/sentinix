@@ -1,0 +1,7 @@
+#!/bin/sh
+
+zcat nessus-adduser.patch.gz | patch -N -d /usr/components/nessus/sbin/
+
+#zcat nessus-adduser.gz > /usr/components/nessus/sbin/nessus-adduser
+#chown root.root /usr/components/nessus/sbin/nessus-adduser
+#chmod 0755 /usr/components/nessus/sbin/nessus-adduser

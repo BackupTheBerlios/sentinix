@@ -1,0 +1,52 @@
+COMPILING THE KERNELS
+
+Just type "./build" or "sh build" to compile and install all kernels for
+SENTINIX. If you add a kernel yourself you must also edit
+/isotope/isolinux/isolinux.cfg and message.txt.
+
+It compiles OK with gcc 2.95.3.
+
+
+HOW TO UPDATE THE KERNELS
+
+Put the new .tar.bz2, the new openMosix bz2 patch and the new Migshm patch in
+this directory (/isotope/src/kernels). Edit the "config" file (symlinked from
+this directory) and change the KVERSION variable to the new kernel version.
+Unpack the .tar.bz2 file. Enter the directory and copy the old "config.plain"
+and "config.smp" to the kernel directory, e.g.:
+
+root@sandbox:/isotope/src/kernels/linux-2.4.21# cp ../config.plain ../config.smp .
+
+Run "make menuconfig" and from there load "config.plain". Unless you want to
+change something or add another feature, just save it, overwrite the
+"config.plain" file. Do the same with "config.smp". When you're done copy them
+back to their old place, e.g.:
+
+root@sandbox:/isotope/src/kernels/linux-2.4.21# cp config.plain config.smp ..
+
+Now, apply the openMosix patch and the Migshm patch, e.g.:
+
+root@sandbox:/isotope/src/kernels/linux-2.4.21# bzcat ../openMosix-2.4.21-1.bz2 | patch -Np1
+...
+root@sandbox:/isotope/src/kernels/linux-2.4.21# cat ../patch-Migshm-2.4.21.diff | patch -Np1
+...
+
+Do the same as you did previously with the "config.plain" and the "config.smp"
+file, copy "config.om" and "config.omsmp" to the kernel directory and run "make
+menuconfig". Load the "config.om", save and overwrite it, do the same thing
+with "config.omsmp". Copy "config.om" and "config.omsmp" back to ".." as you
+did with "config.plain" and "config.smp".
+
+Finish by copying "config.om" to /usr/src/linux/.
+
+That's it! You may also want to check out /usr/src/README, there are some
+variables to change in the source tree.
+
+Good luck!
+
+--
+Michel Blomgren
+SENTINIX Project Manager
+michel at sentinix.org
+http://sentinix.org
+

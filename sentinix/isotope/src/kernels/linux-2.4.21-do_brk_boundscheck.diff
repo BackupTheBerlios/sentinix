@@ -1,0 +1,13 @@
+--- ./mm/mmap.c.orig	2003-12-07 07:44:04.000000000 +0100
++++ ./mm/mmap.c	2003-12-07 07:47:49.000000000 +0100
+@@ -1041,6 +1041,10 @@
+ 	if (!len)
+ 		return addr;
+ 
++	/* do_brk() bounds check */
++	if ((addr + len) > TASK_SIZE || (addr + len) < addr)
++	    return -EINVAL;
++
+ 	/*
+ 	 * mlock MCL_FUTURE?
+ 	 */

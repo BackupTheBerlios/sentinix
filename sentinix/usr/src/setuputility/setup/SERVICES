@@ -1,0 +1,28 @@
+#!/bin/sh
+
+SERVICES=`cat /usr/local/setup/sentinixservices 2> /dev/null | grep -v "^#" 2> /dev/null`
+
+echo "$SERVICES" | while read LINE
+do
+    if [ ! "$LINE" = "" ]; then
+	SCRIPT=`echo $LINE | cut -d' ' -f1`
+	VAR=`echo RM_${SCRIPT}`
+
+	if printenv $VAR 1> /dev/null 2>&1 ; then
+	    if [ -e /etc/rc.d/$SCRIPT ]; then
+		chmod +x /etc/rc.d/$SCRIPT
+	    fi
+	else
+	    if [ -e /etc/rc.d/$SCRIPT ]; then
+		chmod -x /etc/rc.d/$SCRIPT
+	    fi
+	fi
+    fi
+done
+
+if [ "$RM_sxrunMailScanner" = "yes" ]; then
+    echo "# If this file exists then you'll be running MailScanner with Postfix." > /etc/sxrunMailScanner
+    echo "# Please consider using the \"setup\" tool to change this setting." >> /etc/sxrunMailScanner
+else
+    rm -f /etc/sxrunMailScanner
+fi

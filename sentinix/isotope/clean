@@ -1,0 +1,5 @@
+#!/bin/sh
+rm -f .gotrootpasswd
+rm -f isolinux/initrd.img
+rm -f cd/sentinix.tgz
+rm -f sentinix.iso

@@ -1,0 +1,6 @@
+# version variables
+# this file is in sh (shell) format
+
+APACHEVER=1.3.29
+MODSSLVER=2.8.16-1.3.29
+PHPVER=4.3.4

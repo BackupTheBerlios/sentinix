@@ -1,0 +1,86 @@
+#!/bin/sh
+
+CWD=`pwd`
+
+if [ ! -d rootfs ]; then
+	echo "no rootfs dir, you probably haven't compiled isotope yet!"
+	exit 1
+fi
+
+rm -f initrd.img 2> /dev/null
+rm -f initrd.img.gz 2> /dev/null
+
+dd if=/dev/zero of=initrd.img bs=1k count=18000
+if [ $? != 0 ]; then
+	exit 1
+fi
+
+sleep 1
+
+mke2fs -F -m0 -L SENTINIX -b 1024 -i 2048 initrd.img
+if [ $? != 0 ]; then
+	echo "mke2fs failed"! > /dev/stderr
+	exit 1
+fi
+
+tune2fs -c 0 initrd.img
+if [ $? != 0 ]; then
+	echo "tune2fs failed"! > /dev/stderr
+	exit 1
+fi
+
+sleep 1
+
+if [ ! -e mnt ]; then
+	mkdir mnt
+elif [ ! -d mnt ]; then
+	echo "mnt is not a directory"! > /dev/stderr
+	exit 1
+fi
+
+mount -o loop -w -t ext2 initrd.img mnt
+if [ $? != 0 ]; then
+	echo "Error trying to mount initrd.img"! > /dev/stderr
+	exit 1
+fi
+
+cd mnt &&
+rm -rf "lost+found" &&
+cp $CWD/networkmodules $CWD/rootfs/etc/ &&
+cp -a $CWD/rootfs/. . &&
+cd $CWD
+if [ $? != 0 ]; then
+	cd $CWD
+	umount mnt
+	exit 1
+fi
+
+echo -e "\033[1m"
+df mnt
+echo
+df -i mnt
+echo -e "\033[0m"
+
+umount mnt
+if [ $? != 0 ]; then
+	echo "Could not umount mnt"! > /dev/stderr
+	exit 1
+fi
+
+gzip -n -9 initrd.img &&
+mv initrd.img.gz initrd.img
+if [ $? != 0 ]; then
+	echo "compression of initrd failed"! > /dev/stderr
+	exit 1
+fi
+
+echo
+echo -e "\033[32mOK\033[0m"
+echo
+ls -la initrd.img
+ls -lah initrd.img
+echo
+gzip -l initrd.img
+echo
+
+mv initrd.img isolinux/

@@ -1,0 +1,46 @@
+#!/bin/sh
+
+if [ ! -e config ]; then
+	echo "No \"config\" file found"!
+	exit 1
+fi
+
+. config
+
+CWD=`pwd`
+isotope="$CWD/.."
+
+VERSION=0.60.5
+rm -rf busybox-$VERSION &&
+tar -xzf busybox-$VERSION.tar.gz &&
+cd busybox-$VERSION &&
+chown -R root.root . &&
+cp $CWD/busyboxconfig Config.h &&
+cp $CWD/busyboxmakefile Makefile
+[ ! $? -eq 0 ] && exit 1
+
+if [ ! -e ${isotope}/rootfs ]; then
+	( cd $isotope &&
+	  tar -xzf rootfs.tar.gz
+	)
+	if [ ! $? -eq 0 ]; then
+		exit 1
+	fi
+fi
+
+if [ ! -d ${isotope}/rootfs ]; then
+	echo "${isotope}/rootfs is not a directory!"
+	exit 1
+fi
+
+rm -f ${isotope}/rootfs/linuxrc
+rm -rf ${isotope}/rootfs/bin
+rm -rf ${isotope}/rootfs/sbin
+rm -rf ${isotope}/rootfs/usr/bin
+rm -rf ${isotope}/rootfs/usr/sbin
+
+make CC=$UCLIBC clean &&
+make CC=$UCLIBC &&
+make CC=$UCLIBC PREFIX=${isotope}/rootfs install &&
+cp -ia ${isotope}/specials/. ${isotope}/rootfs/ &&
+ln -sf ../../var/setup/setup.kbdmap ${isotope}/rootfs/usr/sbin/setup.kbdmap

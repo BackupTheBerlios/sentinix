@@ -1,0 +1,90 @@
+#!/bin/sh
+
+TMP=/usr/local/setup/tmp/modules.temp
+MODLIST=/usr/local/setup/sentinixmodules
+LOADEDMODULES=`/sbin/lsmod | grep -vw "^Module" | cut -d' ' -f 1`
+LOADEDMODULES=`echo $LOADEDMODULES`
+savefile=/etc/MODULES
+PREVMODULES=`cat $savefile 2> /dev/null | grep -v "^#"`
+PREVMODULES=`echo $PREVMODULES`
+
+if [ -r $savefile ]; then
+    export ETCMODULESEXIST=yes
+fi
+
+cat <<EOF > $TMP
+caption=SENTINIX Setup Utility
+text=Choose which modules to modprobe (load) during boot. Some modules might already be crossed in because they were modprobe'd or selected earlier.
+aftertext=
+colorscheme=4
+runonexit=source /usr/local/setup/MODULES NOSAVE
+EOF
+
+CAPCOUNT=0
+
+echo -n "Loading"
+
+cat $MODLIST | while read LINE
+do
+  if echo $LINE | grep "^#CAP:" 1> /dev/null 2>&1 ; then
+	echo -n "."
+	CAP=`echo $LINE | cut -d: -f 2-`
+	CAP=`echo $CAP`
+	if [ $CAPCOUNT -gt 0 ]; then
+		echo "br" >> $TMP
+	fi
+	echo "br $CAP" >> $TMP
+	echo "br" >> $TMP
+	let CAPCOUNT=$CAPCOUNT+1
+  elif ! echo $LINE | grep "^#" 1> /dev/null 2>&1 ; then
+    if [ ! "$LINE" = "" ]; then
+	NAME=`echo $LINE | cut -d'#' -f 1`
+	NWUS=`echo $NAME`
+	NAME=`echo M_$NAME`
+	LABEL=`echo $LINE | cut -d'#' -f 2-`
+	LABEL=`echo "${NWUS}:" $LABEL`
+
+	echo "begin item" >> $TMP
+	echo "name=$NAME" >> $TMP
+	echo "label=$LABEL" >> $TMP
+
+	if echo $LOADEDMODULES | grep -w $NWUS 1> /dev/null 2>&1 ; then
+	    echo "type=checkbox|selected" >> $TMP
+	else
+	    if echo $PREVMODULES | grep -w $NWUS 1> /dev/null 2>&1 ; then
+		echo "type=checkbox|selected" >> $TMP
+	    else
+    		echo "type=checkbox" >> $TMP
+	    fi
+	fi
+
+	echo "default=1" >> $TMP
+	echo "end" >> $TMP
+    fi
+  else
+	echo -n "."
+  fi
+done
+
+cat <<EOF >> $TMP
+br
+begin item
+    name=QUIT
+    bullet=<-
+    label=Exit and save
+    command=source /usr/local/setup/MODULES
+end
+begin item
+    name=QUIT
+    bullet=<-
+    label=Exit without saving
+    command=source /usr/local/setup/MODULES NOSAVE
+end
+EOF
+
+replimenu -f $TMP
+
+#
+# if any new modules where chosen, load them now.
+#
+/etc/rc.d/rc.modules

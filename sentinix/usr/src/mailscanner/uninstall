@@ -1,0 +1,6 @@
+#!/bin/sh
+
+rm -rf /opt/MailScanner* &&
+rm -rf /var/spool/postfix.mailscanner.out &&
+rm -rf /etc/postfix.mailscanner.out &&
+rm -rf /var/spool/MailScanner

@@ -1,0 +1,436 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+
+<html>
+<head>
+	<title>Cacti Manual</title>
+	<link href="main.css" rel="stylesheet">
+</style>
+</head>
+
+<body>
+
+<table bgcolor="#d5d5d5" width="100%">
+	<tr>
+		<td align="left">
+			<strong><a href="section4.htm">&lt;&lt; Previous Section</a></strong>
+		</td>
+		<td align="center">
+			The Power of Data Acquisition <strong>[<a href="index.htm">home</a>]</strong>
+		</td>
+		<td align="right">
+			<strong><a href="section6.htm">Next Section &gt;&gt;</a></strong>
+		</td>
+	</tr>
+</table>
+
+<br>
+
+<span class="textPageHeader">Data Queries</span>
+
+<p>Data queries are not a replacement for data input methods in Cacti. Instead they provide an easy way to query, or list 
+data based upon an index, making the data easier to graph. The most common use of a data query within Cacti is to retrieve
+a list of network interfaces via SNMP. If you want to graph the traffic of a network interface, first Cacti must retrieve a 
+list of interfaces on the host. Second, Cacti can use that information to create the necessary graphs and data sources. Data
+queries are only concerned with the first step of the process, that is obtaining a list of network interfacesand not creating
+the graphs/data sources for them. While listing network interfaces is a common use for data queries, they also have other uses
+such as listing partitions, processors, or even cards in a router.</p>
+
+<p>One requirment for any data query in Cacti, is that it has some unique value that defines each row in the list. This concept
+follows that of a 'primary key' in SQL, and makes sure that each row in the list can be uniquely referenced. Examples of these
+index values are 'ifIndex' for SNMP network interfaces or the device name for partitions.</p> 
+
+<p>There are two types of data queries that you will see referred to throughout Cacti. They are script queries and SNMP queries.
+Script and SNMP queries are virtually identical in their functionality and only differ in how they obtain their information. A
+script query will call an external command or script and an SNMP query will make an SNMP call to retrieve a list of data.</p>
+
+<p>All data queries have two parts, the XML file and the definition within Cacti. An XML file must be created for each query, that
+defines where each piece of information is and how to retrieve it. This could be thought of as the actual query. The second part
+is a definition within Cacti, which tells Cacti where to find the XML file and associates the data query with one or more graph
+templates.</p>
+
+<p class="textParagraphHeader">SNMP Query XML Syntax</p>
+
+<table>
+	<tr>
+		<td class="exampleCode">
+			&lt;query&gt;<br>
+			&nbsp;&nbsp;&nbsp;&lt;name&gt;Get SNMP Interfaces&lt;/name&gt;<br>
+			&nbsp;&nbsp;&nbsp;&lt;description&gt;Queries a host for a list of monitorable interfaces&lt;/description&gt;<br>
+			&nbsp;&nbsp;&nbsp;&lt;oid_index&gt;.1.3.6.1.2.1.2.2.1.1&lt;/oid_index&gt;<br>
+			<br>
+			&nbsp;&nbsp;&nbsp;&lt;fields&gt;<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ifIndex&gt;<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;name&gt;Index&lt;/name&gt;<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;method&gt;walk&lt;/method&gt;<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;source&gt;value&lt;/source&gt;<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;direction&gt;input&lt;/direction&gt;<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;oid&gt;.1.3.6.1.2.1.2.2.1.1&lt;/oid&gt;<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ifIndex&gt;<br>
+			&nbsp;&nbsp;&nbsp;&lt;/fields&gt;<br>
+			&lt;/query&gt;<br>
+		</td>
+	</tr>
+</table>
+
+<br>
+
+<table class="field" cellspacing="0">
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			query->name
+		</td>
+		<td class="fieldDescription">
+			(Optional) You can enter a "friendly name" for the SNMP query here. It will not be used by Cacti, and
+			is for identification only.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			query->description
+		</td>
+		<td class="fieldDescription">
+			(Optional) You can enter a description for the SNMP query here. It will not be used by Cacti, and
+			is for identification only.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			query->oid_index
+		</td>
+		<td class="fieldDescription">
+			Every SNMP query must have an OID that represents the index values for the query when walked. As described
+			above, any data query in Cacti must contain a field that uniquely identifies each row returned by the
+			query. In the example above, the oid_index points to the OID of ifIndex in the interface MIB.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			query->fields
+		</td>
+		<td class="fieldDescription">
+			Each field contained within the SNMP query must be defined under this tag.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			query->fields->ifIndex
+		</td>
+		<td class="fieldDescription">
+			Each defined field in the SNMP query must have a unique name given to it. Do not use spaces or any
+			non-alphanumeric characters, this name must be identifiable within Cacti.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			query->fields->ifIndex->name
+		</td>
+		<td class="fieldDescription">
+			Here you can specify a "friendly name" for the field. This name will be used by Cacti to help the
+			user identify this field.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			query->fields->ifIndex->method
+		</td>
+		<td class="fieldDescription">
+			Tell Cacti how you want it to gather SNMP information for this field. Valid values are 'walk' and 'get'.
+			The 'get' method obtains a list of indexes and does an snmpget for each index of the OID specified for this
+			field. The walk method simply does a walk of the OID specified for this field. Both methods will return 
+			the same values, even though the 'walk' method is typically more efficient.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			query->fields->ifIndex->source
+		</td>
+		<td class="fieldDescription">
+			When Cacti obtains a list for this field, you need to tell it how to derive its value for each row. Valid
+			options here are 'value' and 'OID/REGEXP:(regexp_match)'. The 'value' option simply returns the result of
+			the snmpget for each row. The 'OID/REGEXP:(regexp_match)' can be used when you need to use a POSIX-based
+			regular expression to derive the value from the OID. The most common example of this is to retreive the IP
+			address of an interface, and can be seen in the 'interface.xml' file.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			query->fields->ifIndex->direction
+		</td>
+		<td class="fieldDescription">
+			There are two types of fields when dealing with an SNMP query, 'input' and 'output'. Input values are the
+			"known" values that you will use to derive the output values, this is where the "query" part of SNMP query
+			comes in. When you create a graph based on an SNMP query, Cacti will prompt you to choose the input value
+			to base the graph on. A rule of thumb is that input fields contain semi-static data that is not graphable,
+			while the output fields contain the data that will be graphed.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			query->fields->ifIndex->oid
+		</td>
+		<td class="fieldDescription">
+			You must specify the actual OID that corresponds with the field. Each value for this field can be obtained
+			by doing an snmpget on 'oid.(each)snmpindex'.
+		</td>
+	</tr>
+</table>
+
+<p class="textParagraphHeader">Script Query XML Syntax</p>
+
+<table>
+	<tr>
+		<td class="exampleCode">
+			&lt;query&gt;<br>
+			&nbsp;&nbsp;&nbsp;&lt;name&gt;Get Unix Mounted Partitions&lt;/name&gt;<br>
+			&nbsp;&nbsp;&nbsp;&lt;description&gt;Queries a list of mounted partitions on a unix-based host with the 'df' command.&lt;/description&gt;<br>
+			&nbsp;&nbsp;&nbsp;&lt;script_path&gt;perl |path_cacti|/scripts/query_unix_partitions.pl&lt;/script_path&gt;<br>
+			&nbsp;&nbsp;&nbsp;&lt;arg_index&gt;index&lt;/arg_index&gt;<br>
+			&nbsp;&nbsp;&nbsp;&lt;arg_query&gt;query&lt;/arg_query&gt;<br>
+			&nbsp;&nbsp;&nbsp;&lt;arg_get&gt;get&lt;/arg_get&gt;<br>
+			&nbsp;&nbsp;&nbsp;&lt;output_delimeter&gt;:&lt;/output_delimeter&gt;<br>
+			&nbsp;&nbsp;&nbsp;<br>
+			&nbsp;&nbsp;&nbsp;&lt;fields&gt;<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dskDevice&gt;<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;name&gt;Device Name&lt;/name&gt;<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;direction&gt;input&lt;/direction&gt;<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;query_name&gt;device&lt;/query_name&gt;<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dskDevice&gt;<br>
+			&nbsp;&nbsp;&nbsp;&lt;/fields&gt;<br>
+			&lt;/query&gt;<br>
+		</td>
+	</tr>
+</table>
+
+<br>
+
+<table class="field" cellspacing="0">
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			query->name
+		</td>
+		<td class="fieldDescription">
+			(Optional) You can enter a "friendly name" for the script query here. It will not be used by Cacti, and
+			is for identification only.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			query->description
+		</td>
+		<td class="fieldDescription">
+			(Optional) You can enter a description for the script query here. It will not be used by Cacti, and
+			is for identification only.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			query->script_path
+		</td>
+		<td class="fieldDescription">
+			Enter the complete path to the script or executable that is going to handle your script query. When in
+			doubt, specify the pull path to all binaries referenced in this path, the query may not execute
+			otherwise.
+		</td>                                                                       
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			query->arg_index
+		</td>
+		<td class="fieldDescription">
+			Enter the argument that is to be passed to the script to retrieve a list of indexes.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			query->arg_query
+		</td>
+		<td class="fieldDescription">
+			Enter the argument that is to be passed to the script to retrieve a list of values given a field name.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			query->arg_get
+		</td>
+		<td class="fieldDescription">
+			Enter the argument that is to be passed to the script to retrieve a single value given a field name and
+			index value.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			query->output_delimeter
+		</td>
+		<td class="fieldDescription">
+			Enter the one character delimiter that will be used to separate output values. This is only used when
+			you "query" the script in which case it outputs 'index(delimiter)value'.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">             
+			query->fields
+		</td>
+		<td class="fieldDescription">
+			Each field contained within the script query must be defined under this tag.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			query->fields->dskDevice
+		</td>
+		<td class="fieldDescription">
+			Each defined field in the script query must have a unique name given to it. Do not use spaces or any
+			non-alphanumeric characters, this name must be identifiable within Cacti.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			query->fields->dskDevice->name
+		</td>
+		<td class="fieldDescription">
+			Here you can specify a "friendly name" for the field. This name will be used by Cacti to help the
+			user identify this field.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			query->fields->dskDevice->direction
+		</td>
+		<td class="fieldDescription">
+			There are two types of fields when dealing with an script query, 'input' and 'output'. Input values are the
+			"known" values that you will use to derive the output values, this is where the "query" part of script query
+			comes in. When you create a graph based on an script query, Cacti will prompt you to choose the input value
+			to base the graph on. A rule of thumb is that input fields contain semi-static data that is not graphable,
+			while the output fields contain the data that will be graphed.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			query->fields->dskDevice->query_name
+		</td>
+		<td class="fieldDescription">
+			Enter the name that Cacti must use when asking the script for information about this field. For instance,
+			the following should return values: '(script_name) query (query_name)'.
+		</td>
+	</tr>
+</table>
+
+<p class="textParagraphHeader">Creating a Data Query</p>
+
+<p>Once you have created the XML file that defines your data query, you must add the data query within Cacti. To do this you
+must click on "Data Queries" under the "Data Gathering" heading, and select "Add". You will be prompted for some basic
+information about the data query, described in more detail below.</p>
+
+<table class="field" cellspacing="0">
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Name
+		</td>
+		<td class="fieldDescription">
+			Give the data query a name that you will use to identify it. This name will be used throughout
+			Cacti when presented with a list of data queries.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Description
+		</td>
+		<td class="fieldDescription">
+			(Optional) Enter a more detailed description of the data query including the information it queries
+			or additional requirements.
+		</td>
+	</tr>
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			XML Path
+		</td>
+		<td class="fieldDescription">
+			Fill in the full path to the XML file that defines this query. You can optionally use the &lt;path_cacti&gt;
+			variable that will be substituted with the full path to Cacti. On the next screen, Cacti will check to make
+			sure that it can find the XML file.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Data Input Method
+		</td>
+		<td class="fieldDescription">
+			This is how you tell Cacti to handle the data it receives from the data query. Typically, you will select
+			"Get SNMP Data (Indexed)" for an SNMP query and "Get Script Data (Indexed)" for a script query.
+		</td>
+	</tr>
+</table>
+
+<p>When you are finished filling in all necessary fields, click the "Create" button to continue. You will be redirected back to the
+same page, but this time with some additional information to fill in. If you receive a red warning that says 'XML File Does Not Exist',
+correct the value specified in the 'XML Path' field.</p>
+
+<p>Under the 'Data Input Method' box, you need to specify mappings that tell Cacti where to send data it recieves from the data
+query. There are three data source fields that Cacti cares about when referring to a data query; index type, index value, and
+output type ID. Index type refers to the name of the input field to search in, while the index value contains the value to search 
+for in that field. Lastly, output type ID specifies the ID of the "Associated Graph Template" to use. You do not have to worry
+about filling in values for these fields when creating data sources, Cacti will do that for you. Below are the default mappings
+that will work in almost all cases:</p>
+
+<table>
+	<tr>
+		<td class="exampleCode" nowrap>
+			 Index Type:<br>
+			 Index Value:<br>
+			 Output Type ID:<br>
+		</td>
+		<td class="exampleCode" nowrap>
+			SNMP Field Name (Dropdown)<br>
+			SNMP Field Value (From User)<br>
+			SNMP Output Type (Dropdown)<br>
+		</td>
+	</tr>
+</table>
+
+<p><strong>Make sure to check the checkboxes to the right of these three fields, or the mappings will not be saved.</strong></p>
+
+<p class="textParagraphHeader">Associated Graph Templates</p>
+
+<p>Every data query must have at least one graph template associated with it, and possibly more depending on the number of output
+fields specified in the XML file. This is where you get to choose what kind of graphs to generate from this query. For instance,
+the interface data query has multiple graph template associations, used to graph traffic, errors, or packets. To add a new
+graph template association, simply click "Add" at the right of the "Associated Graph Templates" box. You will be presented with
+a few fields to fill in:</p>
+
+<table class="field" cellspacing="0">
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Name
+		</td>
+		<td class="fieldDescription">
+			Give a name describing what kind of data you are trying to represent or graph. When the user creates a
+			graph using this data query, they will see a list of graph template associations that they will have
+			to choose from.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			Graph Template
+		</td>
+		<td class="fieldDescription">
+			Choose the actual graph template that you want to make the association with.
+		</td>
+	</tr>
+</table>
+
+<p>When you are finished filling in these fields, click the "Create" button. You will be redirected back to the same page with
+some additional information to fill in. Cacti will make a list of each data template referenced to in your selected graph 
+template and display them under the "Associated Data Templates" box. For each data source item listed, you must selected the 
+data query output field that corresponds with it. <em>Do not forget to check the checkbox to the right of each selection, or your
+settings will not be saved</em>.</p>
+
+<p>The "Suggested Values" box gives you a way to control field values of data sources and graphs created using this data query. If
+you specify multiple suggested values for the same field, Cacti will evaluate them in order which you can control using the up or
+down arrow icons. For more information about valid field names and variables, read the section on <a href="section8_2.htm">suggested values</a>.</p>
+
+<p>When you are finished filling in all necessary fields on this form, click the 'Save' button to return to the data queries
+edit screen. Repeat the steps under this heading as many times as necessary to represent all data in your XML file. When you
+are finished with this, you should be ready to start adding your data query to hosts.</p>
+
+</body>
+</html>

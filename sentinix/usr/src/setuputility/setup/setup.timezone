@@ -1,0 +1,46 @@
+#!/bin/sh
+
+TZFILE=/usr/local/setup/timezones
+TMP=/usr/local/setup/tmp/timezone.temp
+
+CURRENTTZ=`readlink /etc/localtime 2> /dev/null`
+
+if [ ! "$CURRENTTZ" = "" ]; then
+    CURRENTTZ=`echo $CURRENTTZ | sed -e "s|usr/share/zoneinfo/||g" | cut -d/ -f2-`
+else
+    CURRENTTZ=UTC
+fi
+
+cat <<EOF > $TMP
+caption=SENTINIX Setup Utility
+text=Choose your time zone. You may press "Q" of F10 to save your choice.
+aftertext=
+colorscheme=4
+runonexit=source /usr/local/setup/TIMEZONE
+EOF
+
+cat $TZFILE | grep -v "^#" | while read LINE
+do
+    if [ ! "$LINE" = "" ]; then
+	echo "begin item" >> $TMP
+	echo "name=timezone">> $TMP
+	if [ "$LINE" = "$CURRENTTZ" ]; then
+	    echo "type=radiobutton|selected" >> $TMP
+	else
+    	    echo "type=radiobutton" >> $TMP
+	fi
+	echo "label=$LINE" >> $TMP
+	echo "default=$LINE" >> $TMP
+	echo "end" >> $TMP
+    fi
+done
+
+cat <<EOF >> $TMP
+br
+begin item
+    name=QUIT
+    bullet=<-
+    label=OK, I'm done
+end
+EOF
+exec replimenu -f $TMP

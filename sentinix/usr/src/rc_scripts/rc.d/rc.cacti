@@ -1,0 +1,13 @@
+#!/bin/sh
+
+case "$1" in
+    'start')
+	chmod +x /etc/cron.every5minutes/cacti
+	;;
+    'stop')
+	chmod -x /etc/cron.every5minutes/cacti
+	;;
+    *)
+	echo "usage: $0 start|stop"
+	;;
+esac

@@ -1,0 +1,4 @@
++ mkdir /var/spool/MailScanner ; chown postfix.postfix /var/spool/MailScanner
+- SpamAssassin
+- Razor
+- SpamAssassin User State Dir = /var/spool/MailScanner/spamassassin

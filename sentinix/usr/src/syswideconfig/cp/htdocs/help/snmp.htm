@@ -1,0 +1,428 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Linux Magazine | June 2002 | GURU GUIDANCE | Monitoring Linux Hosts with SNMP</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="MSHTML 6.00.2600.0" name=GENERATOR></HEAD>
+<BODY vLink=#0000ff aLink=#0000ff link=#0000ff bgColor=#FFFFFF>
+<P align=center><B><FONT face="Arial, Helvetica, Sans-Serif" size=-1>Linux Magazine 
+  (http://www.linux-mag.com) June 2002</B></FONT> 
+  <!--#include virtual="/ssi/navbar.ssi"-->
+</P>
+<P align=center><B><FONT face="Arial, Helvetica, Sans-Serif" size=-1>Copyright 
+Linux Magazine ©2002</P></B></FONT>&nbsp;</P>
+<TABLE cellPadding=6 width="80%">
+  <TBODY>
+  <TR><!--#include virtual="/ssi/leftbar.ssi"-->
+    <TD vAlign=top>
+      <CENTER><!--#include virtual="/cgi-bin/randomize"--></CENTER>
+      <P></P><!-- END TOP TREENAV -->
+      <P></P>
+      <DIV class=SECTION><FONT face=Arial,Helvetica,sans-serif><B>GURU GUIDANCE 
+      </B></FONT></DIV>
+      <DIV class=TITLE><FONT color=#dc143c size=5>Monitoring Linux Hosts with 
+      SNMP </FONT></DIV>
+      <DIV class=AUTHOR><FONT face=Arial,Helvetica,sans-serif size=2>by Æleen 
+      Frisch </FONT></DIV>
+      <BLOCKQUOTE>
+        <P class=LEADPARA>Last month's column introduced the Simple Network 
+        Management Protocol (SNMP) and described how SNMP can be used to monitor 
+        devices and hosts connected to your network. This month, we'll configure 
+        a Linux machine as an SNMP agent and learn how to keep SNMP secure.</P>
+        <P class=SUBHEAD><B>Configuring Net-SNMP</B></P>
+        <P>Net-SNMP (<A 
+        href="http://www.net-snmp.org/">http://www.net-snmp.org/</A>), formerly 
+        known as UCD-SNMP, is the preferred SNMP package for Linux. Net-SNMP 
+        includes the <I>snmpd</I> daemon, an agent for Linux hosts, and a suite 
+        of client utilities. Net-SNMP does not include a manager (remember that 
+        an SNMP manager is the central monitor and the SNMP agent is the 
+        client); you'll need to separately acquire SNMP management software if 
+        you want to talk to the Net-SNMP agent software. </P>
+        <P>The <I>snmpd</I> daemon is started via the <I>/etc/init.d/snmp</I> 
+        boot script and uses <I>/usr/share/snmp/snmpd.conf</I> as its default 
+        configuration file. (Be aware that the RPMs provided with recent SuSE 
+        distributions use the <I>/etc/ucdsnmpd.conf</I> configuration file 
+        instead, although you can change this by editing the boot script.) 
+        <I>Figure One</I> shows a sample Net-SNMP <I>snmpd.conf</I> file.</P>
+        <TABLE class=LISTING cellSpacing=2 cellPadding=4 width="80%" 
+        bgColor=#ffffff border=1>
+          <TBODY>
+          <TR>
+            <TD>
+              <DIV class=LISTING>
+              <P class=LISTING-TITLE><FONT 
+              face=Arial,Helvetica,sans-serif><I>Figure One: Sample snmpd.conf 
+              file</I></FONT></P></DIV>
+              <DIV><PRE> 1  rocommunity    somethingsecure
+ 2  rwcommunity    somethingelse
+ 3  trapcommunity  anothername
+ 4  trapsink       dalton
+ 5  trap2sink      dalton
+ 6
+ 7  syslocation    "Building 2 Main Machine Room"
+ 8  syscontact     "<A href="mailto:chavez@ahania.com">chavez@ahania.com</A>"
+ 9
+10  # Net-SNMP-specific items
+11  #keyw [args] limit(s)
+12  load   5.0 6.0 7.0  # 1,5,15 load average max
+13  disk   / 3%        # root filesystem &lt; 3% free
+14  proc   portmap 1 1 # Only 1 portmap process 
+15  proc   cron  1 1   # Only 1 cron process 
+16  procsendmail    # 1 or more sendmails </PRE></DIV></TD></TR></TBODY></TABLE>
+        <P>Lines 1 and 2 specify the community names used to access the agent in 
+        read-only and read-write modes. Line 3 defines the community name to use 
+        when sending traps. It's best to use different names for each community, 
+        but it's not required. </P>
+        <P>Lines 4 and 5 specify the trap destination for SNMP Version 1 and 
+        Version 2, respectively. In this case, they're both sent to the host 
+        <TT>dalton</TT>. Lines 7 and 8 specify the values of two <TT>mib-2</TT> 
+        variables that describe the location of the device and its primary 
+        contact. Both values are located under <TT>mib-2.system</TT>. Note that 
+        it is not necessary to specify the complete "path" to these two data 
+        nodes.</P>
+        <P>The final section (lines 10-16) defines monitoring items specific to 
+        Net-SNMP. Line 12 checks whether the 1-, 5-, or 15-minute load average 
+        is above 5.0, 6.0, or 7.0, respectively. Line 13 checks whether the free 
+        space in the root filesystem (<TT>/</TT>) has dropped below three 
+        percent. Finally, the three <TT>proc</TT> directives (found on lines 
+        14-16) ensure that exactly one <I>portmap</I> and <I>cron</I> daemon are 
+        running (the two "<TT>1</TT>"s mean at least one and no more than one), 
+        and that at least one <I>sendmail</I> daemon is running.</P>
+        <P>If a monitored value falls outside the allowed range, the SNMP daemon 
+        will set a value in one of the data nodes defined in the MIB underneath 
+        <TT>enterprises.ucdavis</TT>. The nodes correspond to the specific item 
+        being monitored: <TT>laTable.laEntry.laErrorFlag</TT> for load average, 
+        <TT>dskTable. dskEntry.dskErrorFlag </TT>for disk, and 
+        <TT>prTable.prEntry. prErrorFlag </TT>for processes. The exact value 
+        stored depends on which error flag is being set. Note that traps are not 
+        generated.</P>
+        <P>You can also use the <TT>snmpconf -g</TT> command to configure a 
+        <I>snmpd.conf</I> file. Add the <TT>-i</TT> option to have the command 
+        automatically install the new file into the proper directory (rather 
+        than placing it in the current directory).</P></BLOCKQUOTE><BR clear=all><!-- END BOTTOM TREENAV --></TD></TR></TBODY></TABLE><!--#include virtual="/ssi/navbar.ssi"--><!-- HTML, 2 --><!-- HEAD, 2 --><!-- BODY, 2 --><!--#include virtual="/ssi/navbar.ssi"-->
+<TABLE cellPadding=6 width="80%">
+  <TBODY>
+  <TR><!--#include virtual="/ssi/leftbar.ssi"-->
+    <TD vAlign=top>
+      <CENTER><!--#include virtual="/cgi-bin/randomize"--></CENTER>
+      <P></P><!-- END TOP TREENAV -->
+      <P></P>
+      <BLOCKQUOTE>
+        <P class=SUBHEAD><B>The Net-SNMP Utilities</B></P>
+        <P>Net-SNMP includes several useful utilities for querying SNMP devices. 
+        <I>snmptranslate</I> provides information about the MIB structure and 
+        its entities (but not any actual data). <I>Table One</I> shows some 
+        useful options.</P>
+        <TABLE cellPadding=8 width="80%" bgColor=#ffffff border=1>
+          <TBODY>
+          <TR>
+            <TD>
+              <DIV class=LISTING>
+              <P class=LISTING-TITLE><FONT 
+              face=Arial,Helvetica,sans-serif><I>Table One: Useful options for 
+              snmptranslate</I></FONT></P></DIV>
+              <DIV>
+              <TABLE>
+                <TBODY>
+                <TR>
+                  <TD><B>OPTION</B></TD>
+                  <TD></TD>
+                  <TD><B>DESCRIPTION</B></TD></TR>
+                <TR>
+                  <TD><TT>-Tp </TT><I>OID</I></TD>
+                  <TD>
+                    <P>Display subtree underneath this data node</P></TD></TR>
+                <TR>
+                  <TD><TT>-Td </TT><I>OID</I></TD>
+                  <TD>
+                    <P>Display the complete definition of the data 
+node</P></TD></TR>
+                <TR>
+                  <TD><TT>-IR -On </TT><I>name</I></TD>
+                  <TD>
+                    <P>Display the full numeric OID for this name</P></TD></TR>
+                <TR>
+                  <TD><TT>-IR </TT><I>name</I></TD>
+                  <TD>
+                    <P>Translate a data node name to its numeric 
+                  equivalent</P></TD></TR>
+                <TR>
+                  <TD><TT>-On </TT><I>number</I></TD>
+                  <TD>
+                    <P>Translate a data node number to its string 
+                  equivalent</P></TD></TR></TBODY></TABLE>
+              <P>If the values provided for the <I>OID, name,</I> or 
+              <I>number</I> arguments are "absolute" (i.e., starting at the top 
+              of the MIB tree, before the <TT>iso</TT> or the first <TT>1</TT> 
+              ), they must start with a period 
+          ("<TT>.</TT>").</P></DIV></TD></TR></TBODY></TABLE>
+        <P>To show how <I>snmptranslate</I> works, let's define an alias (in 
+        <I>tcsh</I>) that takes the name of a leaf node (in the <TT>mib-2</TT> 
+        tree) as its argument and prints out the definition of that item, 
+        including its full OID string and numeric equivalent. The shell alias 
+        and sample usage are shown in <I>Figure Two.</I> The alias uses two 
+        calls to <I>snmptranslate</I>. The one in backquotes (<TT>snmptranslate 
+        -IR -On \!:1</TT>) finds the full OID for the specified name 
+        (substituted in with <TT>!:1</TT>). Its output becomes the argument of 
+        the second command which displays the description of this data item. 
+</P>
+        <TABLE class=LISTING cellSpacing=2 cellPadding=4 width="80%" 
+        bgColor=#ffffff border=1>
+          <TBODY>
+          <TR>
+            <TD>
+              <DIV class=LISTING>
+              <P class=LISTING-TITLE><FONT 
+              face=Arial,Helvetica,sans-serif><I>Figure Two: Using the 
+              snmptranslate command</I></FONT></P></DIV>
+              <DIV><PRE>% alias snmpwhat 'snmptranslate -Td `snmptranslate -IR -On \!:1`'
+% snmpwhat sysLocation
+.1.3.6.1.2.1.1.6
+sysLocation OBJECT-TYPE
+  -- FROM       SNMPv2-MIB, RFC1213-MIB
+  -- TEXTUAL CONVENTION DisplayString
+  SYNTAX        OCTET STRING (0..255)
+  DISPLAY-HINT  "255a"
+  MAX-ACCESS    read-write
+  STATUS        current
+  DESCRIPTION   "The physical location of this node (e.g., `telephone
+            closet, 3rd floor').  If the location is unknown, the value
+            is the zero-length string."
+::= { iso(1) org(3) dod(6) internet(1) mgmt(2) mib-2(1) system(1) 6 }</PRE></DIV></TD></TR></TBODY></TABLE>
+        <P><I>Figure Three</I> shows how the <I>snmpget</I> command retrieves 
+        data from an SNMP agent. The first command displays the value of the 
+        <TT>sysLocation</TT> data node from the agent on <TT>beulah</TT>, 
+        specifying the community string as <TT>somethingsecure</TT>. The 
+        specified data node (<TT>sysLocation</TT>) is followed by a period and 
+        an instance number. When a data node holds only a single value, the 
+        number 0 is used.</P>
+        <TABLE class=LISTING cellSpacing=2 cellPadding=4 width="80%" 
+        bgColor=#ffffff border=1>
+          <TBODY>
+          <TR>
+            <TD>
+              <DIV class=LISTING>
+              <P class=LISTING-TITLE><FONT 
+              face=Arial,Helvetica,sans-serif><I>Figure Three: Using the snmpget 
+              command</I></FONT></P></DIV>
+              <DIV><PRE># snmpget beulah somethingsecure sysLocation.0
+system.sysLocation.0 = "Receptionist Printer"
+
+# snmpget beulah somethingsecure laLoad.2
+enterprises.ucdavis.laTable.laEntry.laLoad.2 = 1.22</PRE></DIV></TD></TR></TBODY></TABLE>
+        <P>By convention, if a leaf node has a parent whose name contains 
+        "<TT>Table</TT>", then that leaf node holds multiple values. The 
+        presence of the <TT>laTable</TT> data node shows that its leaf node, 
+        <TT>laLoad</TT>, holds multiple values (in this case, the 1-, 5-, and 
+        15-minute load averages). Multiple values are stored as tables, with 
+        each value in a separate row. To access a specific row, you use the row 
+        number as the instance number. Row numbers start from 1.</P>
+        <P>The second command in <I>Figure Three</I> retrieves the 5-minute load 
+        average, which is stored in the second row of the <TT>enterprises. 
+        ucdavis.laTable</TT>.</P>
+        <P>The <I>snmpwalk</I> command displays the entire subtree below a 
+        specified data node. <I>Figure Four </I>shows how <I>snmpwalk</I> 
+        displays all the data under <TT>iso.org.dod.internet. 
+        mgmt.mib-2.host.hrSystem</TT>. Each line of output is of the form 
+        <TT>OID.instance = [<I>datatype</I>:] value</TT>, where 
+        <TT><I>datatype</I></TT> is optional. Use the <I>snmptranslate 
+        </I>command to get a full description of each data node in the MIB.</P>
+        <TABLE class=LISTING cellSpacing=2 cellPadding=4 width="80%" 
+        bgColor=#ffffff border=1>
+          <TBODY>
+          <TR>
+            <TD>
+              <DIV class=LISTING>
+              <P class=LISTING-TITLE><FONT 
+              face=Arial,Helvetica,sans-serif><I>Figure Four: Using the snmpwalk 
+              command</I></FONT></P></DIV>
+              <DIV><PRE># snmpwalk beulah somethingsecure host.hrSystem
+host.hrSystem.hrSystemUptime.0 = Timeticks: (31861126) 3 days, 16:30:11.26
+host.hrSystem.hrSystemDate.0 = 2002-2-8,11:5:4.0,-5:0
+host.hrSystem.hrSystemInitialLoadDevice.0 = 1536
+host.hrSystem.hrSystemInitialLoadParameters.0 = "auto BOOT_IMAGE=linux ro
+  root=2107 BOOT_FILE=/boot/vmlinuz enableapic vga=0x0314."
+host.hrSystem.hrSystemNumUsers.0 = Gauge32: 1
+host.hrSystem.hrSystemProcesses.0 = Gauge32: 205
+host.hrSystem.hrSystemMaxProcesses.0 = 0</PRE></DIV></TD></TR></TBODY></TABLE>
+        <P>Finally, we can use the <I>snmpset</I> command to modify writable 
+        data values. <I>Figure Five</I> shows how to use <I>snmpset</I> to set 
+        the device's primary contact. The <TT>s</TT> parameter indicates a 
+        string datatype; other useful datatypes are <TT>i</TT> for integer, 
+        <TT>d</TT> for decimal, and <TT>a</TT> for IP address (consult the 
+        <I>snmpset</I> man page for the entire list).</P>
+        <TABLE class=LISTING cellSpacing=2 cellPadding=4 width="80%" 
+        bgColor=#ffffff border=1>
+          <TBODY>
+          <TR>
+            <TD>
+              <DIV class=LISTING>
+              <P class=LISTING-TITLE><FONT 
+              face=Arial,Helvetica,sans-serif><I>Figure Five: Using the snmpset 
+              command </I></FONT></P></DIV>
+              <DIV><PRE># snmpset beulah somethingelse sysContact.0 s "<A href="mailto:r_chavez@ahania.com">r_chavez@ahania.com</A>"
+system.sysContact.0 = <A href="mailto:r_chavez@ahania.com">r_chavez@ahania.com</A></PRE></DIV></TD></TR></TBODY></TABLE></BLOCKQUOTE><BR 
+      clear=all><!-- END BOTTOM TREENAV --></TD></TR></TBODY></TABLE><!--#include virtual="/ssi/navbar.ssi"--><!-- HTML, 3 --><!-- HEAD, 3 --><!-- BODY, 3 --><!--#include virtual="/ssi/navbar.ssi"-->
+<TABLE cellPadding=6 width="80%">
+  <TBODY>
+  <TR><!--#include virtual="/ssi/leftbar.ssi"-->
+    <TD vAlign=top>
+      <CENTER><!--#include virtual="/cgi-bin/randomize"--></CENTER>
+      <P></P><!-- END TOP TREENAV -->
+      <P></P>
+      <BLOCKQUOTE>
+        <P class=SUBHEAD><B>Generating and Handling Traps </B></P>
+        <P>SNMP-managed devices are usually shipped with pre-defined traps that 
+        can be enabled or disabled during configuration. Some agents are 
+        extensible and allow you to define additional traps. The Net-SNMP 
+        package includes the <I>snmptrap</I> command for manually generating 
+        traps. <I>Figure Six</I> shows an example of using <I>snmptrap</I>.</P>
+        <TABLE class=LISTING cellSpacing=2 cellPadding=4 width="80%" 
+        bgColor=#ffffff border=1>
+          <TBODY>
+          <TR>
+            <TD>
+              <DIV class=LISTING>
+              <P class=LISTING-TITLE><FONT 
+              face=Arial,Helvetica,sans-serif><I>Figure Six: Using snmptrap to 
+              generate a trap </I></FONT></P></DIV>
+              <DIV><PRE># snmptrap -v2c dalton anothername '' .1.3.6.1.6.3.1.1.5.3 \
+  ifIndex i 2   ifAdminStatus i 1   ifOperStatus i 1</PRE></DIV></TD></TR></TBODY></TABLE>
+        <P>The <TT>-v2c</TT> option indicates that an SNMP Version 2c trap is to 
+        be sent. The next two arguments (<TT>dalton</TT> and 
+        <TT>anothername</TT>) are the destination for the trap message (the SNMP 
+        manager) and the trap community name. The next argument is the device 
+        uptime, which is required for all traps. In this example, we specify a 
+        null string, which defaults to the current uptime. The final argument in 
+        the first line is the OID for the trap itself. Traps are defined in a 
+        MIB just like regular data nodes and therefore have OIDs. This OID 
+        corresponds to the trap (or node) <TT>linkDown</TT>, and means a network 
+        interface has changed state (from up to down or from down to up).</P>
+        <P>The remaining arguments (starting with <TT>ifIndex</TT>) are 
+        determined by the specific trap being sent. This particular trap 
+        (<TT>linkDown</TT>) requires three additional arguments, where each is, 
+        in turn, composed of three values. The three arguments are the interface 
+        number, the administrative status and the operational status. The three 
+        values that specify each of these arguments are a keyword 
+        (<TT>ifIndex</TT>, <TT>ifAdminStatus</TT>, and <TT>ifOperStatus</TT>), 
+        the type of data (<TT>i</TT> for integer), and the actual (integer) 
+        value (<TT>2</TT>, <TT>1</TT>, and <TT>1</TT>).</P>
+        <P>In this case, the trap specifies interface number 2. The two status 
+        values of 1 indicate that the interface is up, so this trap means that 
+        the interface is back online after being down.</P>
+        <P>Net-SNMP also includes the <I>snmptrapd</I> daemon that runs on the 
+        manager host to handle incoming traps (although you might not need this 
+        daemon if your management software handles traps). Start the daemon 
+        manually by running the <TT>snmptrapd -s</TT> command, which by default 
+        sends trap messages to the <TT>syslogd </TT>daemon, using the 
+        <TT>Local0</TT> facility (for more on <TT>syslogd</TT>, see the 
+        September 2000 <I>Guru Guidance</I> column, online at <A 
+        href="http://www.linuxmagazine.com/2000-09/guru_01.html">http://www.linuxmagazine.com/2000-09/guru_01.html</A>). 
+        <I>Figure Seven </I>shows the <TT>syslog </TT>message generated by the 
+        trap command in <I>Figure Six.</I></P>
+        <TABLE class=LISTING cellSpacing=2 cellPadding=4 width="80%" 
+        bgColor=#ffffff border=1>
+          <TBODY>
+          <TR>
+            <TD>
+              <DIV class=LISTING>
+              <P class=LISTING-TITLE><FONT 
+              face=Arial,Helvetica,sans-serif><I>Figure Seven: The syslog log 
+              message for a trap</I></FONT></P></DIV>
+              <DIV><PRE>Feb 25 11:44:21 beulah snmptrapd[8675]: beulah.local [192.0.9.84]: 
+Trap system.sysUpTime.0 = Timeticks: (144235905) 16 days, 16:39:19.05, 
+.iso.org.dod.internet.snmpV2.snmpModules.snmpMIB.
+snmpMIBObjects.snmpTrap.snmpTrapOID.0 = OID: 1.1.5.3, 
+interfaces.ifTable.ifEntry.ifIndex = 2, 
+interfaces.ifTable.ifEntry.ifAdminStatus = up(1), 
+interfaces.ifTable.ifEntry.ifOperStatus = up(1)</PRE></DIV></TD></TR></TBODY></TABLE>
+        <P>To start <I>snmptrapd</I> at boot time, you'll need to add the 
+        startup command to the <I>/etc/ init.d/snmp</I> boot script. Its 
+        configuration file is <I>/usr/share/snmp/snmptrapd.conf. </I></P>
+        <P>If you want the daemon to perform certain tasks upon receiving 
+        various traps, add entries to the configuration file that look like 
+        this:</P>
+        <DIV class=LISTING><PRE>traphandle <I>OID</I>|default <I>program </I>
+<I>[arguments] </I>
+</PRE></DIV>
+        <P>The second field is either the OID of the trap that should be handled 
+        or the word <TT>default</TT>, which handles traps when there is no 
+        matching <TT>traphandle</TT> definition. The rest of the line contains 
+        the name of a program and its arguments. This program (or action) is run 
+        whenever the specified trap is received.</P></BLOCKQUOTE><BR clear=all><!-- END BOTTOM TREENAV --></TD></TR></TBODY></TABLE><!--#include virtual="/ssi/navbar.ssi"--><!-- HTML, 4 --><!-- HEAD, 4 --><!-- BODY, 4 --><!--#include virtual="/ssi/navbar.ssi"-->
+<TABLE cellPadding=6 width="80%">
+  <TBODY>
+  <TR><!--#include virtual="/ssi/leftbar.ssi"-->
+    <TD vAlign=top>
+      <CENTER><!--#include virtual="/cgi-bin/randomize"--></CENTER>
+      <P></P><!-- END TOP TREENAV -->
+      <P></P>
+      <BLOCKQUOTE>
+        <P class=SUBHEAD><B>SNMP and Security</B></P>
+        <P>As with any network service, SNMP presents some security concerns and 
+        demands tradeoffs be made. At the time this article was written, a major 
+        SNMP vulnerability was uncovered and widely publicized (see <A 
+        href="http://www.cert.org/advisories/CA-2002-03.html">http://www.cert.org/advisories/CA-2002-03.html</A>). 
+        Interestingly, Net-SNMP was one of the few implementations that did not 
+        include the problem; all the commercial network management packages were 
+        affected.</P>
+        <P>Perhaps the biggest problem with the current SNMP versions is that 
+        community names are sent unencrypted over the network (and can thus be 
+        "sniffed" by listening to the network). Additionally, poor coding in 
+        SNMP agents means that some devices are vulnerable to buffer overflow 
+        attacks until their vendors provide patches. Thus, a decision to use 
+        SNMP involves balancing security needs with the advantages and 
+        convenience that it provides.</P>
+        <P>SNMP Version 3 will greatly improve the security of SNMP, but many 
+        devices don't support version 3 yet, because it's still in development 
+        and is only a draft standard. Version 3's best new feature is that it 
+        sends encrypted community strings only. It also provides user-based 
+        access control to SNMP data. Due to its increased security, migrating to 
+        SNMP version 3 as soon as you can will be very worthwhile.</P>
+        <P>If you aren't able to run SNMP Version 3, you'll definitely want to 
+        take steps to increase the security of your SNMP setup. Even if you are 
+        running SNMP Version 3, implementing the following best practices is 
+        advisable.</P>
+        <UL>
+          <LI>Disable SNMP on devices that are not being managed. On Linux 
+          systems, remove any links to <I>/etc/init.d/ snmp</I> in the 
+          <I>/etc/rc*.d</I> directories. 
+          <LI>Choose community names that are not likely to be easily guessed. 
+          Change default community names before devices are added to the 
+          network. 
+          <LI>Block external access to the SNMP ports: TCP and UDP ports 161 and 
+          162, as well as any additional vendor-specific ports (e.g., TCP and 
+          UDP ports 1993 for Cisco). 
+          <LI>If you want to perform SNMP operations over the Internet (e.g., 
+          from a Web browser), use VPN or an SSL-encrypted connection to protect 
+          your data. 
+          <LI>Configure agents to only accept requests from a small group of 
+          hosts (not all agents have this feature). In the configuration file 
+          <I>snmpd.conf</I>, community string definitions can have additional 
+          parameters to restrict access. For example: </LI></UL>
+        <DIV class=LISTING><PRE>rwcommunity localonly 192.0.10.0/24
+rocommunity onlylocal callisto .1.3.6.1.2.1.25
+</PRE></DIV>
+        <P>The first entry defines the read-write community name as 
+        "<TT>localonly</TT>", and will only accept requests from hosts within 
+        the <TT>192.0.10.0</TT> subnet. The second entry specifies a read-only 
+        community name ("<TT>onlylocal</TT>") usable only by the host 
+        <TT>callisto</TT><I>.</I> It also limits access from <TT>callisto</TT> 
+        to the nodes underneath the <TT>mib-2.hosts</TT> subtree.</P>
+        <P class=SUBHEAD><B>So Much to Monitor, So Little Time</B></P>
+        <P>SNMP can dramatically increase the amount of information you can 
+        gather about the devices on your network and can help you more quickly 
+        identify problems when they arise. If you have good management software, 
+        SNMP can also help identify recurring problems (such as constantly full 
+        file systems or high load averages) that should be addressed.</P>
+        <P>Once you've set up SNMP, your next problem will be finding the time 
+        to analyze and interpret all of the information it gives you.</P>
+        <HR>
+        </HR><I>Æleen Frisch is the author of Essential System Administration. 
+        She can be reached at <A 
+        href="mailto:aefrisch@lorentzian.com">aefrisch@lorentzian.com</A>.</I></BLOCKQUOTE><BR 
+      clear=all><!-- END BOTTOM TREENAV --></TD></TR></TBODY></TABLE><!--#include virtual="/ssi/navbar.ssi"-->
+<P align=center><B><FONT face="Arial, Helvetica, Sans-Serif" size=-1>Linux Magazine 
+  (http://www.linux-mag.com) June 2002<A href="http://www.linux.hp.com/"></A> 
+</P>
+<P></P>
+<P align=center><B><FONT face="Arial, Helvetica, Sans-Serif" size=-1>Copyright 
+Linux Magazine ©2002</P></B></FONT></BODY></HTML>

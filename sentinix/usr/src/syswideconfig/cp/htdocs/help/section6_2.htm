@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+
+<html>
+<head>
+	<title>Cacti Manual</title>
+	<link href="main.css" rel="stylesheet">
+</style>
+</head>
+
+<body>
+
+<table bgcolor="#d5d5d5" width="100%">
+	<tr>
+		<td align="left">
+			<strong><a href="section5.htm">&lt;&lt; Previous Section</a></strong>
+		</td>
+		<td align="center">
+			Altering Graphs on the Fly <strong>[<a href="index.htm">home</a>]</strong>
+		</td>
+		<td align="right">
+			<strong><a href="section7.htm">Next Section &gt;&gt;</a></strong>
+		</td>
+	</tr>
+</table>
+
+<br>
+
+<span class="textPageHeader">GPRINT Presets</span>
+
+<p>GPRINTs are a graph item type that enables you to print the values of data sources on a graph. They are typically
+used to represent legend values on the graph. The output format of these numbers are controlled by a printf-like format
+string. Cacti enables you to keep a global list of these strings that can be applied to any graph item throughout Cacti.
+To create a new GPRINT preset, select the "GPRINT Presets" menu item under the "Graph Setup" heading. Click "Add" to the
+right and you will be presented with a few fields:</p>
+
+<table class="field" cellspacing="0">
+	<tr class="fieldOne">
+		<td class="fieldName" width="150">
+			Name
+		</td>
+		<td class="fieldDescription">
+			Give the GRPINT preset a name that you can use to identify it throughout Cacti. You will see this 
+			name on the graph items edit screen where you can choose a GPRINT preset.
+		</td>
+	</tr>
+	<tr class="fieldTwo">
+		<td class="fieldName" width="150">
+			GPRINT Text
+		</td>
+		<td class="fieldDescription">
+			In this field you must enter the literal printf-like string that will be passed directly to RRDTool.
+			The <a href="http://people.ee.ethz.ch/~oetiker/webtools/rrdtool/manual/rrdgraph.html">RRDTool graph manual</a>
+			has a section on legend formatting which describes this format in more detail.
+		</td>
+	</tr>
+</table>
+
+<p>When you are finished filling in both of these fields, click the "Create" button to add the new GPRINT preset. You will now
+be able to apply this to GPRINT graph items.</p>
+
+</body>
+</html>

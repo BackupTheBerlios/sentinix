@@ -1,0 +1,125 @@
+#!/bin/sh
+#
+# rc.inet2	This shell script boots up the entire network system.
+#		Note, that when this script is used to also fire
+#		up any important remote NFS disks (like the /usr
+#		distribution), care must be taken to actually
+#		have all the needed binaries online _now_ ...
+#
+#               Uncomment or comment out sections depending on which
+#               services your site requires.
+#
+# Author:	Fred N. van Kempen, <waltje@uwalt.nl.mugnet.org>
+# Modified for Slackware by Patrick Volkerding <volkerdi@slackware.com>
+#
+# Yet further modified for SENTINIX by Michel Blomgren <michel@sentinix.org>  =)
+# $Id: rc.inet2,v 1.1 2004/01/11 20:10:21 replikan Exp $
+#
+
+# set up firewall
+if [ -x /etc/rc.d/rc.firewall ]; then
+    /etc/rc.d/rc.firewall start
+fi
+
+# start the rpc portmapper
+if [ -x /etc/rc.d/rc.portmap ]; then
+    /etc/rc.d/rc.portmap start
+fi
+
+# At this point, we are ready to talk to The World...
+
+# Mount remote (NFS) filesystems:
+##echo "Mounting remote (NFS) file systems:  /bin/mount -a -t nfs"
+##/bin/mount -a -t nfs      	 # This may be our /usr runtime!
+# Show the mounted volumes:
+##/bin/mount -v -t nfs
+# Done mounting remote (NFS) filesystems.
+
+# Mount remote (SMB) filesystems:
+##echo "Mounting remote (SMB) file systems:  /bin/mount -a -t smbfs"
+##/bin/mount -a -t smbfs
+# Show the mounted volumes:
+##/bin/mount -v -t smbfs
+# Done mounting remote (SMB) filesystems.
+
+# Start the system logger.
+if [ -x /etc/rc.d/rc.syslog ]; then
+    /etc/rc.d/rc.syslog start
+fi
+
+# If there's IPv4 packet forwarding support in the kernel, see if we're
+# going to enable it or not. In 2.4+ it's disabled by default.
+
+if [ -x /etc/rc.d/rc.ip_forward ]; then
+    /etc/rc.d/rc.ip_forward start
+fi
+
+# Check if we should enable TCP SYN cookies.
+if [ -x /etc/rc.d/rc.tcp_syncookies ]; then
+    /etc/rc.d/rc.tcp_syncookies start
+fi
+
+# Start the inetd server:
+if [ -x /usr/sbin/inetd ]; then
+    echo "Starting inetd (Internet super-server daemon, /usr/sbin/inetd)."
+    /usr/sbin/inetd
+else
+    echo "WARNING:  /usr/sbin/inetd not found."
+fi
+
+# Start the OpenSSH SSH daemon:
+if [ -x /etc/rc.d/rc.sshd ]; then
+     /etc/rc.d/rc.sshd start
+fi
+
+# Start bind, the name server daemon.
+# Because bind's named is known to be quite buggy, let's run it as user
+# daemon and not as root. /etc/rc.d/rc.named will do this for us.
+#
+if [ -x /etc/rc.d/rc.named ]; then
+    /etc/rc.d/rc.named start
+fi
+
+# Start dhcpd:
+if [ -x /etc/rc.d/rc.dhcpd ]; then
+    /etc/rc.d/rc.dhcpd start
+fi
+
+# Start the NFS server.   Note that for this to work correctly, you'll
+# need to load the knfsd module for kernel NFS server support.
+# You'll also need to set up some shares in /etc/exports.
+# Starting the NFS server:
+if [ -x /etc/rc.d/rc.nfsd ]; then
+  /etc/rc.d/rc.nfsd start
+fi
+
+# # Start the network routing daemon:
+# if [ -x /usr/sbin/routed ]; then
+#   echo "Starting network routing daemon:  /usr/sbin/routed"
+#   /usr/sbin/routed -g -s
+# fi
+# # Done starting the network routing daemon.
+
+# # Start the system status server:
+# if [ -x /usr/sbin/rwhod ]; then
+#   echo "Starting system status server:  /usr/sbin/rwhod"
+#   /usr/sbin/rwhod
+# fi
+# # Done starting the system status server.
+
+# Start NIS (the Network Information Service):
+if [ -x /etc/rc.d/rc.yp ]; then
+    /etc/rc.d/rc.yp start
+fi
+
+#  # Fire up the PC-NFS daemon(s).  This is a primarily obsolete system, and may
+#  # not be very secure.  It's not at all needed for normal NFS server support.
+#  # You probably should not run this.
+#  if [ -x /usr/sbin/rpc.pcnfsd ]; then
+#    echo "Starting PC-NFS daemons:  /usr/sbin/rpc.pcnfsd /usr/sbin/rpc.bwnfsd"
+#    /usr/sbin/rpc.pcnfsd /var/spool/lpd
+#  fi
+#  if [ -x /usr/sbin/rpc.bwnfsd ]; then
+#    /usr/sbin/rpc.bwnfsd /var/spool/lpd
+#  fi
+#  # Done firing up the PC-NFS daemons.

@@ -1,0 +1,71 @@
+diff -Nur debianutils-1.16/run-parts.c debianutils-1.16-modified/run-parts.c
+--- debianutils-1.16/run-parts.c	2002-02-19 00:35:31.000000000 +0100
++++ debianutils-1.16-modified/run-parts.c	2003-12-26 23:57:40.000000000 +0100
+@@ -54,26 +54,24 @@
+ void version ()
+ {
+   fprintf (stderr, "Debian GNU/Linux run-parts program, version " VERSION
+-"\nCopyright (C) 1994 Ian Jackson, Copyright (C) 1996 Jeff Noxon.
+-Copyright (C) 1996,1997,1998,1999 Guy Maor
+-This is free software; see the GNU General Public License version 2
+-or later for copying conditions.  There is NO warranty.
+-");
++"\nCopyright (C) 1994 Ian Jackson, Copyright (C) 1996 Jeff Noxon.\n"
++"Copyright (C) 1996,1997,1998,1999 Guy Maor\n"
++"This is free software; see the GNU General Public License version 2\n"
++"or later for copying conditions.  There is NO warranty.\n");
+   exit (0);
+ }
+ 
+ 
+ void usage ()
+ {
+-  fprintf (stderr, "Usage: run-parts [OPTION]... DIRECTORY
+-  --test          print script names which would run, but don't run them.
+-  --verbose       print script names before running them.
+-  --report        print script names if they produce output.
+-  --umask=UMASK   sets umask to UMASK (octal), default is 022.
+-  --arg=ARGUMENT  pass ARGUMENT to scripts, use once for each argument.
+-  --version       output version information and exit.
+-  --help          display this help and exit.
+-");
++  fprintf (stderr, "Usage: run-parts [OPTION]... DIRECTORY\n"
++"  --test          print script names which would run, but don't run them.\n"
++"  --verbose       print script names before running them.\n"
++"  --report        print script names if they produce output.\n"
++"  --umask=UMASK   sets umask to UMASK (octal), default is 022.\n"
++"  --arg=ARGUMENT  pass ARGUMENT to scripts, use once for each argument.\n"
++"  --version       output version information and exit.\n"
++"  --help          display this help and exit.\n" );
+   exit(0);
+ }
+ 
+diff -Nur debianutils-1.16/tempfile.c debianutils-1.16-modified/tempfile.c
+--- debianutils-1.16/tempfile.c	1999-09-03 17:40:40.000000000 +0200
++++ debianutils-1.16-modified/tempfile.c	2003-12-27 00:03:04.000000000 +0100
+@@ -16,16 +16,15 @@
+   if (status)
+     fprintf(stderr, "Try `%s --help' for more information.\n", progname);
+   else
+-    printf("Usage: %s [OPTION]\n\
+-Create a temporary file in a safe manner.
+-\n\
+--d, --directory=DIR  place temporary file in DIR\n\
+--p, --prefix=STRING  set temporary file's prefix to STRING\n\
+--s, --suffix=STRING  set temporary file's suffix to STRING\n\
+--m, --mode=MODE      open with MODE instead of 0600\n\
+--n, --name=FILE      use FILE instead of tempnam(3)\n\
+-    --help           display this help and exit\n\
+-    --version        output version information and exit\n", progname);
++    printf("Usage: %s [OPTION]\n"
++"Create a temporary file in a safe manner.\n\n"
++"-d, --directory=DIR  place temporary file in DIR\n"
++"-p, --prefix=STRING  set temporary file's prefix to STRING\n"
++"-s, --suffix=STRING  set temporary file's suffix to STRING\n"
++"-m, --mode=MODE      open with MODE instead of 0600\n"
++"-n, --name=FILE      use FILE instead of tempnam(3)\n"
++"    --help           display this help and exit\n"
++"    --version        output version information and exit\n", progname);
+   exit(status);
+ }
+ 

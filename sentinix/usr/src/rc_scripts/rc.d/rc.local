@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+# /etc/rc.d/rc.local:  Local system initialization script.
+#
+# Put any local setup commands in here:
+
+/usr/bin/kbdrate -r 30 -d 250
+

@@ -1,0 +1,12 @@
+build.apache	    Installs the "mkapachecert" script.
+
+build.nessus	    Will modify /usr/local/nessus/sbin/nessus-adduser and add
+		    the "-q" argument which will quietly create user "nessus"
+		    with password "nessus".
+
+build.crontab       Installs root's crontab.
+
+build.mysql         Performs initial configuration of the MySQL database.
+
+build.snortcenter   Installs the SENTINIX specific mksnortcentersensorcert.
+

@@ -1,0 +1,49 @@
+#!/bin/sh
+
+startnessus() {
+		echo -e "\033[1mStarting Nessus daemon...\033[0m"
+
+		cfile1="/usr/components/nessus/com/nessus/CA/servercert.pem"
+		cfile2="/usr/components/nessus/var/nessus/CA/serverkey.pem"
+		if [ ! -e "$cfile1" -o ! -e "$cfile2" ]; then
+		    # automatically generate a certificate
+		    echo "Automatically generating a certificate..."
+		    /usr/components/nessus/sbin/nessus-mkcert -q
+		fi
+
+		unset foundnessususer
+		for i in /usr/components/nessus/var/nessus/users/*; do
+		    if [ -e $i ]; then
+			foundnessususer=yes
+		    fi
+		done
+
+		if [ "$foundnessususer" = "" ]; then
+			/usr/components/nessus/sbin/nessus-adduser -q 1> /dev/null
+		fi
+
+		/usr/components/nessus/sbin/nessusd -D
+}
+
+stopnessus() {
+    killall nessusd
+}
+
+case "$1" in
+    'start')
+	startnessus &&
+	touch /var/sxrunning/nessus
+	;;
+    'stop')
+	stopnessus
+	rm -f /var/sxrunning/nessus
+	;;
+    'restart')
+	stopnessus
+	sleep 2
+	startnessus &&
+	touch /var/sxrunning/nessus
+	;;
+    *)
+	echo "usage: $0 start|stop|restart" ;;
+esac

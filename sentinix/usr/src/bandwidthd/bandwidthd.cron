@@ -1,0 +1,6 @@
+#!/bin/sh
+#
+# /etc/cron.daily/bandwidthd: Make bandwidthd rotate the logs.
+#
+
+/bin/killall -HUP bandwidthd 2> /dev/null

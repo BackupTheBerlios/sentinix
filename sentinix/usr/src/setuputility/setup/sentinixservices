@@ -1,0 +1,17 @@
+rc.sshd OpenSSH remote login daemon
+rc.ftpd FTP server (pure-ftpd)
+rc.postfix Postfix SMTP server
+rc.httpd Apache web server
+rc.mysqld MySQL database server
+rc.nagios Nagios host and service monitor
+rc.nessus Nessus security scanner
+rc.snortcenter Snort Network Intrusion Detection System
+rc.cacti Cacti - RRDTool graphing interface
+rc.snmpd SNMP daemon (net-snmp)
+rc.ntpd NTP daemon (ntpd)
+rc.bandwidthd BandwidthD - Network usage grapher
+rc.syslog System logger (syslogd and klogd)
+rc.ip_forward Enable IPv4 packet forwarding (ip_forward)
+rc.tcp_syncookies Enable TCP SYN cookies (tcp_syncookies)
+rc.network_security_tweak Enable some network security (/etc/rc.d/rc.network_security_tweak)
+rc.firewall Enable Netfilter firewall (default is extremely strict)

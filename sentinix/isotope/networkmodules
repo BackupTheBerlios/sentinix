@@ -1,0 +1,67 @@
+# ethernet 10/100 modules
+
+#CAP: Ethernet 10/100 modules
+
+sunhme		# Sun Happy Meal 10/100baseT
+sungem		# Sun GEM & Apple GMAC
+#3c501		# 3c501 "EtherLink"
+#3c503		# 3c503 "EtherLink II"
+#3c505		# 3c505 "EtherLink Plus"
+3c509		# 3c509/3c529 (MCA)/3c579 "EtherLink III"
+3c515		# 3c515 ISA "Fast EtherLink"
+3c59x		# 3c590/3c900 series (592/595/597) "Vortex/Boomerang"
+typhoon		# 3cr990 series "Typhoon" support
+#lance		# AMD LANCE and PCnet (AT1500 and NE2100)
+#wd		# WD80*3 support
+#smc-ultra	# SMC Ultra
+#smc9194		# SMC 9194
+#ni52		# Racal-Interlan (Micom) NI5210
+ni65		# Racal-Interlan (Micom) NI6510
+depca		# DEPCA, DE10x, DE200, DE201, DE202, DE422
+hp100		# HP 10/100VG PCLAN (ISA, EISA, PCI)
+#e2100		# Cabletron E21xx
+ewrk3		# EtherWORKS 3 (DE203, DE204, DE205)
+#eexpress	# EtherExpress 16
+#eepro		# EtherExpressPro support/EtherExpress 10 (i82595)
+#hp-plus		# HP PCLAN+ (27247B and 27252A)
+#hp		# HP PCLAN (27245 and other 27xxx series)
+lp486e		# LP486E on board Ethernet
+#eth16i		# ICL EtherTeam 16i/32
+#ne		# NE2000/NE1000
+pcnet32		# AMD PCnet32 PCI
+amd8111e	# AMD 8111 (new PCI lance) support
+starfire	# Adaptec Starfire/DuraLAN
+apricot		# Apricot Xen-II on board Ethernet
+#cs89x0		# CS89x0 support
+tulip		# DECchip Tulip (dc21x4x) PCI
+de4x5		# Generic DECchip & DIGITAL EtherWORKS PCI/EISA
+dgrs		# Digi Intl. RightSwitch SE-X
+dmfe		# Davicom DM910x/DM980x
+eepro100	# EtherExpressPro/100 support (eepro100, original Becker driver)
+#e100		# EtherExpressPro/100 support (e100, Alternate Intel driver)
+fealnx		# Myson MTD-8xx PCI
+natsemi		# National Semiconductor DP8381x series PCI
+ne2k-pci	# PCI NE2000 and clones
+8139too		# RealTek RTL-8139 PCI Fast Ethernet Adapter
+sis900		# SiS 900/7016 PCI Fast Ethernet Adapter
+epic100		# SMC EtherPower II
+sundance	# Sundance Alta
+tlan		# TI ThunderLAN
+
+#tc35815	# TOSHIBA TC35815 Ethernet support
+
+via-rhine	# VIA Rhine
+winbond-840	# Winbond W89c840 Ethernet
+
+#CAP: Ethernet 1000 (1GBit) modules
+
+acenic		# Alteon AceNIC/3Com 3C985/NetGear GA620 Gigabit
+dl2k		# D-Link DL2000-based Gigabit Ethernet
+e1000		# Intel(R) PRO/1000 Gigabit Ethernet
+ns83820		# National Semiconductor DP83820
+hamachi		# Packet Engines Hamachi GNIC-II
+# r8169 has an empty license string and taints the kernel with P.
+#r8169		# Realtek 8169 Gigabit Ethernet support
+sk98lin		# SysKonnect SK-98xx
+tg3		# Broadcom Tigon3
+

@@ -1,0 +1,12 @@
+#!/bin/sh
+CWD=`pwd`
+destdir="$CWD/../specials/sbin/"
+VERSION=1.4.1
+
+. config &&
+rm -rf sysklogd-$VERSION &&
+tar -xzf sysklogd-$VERSION.tar.gz &&
+cd sysklogd-$VERSION &&
+chown -R root.root . &&
+make CC=$UCLIBC LDFLAGS="-s -static" &&
+cp syslogd klogd $destdir

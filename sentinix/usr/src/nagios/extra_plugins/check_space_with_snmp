@@ -1,0 +1,331 @@
+#!/bin/sh
+
+STATE_OK=0
+STATE_WARNING=1
+STATE_CRITICAL=2
+STATE_UNKNOWN=3
+STATE_DEPENDENT=4
+
+INDEXOID="HOST-RESOURCES-MIB::hrStorageIndex"
+STRDESCOID="HOST-RESOURCES-MIB::hrStorageDescr."
+ALLOCUNITSOID="HOST-RESOURCES-MIB::hrStorageAllocationUnits."
+STRSIZEOID="HOST-RESOURCES-MIB::hrStorageSize."
+STRUSEDOID="HOST-RESOURCES-MIB::hrStorageUsed."
+
+nosnmp() {
+	echo "Could not find \"snmpget\", a net-snmp tool"!
+	exit $STATE_UNKNOWN
+}
+nobc() {
+	echo "Could not find \"bc\", a GNU program required by this script"!
+	exit $STATE_UNKNOWN
+}
+noprintf() {
+	echo "Could not find \"printf\", a GNU program required by this script"!
+	exit $STATE_UNKNOWN
+}
+SNMPGET=`which snmpget 2> /dev/null` || nosnmp
+SNMPWALK=`which snmpwalk 2> /dev/null` || nosnmp
+BC=`which bc 2> /dev/null` || nobc
+PRINTF=`which printf 2> /dev/null` || noprintf
+
+#
+# defaults
+#
+WARN_MIN_DEF=8
+CRIT_MIN_DEF=5
+
+HOSTNAME=""
+COMMUNITY=public
+DEVICE=1
+WARN_MIN=${WARN_MIN_DEF}
+CRIT_MIN=${CRIT_MIN_DEF}
+SCAN=false
+
+#
+# various functions
+#
+helpme() {
+	echo
+	echo "check_space_with_snmp script written by Michel Blomgren for Sentinix"
+	echo "http://sentinix.org - contact: michel@zebra.ath.cx"
+	echo
+	echo "usage:"
+	echo "$0 -H <host_or_ip> | [-w <percent>] | [-c <percent>] | \\"
+	echo "[-C <community>] | [-s]"
+	echo
+	echo -e "    -H \033[1mhost_or_ip\033[0m"
+	echo "        The hostname or IP to do SNMP query on."
+	echo -e "    -w \033[1mpercent_minimum_space\033[0m"
+	echo "        Minimum space in percent to cause a warning, e.g. \"-w 40\"."
+	echo "        Default is ${WARN_MIN_DEF}%."
+	echo -e "    -c \033[1mpercent_minimum_space\033[0m"
+	echo "        Minimum space in percent to cause critical state, e.g. \"-w 5\"."
+	echo "        Default is ${CRIT_MIN_DEF}%."
+	echo -e "    -C \033[1mcommunity\033[0m"
+	echo "        Community name on remote machine, defaults is \"public\"."
+	echo -e "    -d \033[1mdevice_index\033[0m"
+	echo "        Device index on remote machine, defaults to \"1\". 1 could be A:\\ on a"
+	echo "        Windows machine. 2 could be C:\\. 1 is always the rootfs / on a UNIX."
+	echo -e "    -s"
+	echo "        Scan every device index and show their descriptions. Will not check"
+	echo "        available space. Use -s to find out which device index to check."
+	echo
+	exit $STATE_UNKNOWN
+}
+
+syntaxerror() {
+	echo "Syntax error! Type \"$0 -h\" for help"!
+	exit $STATE_UNKNOWN
+}
+
+
+
+#
+# snmpget functions
+#
+
+getdevicedesc() {
+	# usage: getdevicedesc <device index>
+	Result=`$SNMPGET -Ovq $HOSTNAME -c $COMMUNITY ${STRDESCOID}${1} 2>&1`
+	if [ ! $? -eq 0 ]; then
+		echo ${Result}
+		exit 1
+	fi
+	echo $Result
+	unset Result
+}
+
+getallocunits() {
+	# usage: getallocunits <device index>
+	Result=`$SNMPGET -Ovq $HOSTNAME -c $COMMUNITY ${ALLOCUNITSOID}${1} 2>&1`
+	if [ ! $? -eq 0 ]; then
+		echo ${Result}
+		exit 1
+	fi
+	Result=`echo ${Result} | cut -d\  -f1 2>&1`
+	if [ ! $? -eq 0 ]; then
+		echo ${Result}
+		exit 1
+	fi
+	echo $Result
+	unset Result
+}
+
+getdisksize() {
+	# usage: getdisksize <device index> <allocunits>
+	Result=`$SNMPGET -Ovq $HOSTNAME -c $COMMUNITY ${STRSIZEOID}${1} 2>&1`
+	if [ ! $? -eq 0 ]; then
+		echo ${Result}
+		exit 1
+	fi
+	echo $Result
+	unset Result
+}
+
+getusedsize() {
+	# usage: getdisksize <device index>
+	Result=`$SNMPGET -Ovq $HOSTNAME -c $COMMUNITY ${STRUSEDOID}${1} 2>&1`
+	if [ ! $? -eq 0 ]; then
+		echo ${Result}
+		exit 1
+	fi
+	echo $Result
+	unset Result
+}
+
+calcfreespace() {
+	# usage: calcfreespace <disksize> <usedsize> <allocunits>
+	Result=`$BC <<EOF
+(${1}-${2})*${3}*0.000001
+EOF`
+	if [ ! $? -eq 0 ]; then
+		echo ${Result}
+		exit 1
+	fi
+	$PRINTF "%.0f" $Result
+	unset Result
+}
+
+calcpercentfreespace() {
+	# usage: calcpercentfreespace <disksize> <usedsize>
+	Result=`$BC <<EOF
+scale=4
+(1-(${2}/${1}))*100
+EOF`
+	if [ ! $? -eq 0 ]; then
+		echo ${Result}
+		exit 1
+	fi
+	$PRINTF "%.0f" $Result
+	unset Result
+}
+
+
+#
+# scan OIDs
+#
+
+scanoids() {
+	list=`$SNMPWALK -Ovq $HOSTNAME -c $COMMUNITY ${INDEXOID} 2>&1`
+	if [ ! $? -eq 0 ]; then
+	    echo "Error: $list"
+	    exit 1
+	fi
+
+	echo
+	echo "Host: $HOSTNAME"
+	echo
+	echo "device_index	MB_total_space	description"
+
+	echo "$list" | while read LINE
+	do
+		DEVICEDESC=`getdevicedesc $LINE 2> /dev/null`
+		if [ $? -eq 0 ]; then
+		
+		DISKSIZE=`getdisksize $LINE` || exit $STATE_UNKNOWN
+		ALLOCUNITS=`getallocunits $LINE` || exit $STATE_UNKNOWN
+
+		REALDISKSIZE=`$BC <<EOF
+(${DISKSIZE}*${ALLOCUNITS})*0.000001
+EOF`
+		REALDISKSIZE=`$PRINTF "%.0f" ${REALDISKSIZE}`
+
+		echo "$LINE		$REALDISKSIZE		$DEVICEDESC"
+		fi
+	done
+	echo
+}
+
+
+#
+# check syntax
+#
+
+if [ $# -eq 0 ]; then
+	syntaxerror
+fi
+
+#
+# parse command line options
+#
+
+while getopts "hH:w:c:d:C:s" Option
+do
+	case $Option in
+		h) helpme ;;
+		H) HOSTNAME=$OPTARG ;;
+		w)
+			if [ ! "$OPTARG" = "" ]; then
+				WARN_MIN=$OPTARG
+			fi
+			;;
+		c)
+			if [ ! "$OPTARG" = "" ]; then
+				CRIT_MIN=$OPTARG
+			fi
+			;;
+		d)
+			if [ ! "$OPTARG" = "" ]; then
+				DEVICE=$OPTARG
+			fi
+			;;
+		C)
+			if [ ! "$OPTARG" = "" ]; then
+				COMMUNITY="$OPTARG"
+			fi
+			;;
+		s) SCAN=true ;;
+		*) syntaxerror ;;
+	esac
+done
+
+if [ "$HOSTNAME" = "" ]; then
+	echo "No hostname/IP was specified"!
+	syntaxerror
+fi
+
+if [ "$SCAN" = "true" ]; then
+	scanoids || exit $STATE_UNKNOWN
+	exit 0
+fi
+
+#
+# collect necessary information
+#
+DEVICEDESC=`getdevicedesc $DEVICE`
+if [ ! $? -eq 0 ]; then
+	echo "$DEVICEDESC"
+	exit $STATE_UNKNOWN
+fi
+
+DISKSIZE=`getdisksize $DEVICE`
+if [ ! $? -eq 0 ]; then
+	echo "$DISKSIZE"
+	exit $STATE_UNKNOWN
+fi
+if [ $DISKSIZE -eq 0 ]; then
+	echo "UNKNOWN - \"${DEVICEDESC}\" is zero bytes, this device is probably not mounted."
+	exit $STATE_UNKNOWN
+fi
+
+ALLOCUNITS=`getallocunits $DEVICE`
+if [ ! $? -eq 0 ]; then
+	echo "$ALLOCUNITS"
+	exit $STATE_UNKNOWN
+fi
+
+if [ $ALLOCUNITS -eq 0 ]; then
+	echo "UNKNOWN - \"${DEVICEDESC}\" has an allocation units value of 0, device probably not mounted."
+	exit $STATE_UNKNOWN
+fi
+
+
+
+USEDSIZE=`getusedsize $DEVICE`
+if [ ! $? -eq 0 ]; then
+	echo "$USEDSIZE"
+	exit $STATE_UNKNOWN
+fi
+# avoid division by zero...
+if [ $USEDSIZE -eq 0 ]; then
+	USEDSIZE=1
+fi
+
+#
+# calculate free space
+#
+FREESPACE=`calcfreespace $DISKSIZE $USEDSIZE $ALLOCUNITS`
+if [ ! $? -eq 0 ]; then
+	echo "$FREESPACE"
+	exit $STATE_UNKNOWN
+fi
+
+PERCENTFREE=`calcpercentfreespace $DISKSIZE $USEDSIZE`
+if [ ! $? -eq 0 ]; then
+	echo "$PERCENTFREE"
+	exit $STATE_UNKNOWN
+fi
+
+REALDISKSIZE=`$BC <<EOF
+(${DISKSIZE}*${ALLOCUNITS})*0.000001
+EOF`
+REALDISKSIZE=`$PRINTF "%.0f" ${REALDISKSIZE}`
+
+#
+# check if free space is OK
+#
+
+if [ $PERCENTFREE -le $CRIT_MIN ]; then
+	echo "CRITICAL - \"${DEVICEDESC}\" Free: ${FREESPACE} MB (${PERCENTFREE}%), Total: ${REALDISKSIZE} MB"!
+	exit $STATE_CRITICAL
+fi
+
+if [ $PERCENTFREE -le $WARN_MIN ]; then
+	echo "WARNING - \"${DEVICEDESC}\" Free: ${FREESPACE} MB (${PERCENTFREE}%), Total: ${REALDISKSIZE} MB"!
+	exit $STATE_WARNING
+fi
+
+echo "OK - \"${DEVICEDESC}\" Free: ${FREESPACE} MB (${PERCENTFREE}%), Total: ${REALDISKSIZE} MB."
+
+exit $STATE_OK

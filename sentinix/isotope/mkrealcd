@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if [ ! -e config ]; then
+	echo "The \"config\" file does not exist"!
+	exit 1
+fi
+
+. config
+
+if [ "$CDRSPEED" = "" -o "$CDRDEV" = "" ]; then
+	echo "The CDRSPEED or CDRDEV variable(s) is/are not OK"!
+	exit 1
+fi
+
+cdrecord -v -eject speed=$CDRSPEED dev=$CDRDEV gracetime=2 -data sentinix.iso

@@ -1,0 +1,63 @@
+BODY {
+	FONT-SIZE: 12pt; FONT-FAMILY: Arial, sans-serif
+}
+TR {
+	FONT-SIZE: 12pt; FONT-FAMILY: Arial, sans-serif
+}
+TD {
+	FONT-SIZE: 12pt; FONT-FAMILY: Arial, sans-serif
+}
+TABLE {
+	FONT-SIZE: 12pt; FONT-FAMILY: Arial, sans-serif
+}
+A {
+	COLOR: blue; TEXT-DECORATION: none
+}
+A:hover {
+	BACKGROUND-COLOR: #fffbcc; TEXT-DECORATION: underline
+}
+LI {
+	FONT-SIZE: 12pt; LINE-HEIGHT: 14pt
+}
+.textPageHeader {
+	FONT-WEIGHT: bold; FONT-SIZE: 20pt
+}
+.textParagraphHeader {
+	FONT-WEIGHT: bold; FONT-SIZE: 14pt
+}
+TD.fieldName {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; VERTICAL-ALIGN: middle; FONT-FAMILY: monospace
+}
+TD.diagramText {
+	FONT-SIZE: 10pt; VERTICAL-ALIGN: middle; FONT-FAMILY: monospace
+}
+TD.diagramHeader {
+	FONT-WEIGHT: bold; FONT-SIZE: 14pt; VERTICAL-ALIGN: middle; BACKGROUND-COLOR: #e1e1e1; TEXT-ALIGN: center
+}
+TD.exampleCode {
+	FONT-SIZE: 10pt; FONT-FAMILY: monospace; BACKGROUND-COLOR: #e5e5e5
+}
+TD.fieldDescription {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; PADDING-TOP: 3px
+}
+TR.fieldOne {
+	BACKGROUND-COLOR: #f1f1f1
+}
+TR.fieldTwo {
+	BACKGROUND-COLOR: #ffffff
+}
+TABLE.field {
+	BORDER-RIGHT: #c5c5c5 1px solid; PADDING-RIGHT: 3px; BORDER-TOP: #c5c5c5 1px solid; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; BORDER-LEFT: #c5c5c5 1px solid; PADDING-TOP: 3px; BORDER-BOTTOM: #c5c5c5 1px solid
+}
+P.code {
+	PADDING-RIGHT: 5px; PADDING-LEFT: 5px; FONT-WEIGHT: bold; FONT-SIZE: 10pt; PADDING-BOTTOM: 5px; MARGIN: 5px; COLOR: #000066; PADDING-TOP: 5px; FONT-FAMILY: Courier New, Courier; BACKGROUND-COLOR: #eeeeee
+}
+TT.shell {
+	FONT-WEIGHT: normal; FONT-SIZE: 10pt; COLOR: #999999; FONT-FAMILY: Courier New, Courier
+}
+P.php {
+	PADDING-RIGHT: 5px; PADDING-LEFT: 5px; FONT-WEIGHT: normal; FONT-SIZE: 10pt; PADDING-BOTTOM: 5px; MARGIN: 5px; COLOR: #000000; PADDING-TOP: 5px; FONT-FAMILY: Courier New, Courier; BACKGROUND-COLOR: #eeeeee
+}
+TT.php-var {
+	FONT-WEIGHT: normal; FONT-SIZE: 10pt; COLOR: #008080; FONT-FAMILY: Courier New, Courier
+}

@@ -1,0 +1,29 @@
+#!/bin/sh
+#
+# start/stop Net-SNMP daemon
+# $Id: rc.snmpd,v 1.1 2004/01/11 20:10:21 replikan Exp $
+#
+
+start_snmpd() {
+    echo -e "\033[1mStarting net-snmp daemon\033[0m"
+    /usr/sbin/snmpd &&
+    touch /var/sxrunning/snmpd
+}
+
+stop_snmpd() {
+    killall snmpd
+    rm -f /var/sxrunning/snmpd
+}
+
+case "$1" in
+    'start')
+	start_snmpd ;;
+    'stop')
+	stop_snmpd ;;
+    'restart')
+	stop_snmpd
+	sleep 2
+	start_snmpd ;;
+    *)
+	echo "usage: $0 start|stop|restart" ;;
+esac

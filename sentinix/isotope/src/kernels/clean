@@ -1,0 +1,13 @@
+#!/bin/sh
+CWD=`pwd`
+
+if [ ! -e config ]; then
+	ln -s ../../config config || exit 1
+fi
+
+. config &&
+rm -rf linux-$KVERSION &&
+rm -rf linux-$KVERSION-openmosix-1 &&
+rm -rf $CWD/../../lib &&
+rm -rf $CWD/../../kernels/* &&
+rm -rf $SENTINIXPATH/kernels

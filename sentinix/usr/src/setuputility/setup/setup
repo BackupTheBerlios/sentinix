@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# $Id: setup,v 1.1 2004/01/11 20:10:21 replikan Exp $
+#
+exec replimenu -f /usr/local/setup/main.rm

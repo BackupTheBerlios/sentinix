@@ -1,0 +1,52 @@
+#!/bin/sh
+
+CWD=`pwd`
+KBDDIR=/usr/share/kbd/keymaps/i386
+TMP=/usr/local/setup/tmp/kbdmap.temp
+savefile=/usr/local/setup/tmp/kbdmap.selected
+selected=`cat $savefile 2> /dev/null`
+
+cd $KBDDIR || exit 1
+MAPS=`ls -1 azerty/*.map*`
+MAPS=`echo $MAPS; ls -1 dvorak/*.map*`
+MAPS=`echo $MAPS; ls -1 qwerty/*.map*`
+MAPS=`echo $MAPS; ls -1 qwertz/*.map*`
+MAPS=`echo $MAPS`
+cd $CWD
+
+#
+# start creating the menufile for replimenu
+#
+cat <<EOF > $TMP
+caption=SENTINIX Setup Utility
+colorscheme=4
+text=Choose your keyboard map below. Press F10, "Q" or choose the last item in the menu when you are done.
+runonexit=echo \$RM_kbdmap > $savefile
+EOF
+
+for i in $MAPS
+do
+	echo "begin item" >> $TMP
+	echo "name=kbdmap" >> $TMP
+
+	if [ "$i" = "$selected" ]; then
+		echo "type=radiobutton|selected" >> $TMP
+	else
+		echo "type=radiobutton" >> $TMP
+	fi
+
+	echo "label=$i" >> $TMP
+	echo "default=$i" >> $TMP
+	echo "end" >> $TMP
+done
+
+echo "br" >> $TMP
+echo "begin item" >> $TMP
+echo "name=QUIT" >> $TMP
+echo "bullet=<-" >> $TMP
+echo "label=Done" >> $TMP
+echo "end" >> $TMP
+
+replimenu -f $TMP
+rm -f $TMP 2> /dev/null
+loadkeys `cat $savefile`

@@ -1,0 +1,18 @@
+#!/bin/sh
+
+CWD=`pwd`
+destdir="$CWD/../specials/bin"
+
+VERSION=2.5.1
+
+rm -rf grep-$VERSION
+tar -xzf grep-$VERSION.tar.gz
+cd grep-$VERSION
+chown -R root:root .
+
+CFLAGS=-O2 LDFLAGS="-static -s" ./configure \
+--disable-nls \
+--prefix=/usr \
+--bindir=/bin &&
+make &&
+cp src/grep $destdir

@@ -1,0 +1,25 @@
+If upgrading Cacti to a new version, do this:
+
+ 1. Delete sentinix_cacti.sql: rm sentinix_cacti.sql
+
+ 2. Mount /proc if not already mounted: mount none -t proc /proc
+
+ 3. Start MySQL if not already started: /etc/rc.d/rc.mysqld start
+
+ 4. ./build
+
+ 5. Start Apache: /etc/rc.d/rc.httpd startssl
+
+ 6. Goto http://localhost/cacti
+
+ 7. Press "Next" and then "Next" again.
+
+ 8. If "/var/www/htdocs" or "/var/www/htdocs-unsecure" exist anywhere, replace
+    with "/usr/local".
+
+ 9. Press "Finish". Don't login and don't bother to change the admin password,
+    leave it be admin/admin.
+
+10. Dump the Cacti database and save it into sentinix_cacti.sql:
+    mysqldump -uroot cacti > sentinix_cacti.sql
+

@@ -1,0 +1,16 @@
+# The variable below should point to the directory in which Sentinix is
+# located (compiled and installed).
+SENTINIXPATH=/
+
+# Below, the speed of your CD recorder (speed to record in):
+CDRSPEED=16
+# Speed to record CDRW discs:
+CDRWSPEED=4
+# SCSI (or scsi-generic) device to use:
+CDRDEV=0,0
+
+# SENTINIX version
+SENTINIXVERSION=0.00.0
+
+# Linux kernel version
+KVERSION=2.4.21

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+postfix stop
+postfix -c /etc/postfix.mailscanner.out stop
+
+if [ -e /opt/MailScanner/var/MailScanner.pid ]; then
+	kill `cat /opt/MailScanner/var/MailScanner.pid`
+fi

@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+# This script enables or disables TCP syncookies.
+# Read more about syncookies at http://cr.yp.to/syncookies.html.
+#
+
+enable_syncookies() {
+    if [ -f /proc/sys/net/ipv4/ip_forward -a -f /proc/sys/net/ipv4/tcp_syncookies ]; then
+	echo -e "\033[1mEnabling IPv4 TCP SYN cookies!\033[0m"
+	echo 1 > /proc/sys/net/ipv4/tcp_syncookies
+    fi
+}
+
+disable_syncookies() {
+    if [ -f /proc/sys/net/ipv4/ip_forward -a -f /proc/sys/net/ipv4/tcp_syncookies ]; then
+	echo "Disabling IPv4 TCP SYN cookies!"
+	echo 0 > /proc/sys/net/ipv4/tcp_syncookies
+    fi
+}
+
+case "$1" in
+    'start')
+	enable_syncookies
+	;;
+    'stop')
+	disable_syncookies
+	;;
+    'restart')
+	disable_syncookies
+	sleep 1
+	enable_syncookies
+	;;
+    *)
+	echo "usage: $0 start|stop|restart"
+esac

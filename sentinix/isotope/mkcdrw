@@ -1,0 +1,20 @@
+#!/bin/sh
+
+if [ ! -e config ]; then
+	echo "No \"config\" file found"!
+	exit 1
+fi
+
+. config
+
+if [ "$CDRWSPEED" = "" -o "$CDRDEV" = "" ]; then
+	echo "The CDRWSPEED or CDRDEV variable(s) is/are not OK"!
+	exit 1
+fi
+
+# first, blank the CD-RW
+
+cdrecord -v speed=$CDRWSPEED dev=$CDRDEV blank=fast &&
+sleep 2 &&
+# then burn the image
+cdrecord -v -eject speed=$CDRWSPEED dev=$CDRDEV gracetime=2 -data sentinix.iso

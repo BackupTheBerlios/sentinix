@@ -1,0 +1,32 @@
+#!/bin/sh
+
+startmysql() {
+	/usr/bin/mysqld_safe 1> /dev/null 2>&1 &
+	sleep 1
+	touch /var/sxrunning/mysqld
+}
+
+stopmysql() {
+	killall mysqld
+	rm -f /var/sxrunning/mysqld
+}
+
+case "$1" in
+	'start')
+		echo -e "\033[1mStarting MySQL...\033[0m"
+		startmysql ;;
+	'stop')
+		stopmysql ;;
+	'restart')
+		echo -ne "\033[1mRestarting MySQL"
+		stopmysql
+		while ps -C mysqld 1> /dev/null 2>&1
+		do
+			echo -n "."
+			sleep 1
+		done
+		startmysql
+		echo -e ".\033[0m" ;;
+	*)
+		echo "usage: $0 start|stop|restart" ;;
+esac

@@ -1,0 +1,143 @@
+
+SENTINIX SOURCE TREE
+
+The SENTINIX Source Tree is based on the LFS project (Linux From
+Scratch, linuxfromscratch.org) and Slackware. Although SENTINIX differs
+from both LFS and Slackware in many aspects, the basic idea on how to
+build a Linux distribution came from both LFS and Slackware.
+
+HOW TO USE THE SENTINIX SOURCE TREE
+
+Each software package has it's own directory. E.g.: "postfix" holds the
+source code for Postfix. In each directory there is an "install.sh"
+script that extracts the software tarball (gzip or bzip2), compiles the
+software and installs it. There is also a "clean.sh" script that removes
+the un-tar'd software (it doesn't un-install it) and there's a
+"sxconfig" file that usually only hold a VERSION variable (used by both
+"install.sh" and "clean.sh"). All directories have to have an
+"install.sh" script but not a "clean.sh" script.
+
+The "install-all.sh" script in the top-level directory will go through
+the entire source tree, compile and install all software in the correct
+and intended order.
+
+COMPILING SENTINIX
+
+ 1. Become "root"! (very important!)
+
+ 2. Unpack sentinix-fullsource-X.XX.tar.gz on a partition with atleast 4 Gb of
+    free space.
+
+ 3. Enter the unpacked "sentinix" directory and then run:
+
+	$ ./schroot
+
+ 4. You should now be in the chroot environment ready to build SENTINIX and
+    should see this prompt:
+
+	I have no name!:/#
+
+    "I have no name!" means that bash was unable to resolve the username for
+    user id 0 since the glibc passwd stuff isn't in the build system. Once
+    glibc is installed it will say "root" instead.
+
+ 5. Go to /usr/src and run the "install-all.sh" script:
+
+	$ cd /usr/src
+	$ ./install-all.sh
+
+    Compilation now begins. It takes approximately 3 hours on an AMD
+    1800+ (1.5GHz) with an ATA-100 hard disk to compile SENTINIX. The
+    build system is not designed for a compilation cluster or SMP box
+    (no "make -j" anywhere). If anyone would like to experiment with
+    building SENTINIX on a compilation cluster, we would be very
+    interested in the results!
+
+ 6. Exit the chroot environment (e.g., Ctrl+D) and edit the "schroot"
+    script and add " --login" after "/bin/bash", e.g.:
+
+	"chroot $CWD /bin/bash" -> "chroot $CWD /bin/bash --login".
+
+ 7. Type "./schoot" again and you're inside the full SENTINIX distro. You may
+    delete /staticdumphole if you wish.
+
+ 8. Enter /isotope and continue by reading the README file thereunder:
+
+	$ cd /isotope
+	$ less README
+
+
+HOW TO ADD SOFTWARE TO THE SOURCE TREE
+
+It's really simple. You need to put the new software into a directory,
+modify the top "sxconfig" file and then you're good to go.
+
+The steps below are an example of how the "which" program was added, the same
+set of steps can be applied to just about any program.
+
+    - Make sure you are in the chroot environment (very important).
+
+    - Create a directory to hold the source, e.g. "mkdir which"
+      (under /usr/src).
+
+    - Enter the directory and place the software tarball (including any diff
+      patch) in it.
+
+    - Create the "install.sh" script, e.g. "nano install.sh" or "mc -ce
+      install.sh", example script:
+
+		#!/bin/sh
+		source sxconfig &&
+		rm -rf which-$VERSION &&
+		tar -xzf which-$VERSION.tar.gz &&
+		cd which-$VERSION &&
+		chown -R root.root . &&
+		./configure --prefix=/usr &&
+		make CFLAGS=-O2 LDFLAGS=-s &&
+		make install
+
+      However you write your compilation script, make sure that it exits with a
+      return code of >0 if any crucial step in the script fail. This is simple
+      to do by only adding a && behind every command.
+
+    - Create the "sxconfig" file containing:
+
+		VERSION=2.13
+
+      That's it.
+
+    - Now make a "clean.sh" script too, e.g.:
+
+		#!/bin/sh
+		. sxconfig &&
+		rm -rf which-$VERSION
+
+    - Run "chmod +x install.sh clean.sh"
+
+    - You may create a file named "sxcontrib" and put your name (the
+      name of the person or persons that contributed the software
+      package to SENTINIX) and optionally contact information, etc. The
+      file must be a clear-text file, not a script.
+
+    - Go back to /usr/src and edit the top "sxconfig" file. Add your new
+      software to the "SRC" variable per se, either last or before any
+      other software that may depend on it. If your new software
+      addition depend on any software in the "SRC" variable, make sure
+      to place it after any dependencies.
+
+    - That's it. You may now submit it to the SENTINIX project, i.e. by
+      e-mailing it to Michel Blomgren; michel@sentinix.org.
+
+
+NOTE ON UPGRADING THE LINUX KERNEL
+
+You need to change the Linux kernel version in the following packages:
+
+    linux
+    linuxmandocs
+    openmosix-tools
+
+Edit the "sxconfig" file and change, e.g. "2.4.21" to the new version.
+
+Read the /isotope/src/kernels/README file for further upgrade instructions.
+

@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# This script is not used with SnortCenter; use rc.snortcenter instead.
+#
+
+case "$1" in
+	'start')
+		echo -e "\033[1mStarting snort (NIDS)...\033[0m"
+		/usr/components/snort/bin/snort -c /etc/snort/snort.conf -D ;;
+	'stop')
+		killall snort ;;
+	'restart')
+		echo -e "\033[1mRestarting snort (NIDS)...\033[0m"
+		killall snort
+		sleep 2
+		/usr/components/snort/bin/snort -c /etc/snort/snort.conf -D ;;
+	*)
+		echo "usage: $0 start|stop|restart" ;;
+esac

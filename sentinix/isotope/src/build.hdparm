@@ -1,0 +1,24 @@
+#!/bin/sh
+
+CWD=`pwd`
+destdir="$CWD/../specials/sbin"
+VERSION=5.4
+
+if [ ! -e config ]; then
+	echo "No \"config\" file found"!
+	exit 1
+fi
+
+. config
+
+if [ "$UCLIBC" = "" ]; then
+	echo "The UCLIBC variable is no good, check the \"config\" file"!
+	exit 1
+fi
+
+rm -rf hdparm-$VERSION
+tar -xzf hdparm-$VERSION.tar.gz &&
+cd hdparm-$VERSION &&
+chown -R root.root . &&
+make CC="$UCLIBC" LDFLAGS="-s -static" &&
+cp hdparm $destdir

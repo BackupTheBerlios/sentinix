@@ -1,0 +1,80 @@
+#!/bin/sh
+CWD=`pwd`
+TMP=/tmp/mksentinixtgzexclude
+
+if [ ! -e config ]; then
+	echo "The \"config\" file does not exist"!
+	exit 1
+fi
+
+source config
+
+if [ "$SENTINIXPATH" = "" ]; then
+	echo "The variable SENTINIXPATH is no good, check the \"config\" file"!
+	exit 1
+fi
+
+cat <<EOF > $TMP
+CVS
+./rsync_exclusion
+./rsync_tarballs_to_sentinix.org.sh
+./rsync_to_berlios_cvs_working_copy.sh
+./schroot
+./.rnd
+./README
+./isotope
+./proc/*
+./usr/src/*
+./static
+./staticdumphole
+./etc/mtab
+./etc/hosts
+./etc/dhcpc/*
+./usr/local/nagios/var/nagios.log
+./usr/local/nagios/var/nagios.sav
+./var/log/maillog*
+./var/log/messages*
+./var/log/cron*
+./var/log/debug*
+./var/log/secure*
+./var/log/snmpd.log
+./var/log/spooler*
+./var/log/syslog*
+./var/log/apache/*
+./var/log/snort/*
+./var/spool/clientmqueue/*
+./var/spool/postfix/active/*
+./var/spool/postfix/bounce/*
+./var/spool/postfix/corrupt/*
+./var/spool/postfix/defer/*
+./var/spool/postfix/deferred/*
+./var/spool/postfix/flush/*
+./var/spool/postfix/hold/*
+./var/spool/postfix/incoming/*
+./var/spool/postfix/maildrop/*
+./var/spool/postfix/pid/*
+./var/spool/postfix/private/*
+./var/spool/postfix/public/*
+./root/.bash_history
+./root/.cedit
+./root/.mc
+./root/.ssh
+./root/.mysql_history
+./root/.rnd
+./root/.biewrc
+./root/.gcalrc
+./root/notincluded
+./tmp/*
+./usr/local/setup/tmp/*.save
+./usr/local/setup/tmp/*.conf
+./usr/local/setup/tmp/*.temp
+EOF
+
+cp sentinixmodules $SENTINIXPATH/usr/local/setup/ &&
+cp networkmodules $SENTINIXPATH/usr/local/setup/ &&
+rm -f $CWD/cd/sentinix.tgz &&
+cd $SENTINIXPATH &&
+echo "Making tarfile, please wait..." &&
+rm -f $CWD/cd/sentinix.tgz &&
+tar -czf $CWD/cd/sentinix.tgz -X $TMP . &&
+rm -f $TMP

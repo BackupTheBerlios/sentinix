@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# configuration script for nagios
+#
+if [ "$RM_nagiospasswd" = "" ]; then
+	echo "Password was empty"!
+	exit 1
+fi
+
+
+echo -n "Nagios: "
+htpasswd -mb /usr/local/nagios/etc/htpasswd.users nagiosadmin "$RM_nagiospasswd" &&
+
+echo -n "Nagat: "
+htpasswd -mb /usr/local/nagat/.htpasswd.users nagiosadmin "$RM_nagiospasswd"
+
+#echo
+#echo "Nagat web-interface access: Enter new password for \"nagiosadmin\":"
+#htpasswd -m /usr/local/nagat/.htpasswd.users nagiosadmin

@@ -1,0 +1,37 @@
+#!/bin/sh
+#
+# Start the Apache web server
+#
+
+apachestartssl()
+{
+    if [ ! -e /etc/apache/ssl.crt/server.crt -o ! -e /etc/apache/ssl.key/server.key ]; then    
+	# automatically generate an SSL server certificate
+	/usr/local/sbin/mkapachecert -f
+    fi
+    /usr/sbin/apachectl startssl
+}
+
+case "$1" in
+   'startssl')
+      echo -e "\033[1mStarting Apache (with SSL)...\033[0m"
+      apachestartssl &&
+      touch /var/sxrunning/httpd
+      ;;
+   'start')
+      echo -e "\033[1mStarting Apache...\033[0m"
+      /usr/sbin/apachectl start &&
+      touch /var/sxrunning/httpd
+      ;;
+   'stop')
+      /usr/sbin/apachectl stop
+      rm -f /var/sxrunning/httpd
+      ;;
+   'restart')
+      echo -e "\033[1mRestarting Apache...\033[0m"
+      /usr/sbin/apachectl restart &&
+      touch /var/sxrunning/httpd
+      ;;
+   *)
+      echo "usage $0 startssl|start|stop|restart" ;;
+esac

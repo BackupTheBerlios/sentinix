@@ -1,0 +1,21 @@
+sximage.lss
+0eSENTINIX X is distributed under the X
+0dSENTINIX0e is Copyright (C) 2003 Michel Blomgren - http://sentinix.org
+
+ATTENTION! 1 minute timeout until booting as openMosix node!
+
+If you intend to install SENTINIX now, type in the kernel you want to boot. If
+you want this box to act as an openMosix node, simply press <return> or wait
+until the timeout has expired. E.g.: typing "smp" and pressing <return> will
+boot the Linux SMP kernel. Available kernels:
+
+    0bplain0e  - Linux compiled for uni-processor machines.
+    0bsmp0e    - Linux SMP (2 or more processors).
+    0bom0e     - openMosix uni-processor (transparent HPC clustering).
+    0bomsmp0e  - openMosix SMP kernel.
+
+You may also pass custom command variables to the kernel. For example, to boot
+the om kernel and mount /dev/hda1 as root (starting init from hda1), type:
+
+    0fom root=/dev/hda1 noinitrd ro0e
+

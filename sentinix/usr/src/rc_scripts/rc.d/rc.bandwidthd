@@ -1,0 +1,37 @@
+#!/bin/sh
+
+bdstart()
+{
+    ( cd /usr/components/bandwidthd &&
+      ./bandwidthd &&
+      chmod +x /etc/cron.daily/bandwidthd
+    )
+}
+
+bdstop()
+{
+    chmod -x /etc/cron.daily/bandwidthd
+    killall bandwidthd
+}
+
+case "$1" in
+    'start')
+	echo -e "\033[1mStarting BandwidthD...\033[0m"
+	bdstart &&
+	touch /var/sxrunning/bandwidthd
+	;;
+    'stop')
+	bdstop
+	rm -f /var/sxrunning/bandwidthd
+	;;
+    'restart')
+	echo -e "\033[1mRestarting BandwidthD...\033[0m"
+	bdstop
+	sleep 1
+	bdstart &&
+	touch /var/sxrunning/bandwidthd
+	;;
+    *)
+    	echo "usage: $0 start|stop|restart"
+	;;
+esac

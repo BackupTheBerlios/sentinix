@@ -1,0 +1,32 @@
+#!/bin/sh
+#
+# start BIND nameserver daemon (named).
+# $Id: rc.named,v 1.1 2004/01/11 20:10:21 replikan Exp $
+#
+
+start_named() {
+    echo -e "\033[1mStarting BIND nameserver (/usr/sbin/named)\033[0m"
+    # fix ownership, so that named can be run as another user:
+    chown -R daemon.root /var/run/named
+    # we'll be running as daemon, no matter what they say:
+    /usr/sbin/named -u daemon
+}
+
+stop_named() {
+    echo -e "Stopping BIND nameserver!"
+    killall named
+}
+
+case "$1" in
+    'start')
+	start_named ;;
+    'stop')
+	stop_named ;;
+    'restart')
+	stop_named
+	sleep 1
+	start_named ;;
+    *)
+	echo "usage: $0 start|stop|restart"
+	;;
+esac

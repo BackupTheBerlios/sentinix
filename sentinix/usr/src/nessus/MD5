@@ -1,0 +1,14 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+MD5 (libnasl-2.0.9.tar.gz) = 7626cc58afaa44a3f44f2fb1a31c5ea4
+MD5 (nessus-core-2.0.9.tar.gz) = 7bdbdb663d87a894cf8f99b33a5eb8b5
+MD5 (nessus-libraries-2.0.9.tar.gz) = 6bca1afa20e48886cde4fe98308efdf3
+MD5 (nessus-plugins-2.0.9.tar.gz) = afc233b099a0b36f828d72f891f94721
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.3 (Darwin)
+
+iD8DBQE/qXlW8JEETRRZWhoRAiVZAJ0YG3JNkdnqKx4SeeCmapXA9dK9oQCePl0O
+C4DePRaWoCvQmo4cf8VWbyA=
+=CQQB
+-----END PGP SIGNATURE-----

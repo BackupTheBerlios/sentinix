@@ -1,0 +1,25 @@
+#!/bin/sh
+
+. config
+if [ ! $? -eq 0 ]; then
+	exit 1
+fi
+
+if [ ! -e cd/sentinix.tgz ]; then
+	echo "cd/sentinix.tgz does not exist"!
+	echo "Have you run \"mksentinixtgz\"?, if not, consider running \"./build\""! 
+	exit 1
+fi
+
+mkisofs -o sentinix.iso \
+	-R -J -V "SENTINIX" \
+	-hide-rr-moved \
+	-v -d -N \
+	-no-emul-boot -boot-load-size 32 -boot-info-table \
+	-sort isolinux/iso.sort \
+	-b isolinux/isolinux.bin \
+	-c isolinux/boot.catalog \
+	-m CVS \
+	-A "SENTINIX ${SENTINIXVERSION}" \
+	-graft-points \
+	"isolinux=isolinux" "kernels=kernels" "modules=lib/modules" cd
