@@ -1,0 +1,362 @@
+$Date: 2004/01/08 04:27:30 $ $Author: replikan $
+
+
++ = Finished.
+- = Pending.
+
+- SXSA (SentiniX Security Advisory), some sec announcement system.
+
+- An even better LKM/syscall-tampering rootkit detection idea :)
+
+	- syscall fingerprinting, but a lot more flexible than kstat!
+
+	- How:
+                * using the "lidt" or "sidt" opcode (assembler) to get the
+                  interrupt descriptor table.
+
+                * the IDT contains 256 pointers. Get 0x80 (the Linux syscall
+                  interrupt).
+
+                * When we have the 0x80 pointer, open /dev/kmem and seek to
+		  that address.
+
+                * Here we must find a "call 0xaddress(,eax,4)", that's the
+                  system call dispatch table.  This is different in openMosix
+                  kernels, since they have "remote_sys_call_table" too.
+
+        - When the syscalls are fine, use query_module(2) to get a list of
+          loaded modules and save that list (with correct state, etc.).
+
+        - Since we now have the sys_call_table[], the dispatch table and the
+          module list we keep that info in memory and do polling checks at a
+          set interval (3 seconds, perhaps?).
+
+        - If any of the info gathered changes, syslog() and send e-mail using
+          sendmail to an admin.
+
+	- /boot/bzImage fingerprinting too.
+
+	- getopt-style configuration (command line).
+
+        - Also!  Make sure the LKM/syscall detector daemon is sane as an
+          intruder could possibly modify the daemon's memory, disabling the
+          detector, since the detector doesn't detect when the system is
+          rooted, this is crucial!   Some kind of crypto routine must in, but
+          how do we keep the key secret enough???   What do we do if someone
+          gdb's the daemon's process???   Is it possible to protect against
+          anything of this???
+
+        - When version is more stable, have an auto-reboot-on-change feature??
+          Or is that way-out-of-line?
+
+	- Perhaps auto-rmmod new inserted module feature??
+
+        - Make a loadable kernel module out of the above principle. A daemon
+          killed with signal 9 can't send a "kill-report" to, e.g. syslog, but
+          a kernel module _should_ be able to printk() before unloading under
+          any circumstance, thus much more reliable. An LKM would also get
+          direct access to sys_call_table[] without the quirky approach above.
+          The downside is that it has to be compiled using the kernel sources,
+          unlike the daemon principle, which _should_ work on any running
+          kernel (without sources) even without System.map.
+
+
++ Add the do_brk() TASK_SIZE check patch (mm/mmap.c) to 2.4.21.
+
+
+- LVM support must be added. Software RAID is already working nicely
+  from within the setup tool, etc.
+
+- "webmosmon" - openMosix cluster statistics cgi (just html, no graphics).
+
+- sxpkg 0.1 defines the new "SENTINIX package specification".
+
++ GNU debugger (gdb) must be added!
++ strace should be added!
+
+- check_snort Nagios plugin
+    - write it in C
+    - link it to libmysqlclient
+    - check_snort.conf configuration file for when to alert and
+      what to alert on, etc.
+    - check_snort should have it's own built-in "event handler", configured
+      in the .conf file. it should:
+	- be able to produce iptables rules (blocking IPs).
+	- rules should be able to be distributed if the firewall is not on
+	  the snort box.
+
+- check_mailq Nagios plugin (if mailq stacks up with too many e-mails, etc.)
+
+- Outline to a source-based package subsys for SENTINIX:
+
+	- To be written entirely in bash!
+
+        - SENTINIX-specific, bash-compliant package version numbering ("-lt"
+          "-gt"), e.g.: mailscanner-24 (real version might be MailScanner
+          4.25-14).
+
+        - /var/sxpkg/installedpackages: regular file keeping a list of
+          SENTINIX-specific versions of packages, one package name per line.
+
+        - /var/sxpkg/installqueue : regular file keeping a list of packages
+          downloaded, but not yet installed.
+
+        - /var/sxpkg/packages/ : directory containing all downloaded packages.
+
+		- packages are bzip2 tarballs, for example:
+
+			mailscanner-24.tar.bz2
+
+                - each package should have a dependency list (only for
+                  reference, not used IRL), for example:
+
+			mailscanner-24.deps
+
+		- the dependency list might contain:
+
+			perlmodules-78
+			dcc-12
+
+                - perlmodules might be a dependency by many programs, thus
+                  dependency version tracking must be done in package prog too.
+
+	- Dependency version tracking:
+
+                - PROG MUST NOT DOWNGRADE DEPENDENCIES!  *but* what *if* a
+                  previous package is not compatible with a more rescent
+                  dependency? dilemma!
+
+                - package prog must be able to determine if we already are up
+                  to date, i.e., if perlmodule-85 is already installed, don't
+                  download and install perlmodules-78.
+
+        - /var/sxpkg/lock : lock file. make sure only one sxpkg process can run
+          at any one time. however, 
+
+	- each package's dir should contain:
+                version:      script that prints the real program version (same
+                              kind of parsing as in "build" and "clean").
+
+		build:        script that compiles the program.
+
+                clean:        script that cleans the package dir from
+                              (previously) unpacked sources.
+
+		sxconfig:     contains version variable.
+		sxversion:    SENTINIX-specific version of this package.
+		sxdesc:       Full package description.
+
+                dependencies: regular file listing packages this package
+                              depends on, if any exists in
+                              /var/sxpkg/installedpackages, don't install it,
+                              otherwise attempt to install the dependency
+                              first.
+
+                CONTRIBUTOR:  Single line stating who contributed the package,
+                              e.g.: "contributed by Duane Dunston
+                              <email@host.domain>", output from package lister
+                              would be:
+                              ngrep-1.41 (contributed by Duane Dunston <email@host.domain>)
+
+	THE PACKAGE PROGRAM
+
+	- "sxpkg -a": auto-sync
+                - should download all new packages and their dependencies from
+                  e.g. sxpkg.sentinix.org (or a mirror) and ask if you want to
+                  install them.
+
+	- "sxpkg -i packagenames...": install package(s)
+                - should be able to determine if "packagename" is a local
+                  package by first looking for packagename as a file (tarball),
+                  then look under /var/sxpkg/packages/, if not, try to find it
+                  and download it off sxpkg.sentinix.org. Then ask if we want
+                  to install it/them.
+
+                - if the package requires a dependency you don't have, it
+                  should recursively download (or check if it exists locally)
+                  and install any dependencies and compile + install them
+                  before compiling the package who is dependent on it (doooh).
+                  if any dependency fails during compilation/installation the
+                  whole installation of the package must fail.
+
+                - after installation, the "version" script is run parsed
+                  together with the CONTRIBUTOR file (if exists) and the
+                  "sxdesc" file to create regular file, e.g.,
+                  /var/sxpkg/announcement-snafu-63 containing, e.g.:
+
+                  snafu-1.53 (contributed by fubar <fubar@snafu.bar>)
+
+		  Snafu is Copyright (C) 1843 by Snafu, Inc.
+
+                  Snafu is a prog that stats how many fu:s crosses a bar. If
+                  more than 1, but less than 0, fu crosses, it automatically
+                  reports to syslog as snafu, as if no bar was fubar just
+                  snafu.
+
+	- "sxpkg -I packagenames...": only install local package(s).
+
+	- "sxpkg -g packagenames...": get package(s)
+                - only download packages from sxpkg.sentinix.org, don't install
+                  them. they'll end-up under /var/sxpkg/packages/ and be listed
+                  in the /var/sxpkg/installqueue file for later installation.
+
+        - "sxpkg -q": install packages listed in the install queue file
+                      (/var/sxpkg/installqueue).
+
+	- "sxpkg -l" : list all installed packages.
+
+        - "sxpkg -L" : list all packages not yet installed (from the install
+                       queue file).
+
+	- "sxpkg -f": force
+		- forces any action, no questions asked (non-interactive).
+
+
+- arrrgg: MailScanner-4.25-14 released, must upgrade... again.
+
+- New e-mail anti-virus, anti-spam config: Postfix + MailScanner + ClamAV + SpamAssassin + DCC
+
+
+- check_curl Nagios plugin: bash wrapper for "curl"
+	- check_curl "$ARG1$"
+	- check if download of user-specified (ARG1) URL went OK.
+
+- check_curl_md5sum Nagios plugin: bash wrapper for "curl" with md5sum check
+	- check_curl_md5sum
+		ftp://domain.tld/criticalfile!227ecc256da5864216c7ca538bcd9ab9
+	  or...
+		ftp://domain.tld!227ecc256da5864216c7ca538bcd9ab9
+		(to see if FTP "ls" output is unmodified)
+	- check_curl_md5sum "$ARG1$" "$ARG2$"
+	- ARG1 = URL to download.
+	- ARG2 = correct md5sum or else signal critical alarm.
+
+- check_curl_regex Nagios plugin: bash wrapper for "curl" with regular expression check.
+	- check_curl_regex
+		ftp://domain.tld/file!^This is a critical line in that file.$
+	- check_curl_regex "$ARG1$" "$ARG2$"
+	- ARG1 = URL to download
+	- ARG2 = grep -E regular expression to match (probably just basic regex)
+
+
+- Upgrade mailscanner to MailScanner 4.25-13.
+
+- ClamAV is being incorporated into MailScanner.
+
+- Postfix virtual user's should be configured in main.cf (hash db).
+- Postfix aliases should be configured in main.cf (hash db).
+
+- Postfix: main.cf should configured by modifying it with "sed", not
+  copied in.
+- MailScanner: postfix.mailscanner.out-master.cf & main.cf should not be
+  copied in, main.cf and master.cf should be modified with "sed".
+
+- All Perl modules should go under /usr/src/perldmodules instead of
+  being spread out across several packages.
+
+- Add nTop (http://www.ntop.org/).
+
+- Cacti: cactid instead of "php cmd.php", new rc.cacti. cactid seems very
+  "alpha", too unstable yet, will be included in the future though.
+
+- Install every major component under /usr/components instead of /usr/local.
+
+- Nagios plugins:
+        - make a "speech synthesis" plugin for Nagios notification (festival).
+	  it seems to already exist??? must check out!
+
+	+ check_ntp: check_ntp -H $HOSTADDRESS$
+	+ check_rpc: check_rpc -H $HOSTADDRESS$ -C "$ARG1$" (rpc_command)
+	+ check_hpjd: check_hpjd -H $HOSTADDRESS$
+	+ check_imap: check_imap -H $HOSTADDRESS$
+	+ check_real: check_real -H $HOSTADDRESS$
+
+	- Make a new check_ifstatus
+	- Make a new check_ifoperstatus
+	- Make a new check_wave
+
++ backup/restore script (finished):
+	- mysqldump all databases
+	- /usr/local/nagios
+	- /usr/local/nagat/save
+	- /usr/local/snort/sensor/conf
+	- /usr/local/snort/sensor/rules
+
+	- /usr/local/setup/tmp
+	- /etc/ETHERNETS
+	- /etc/HOSTNAME
+	- /etc/NETCONFIG
+	- /etc/ntp
+	- /etc/rc.d
+	- /etc/postfix
+	- /etc/postfix.mailscanner.out
+	- /etc/openmosix
+	- /etc/my.cnf
+
+	- /etc/dhcpc
+
+
+- pure-ftpwho html crontab
++ /etc/cron.every5minutes
+- rc.cacti: chmod +/-x /etc/cron.every5minutes/cacti
+- 64 GB kernel
+- start/stop services in setup.services
++ choose kernel in setup.lilo
++ /cdrom dir in buildsys
++ missing /etc/lilo.conf, fix in setup.lilo
++ netstat cgi front-end
+- php-nmap
+- check_ldap
+- Nagios "guest" user
+
+
+- mount points in installation scripts (initrd). the first partition should be
+  "/" by default.
+- In the "mount points" menu, the mount points should stand beside the menu
+  alternatives.
+
+- no root MySQL password in the beginning, but the possibility to change it
+  from setup.
+
+- Lilo splash screen? - http://freakzone.net/gordon/
+- xinetd perhaps?
++ add Buslogic SCSI
+- test XFS + openMosix, if ok, incubate all kernels with xfs
+
+- make a web-based maillog browser (simple, behind Basic HTTP authentification).
+
++ install CD: if `tar -xzf sentinix.tgz' fails, then tell...
+
++ libmm (mm) upgrade to 1.3.0.
+
+
+- setup.lilo
+	- find IDE CD-RW automatically and add:
+		append="hdX=ide-scsi"
+
+
++ webinterface (/usr/src/webinterface)
+	- Control Panel
+	+ httpd.conf, sentinix.conf
+		+ Nagios
+		+ Nagat
+		+ SnortCenter (+ ACID)
+		+ SnortAgent
+		+ Cacti
+		+ SNMP Tools
+		- ifmonitor
+		- whois.shark (.cgi)
+
+- pop3d (gnu-pop3d or popa3d)
+- cyrus IMAP ?
+- new inetd.conf
+
++ syswideconfig (/usr/src/syswideconfig)
+	+ creation of mysql databases
+	+ mysql user configuration
+	+ php.ini (global variables)
+	- new inetd.conf
+	- default root passwd
+	+ /etc/my.cnf
+	- /var/named (caching examples)
+

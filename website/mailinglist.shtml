@@ -1,0 +1,15 @@
+<!--#include virtual="top.html"-->
+
+<h1>MAILING LIST</h1>
+
+<p>
+Feel free to subscribe to the SENTINIX mailing list at <a target="_blank" href="http://elevenprospect.com/mailman/listinfo/sentinix">http://elevenprospect.com/mailman/listinfo/sentinix</a>. List is provided by <a target="_blank" href="http://elevenprospect.com">ElevenProspect</a>.
+</p>
+
+<h1>IRC</h1>
+
+<p>
+We also have a <tt><b>#sentinix</b></tt> IRC channel on <b>irc.oftc.net</b> (provided by <a target="_blank" href="http://www.oftc.net/">OFTC</a> - the Open and Free Technology Community).
+</p>
+
+<!--#include virtual="bottom.html"-->

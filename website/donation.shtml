@@ -1,0 +1,50 @@
+<!--#include virtual="top.html"-->
+
+<h1>DONATION</h1>
+<p>
+We have a PayPal account up where we gratefully accept any donation, whether
+just a dollar or more. We don't request anyone to pay anything - SENTINIX is
+non-profit and will live and breath without money. But, the project does
+nevertheless have expenses to cover; hardware for testing, CD-R/CD-RW discs,
+domain name renewal, Internet connection - well you know how it is. Also, many
+hours have been put into and is being put into the making and maintenance of
+SENTINIX. However, we mean that no-one should be obligated or feel pressured to
+pay anything, donation is completely optional. The people/companies who donate
+money to SENTINIX will be mentioned under the <a href="sponsors.shtml">SPONSORS</a> section
+of this web site. If you wish to be anonymous, just put that statement into the
+<i>"Optional Comment"</i> field during donation.
+</p>
+<p>
+<div align=center>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_xclick">
+<input type="hidden" name="business" value="sentinix@kaosphere.ath.cx">
+<input type="hidden" name="item_name" value="Sentinix Development Donation">
+<input type="hidden" name="image_url" value="http://sentinix.org/images/sentinix-150x50.png">
+<input type="hidden" name="no_shipping" value="1">
+<input type="hidden" name="return" value="http://sentinix.org">
+<input type="hidden" name="cancel_return" value="http://sentinix.org">
+<input type="hidden" name="cn" value="Optional Comment">
+<input type="hidden" name="currency_code" value="USD">
+<input type="hidden" name="tax" value="0">
+<input type="image" src="https://www.paypal.com/images/x-click-but04.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+</form>
+</div>
+</p>
+<p>
+Please note: The money goes directly to me, the Project Manager of SENTINIX
+(Michel Blomgren, <b>sentinix&nbsp;at&nbsp;kaosphere.ath.cx</b>). I may
+distribute the money to others in the project or spend it myself on something
+the project is in need of. <u>I personally guarantee that every cent will be
+used entirely for SENTINIX</u>.
+</p>
+
+<p>
+Sincerely,<br>
+Michel Blomgren<br>
+SENTINIX Project Manager<br>
+michel&nbsp;at&nbsp;sentinix.org
+</p>
+
+
+<!--#include virtual="bottom.html"-->

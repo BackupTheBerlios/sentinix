@@ -1,0 +1,414 @@
+<!--#include virtual="top.html"-->
+
+<h1>THE DEVELOPER'S GUIDE</h1>
+
+<h2>NOTICE</h2>
+<p>
+The entire SENTINIX specification is being slightly modified. <b>sxpkg</b>,
+SENTINIX' own packaging tool, although not finished yet, will lay the
+foundation for the new revision. If you are interested in making a package
+contribution, read what's below first, then post an e-mail to the mailing list
+before you begin.
+</p>
+
+
+<h2>CONTENTS</h2>
+
+<ul type=none>
+<li><a href="#11">1.1 - THE SENTINIX SPECIFICATION</a>
+<li><a href="#12">1.2 - ABOUT sentinix-fullsource-X.XX.tar.gz</a>
+<li><a href="#13">1.3 - COMPILING SENTINIX FROM SCRATCH</a>
+<li><a href="#14">1.4 - HOW TO ADD NEW SOFTWARE PACKAGES TO SENTINIX</a>
+</ul>
+
+
+<h3><a name="11">1.1 - THE SENTINIX SPECIFICATION</a></h3>
+<p>
+SENTINIX is a compilation of source code organized in such a way that it may be
+called a <i>specification</i> under which further development and maintenance
+of SENTINIX should obey. This specification is simple and logical in it's
+structure and developers of SENTINIX <i>should</i> follow it.
+</p>
+
+<p>
+The specification is described in detail in the next section (1.2) and section 1.4.
+</p>
+
+
+<h3><a name="12">1.2 - ABOUT sentinix-fullsource-X.XX.tar.gz</a></h3>
+<p>
+<tt>sentinix-fullsource-X.XX.tar.gz</tt> contains a statically compiled
+development framework (gcc, glibc, etc.) that will create (compile) SENTINIX
+from scratch, even produce the ISO image and burn CDs. The framework is based
+on the LFS project (http://www.linuxfromscratch.org/) although the SENTINIX
+specification takes inspiration from Slackware.
+</p>
+<p>
+If you unpack <tt>sentinix-fullsource-X.XX.tar.gz</tt> you will get a
+directory named <tt>sentinix</tt>. Inside it there's a script named
+<tt>schroot</tt>, a bash script that will enter a <i>chroot environment</i>
+from where compilation of SENTINIX will be possible. Example:
+</p>
+
+<p>
+<table border=0 cellpadding=10 cellspacing=0 width=100% bgcolor="#f0f0f0"><tr><td>
+<pre>
+root(~) tar -xzf sentinix-fullsource-0.53.tar.gz
+root(~) cd sentinix
+root(~/sentinix) ls
+README  boot/  etc/   <b>isotope/</b>  mnt/  proc/  sbin/     static/  usr/
+bin/    dev/   home/  lib/      opt/  root/  <b>schroot*</b>  tmp/     var/
+root(~/sentinix)
+</pre>
+The <tt>isotope</tt> directory contains the source code for the ramdisk
+installation system and the kernel sources for SENTINIX.
+</td></tr></table>
+</p>
+
+<p>
+The root of the SENTINIX specification is everything found under <b><tt>usr/src</tt></b>
+in the <tt>sentinix-fullsource</tt> package. Each software has it's own directory, called
+a <b>package</b> in the SENTINIX specification:
+<p>
+
+<p>
+<table border=0 cellpadding=10 cellspacing=0 width=100% bgcolor="#f0f0f0"><tr><td>
+<pre>
+root(~/sentinix/usr/src) ls
+<b>README</b>        ed/         libpng/        nasm/             rexima/
+ansirem/      eject/      libtermcap/    ncurses/          samba/
+apache/       fblogo/     libtool/       nessus/           sed/
+autoconf/     fetch/      lilo/          net-snmp/         sendmail/
+automake/     file/       links/         netcat/           sh-utils/
+bash/         fileutils/  linux/         nfs-utils/        shadow/
+bc/           findutils/  linuxmandocs/  ngrep/            sharkwrapper/
+bchunk/       flex/       logrotate/     nmap/             slocate/
+biew/         fping/      lynx/          ntp/              snort/
+bin86/        freetype/   m4/            oggvorbis/        snortcenter/
+bind/         gawk/       mad/           openldap/         sox/
+binutils/     gcal/       mailscanner/   openmosix-tools/  sysklogd/
+bison/        gcc/        mailx/         openssh/          sysstat/
+bmon/         gd/         make/          openssl/          sysvinit/
+bsd_db/       gdbm/       man/           parted/           syswideconfig/
+<b>build-all*</b>    gettext/    man-pages/     patch/            tar/
+bzip2/        glib/       mc/            perl/             tcpdump/
+cacti/        glibc/      mhash/         pine/             tcpip/
+calcpercent/  gmp/        minicom/       popt/             tcptrace/
+cdp/          gnupg/      mm/            portmap/          texinfo/
+cdparanoia/   gpm/        modutils/      postfix/          textutils/
+cdrtools/     grep/       mop00/         procinfo/         traceroute/
+<b>clean-all*</b>    groff/      mop01/         procmail/         usleep/
+cron/         gzip/       mop02/         procps/           util-linux/
+curl/         hdparm/     mop03/         psmisc/           vim/
+cyrus-sasl/   infozip/    mop04/         pure-ftpd/        wget/
+debianutils/  ipaudit/    mpg321/        python/           which/
+dhcp/         iptables/   msyslog/       qstat/            whois/
+dhcpcd/       kbd/        mysql/         radiusclient/     zlib/
+dialog/       less/       nagios/        raidtools/        zoneinfo/
+diffutils/    lftp/       nail/          readline/
+e2fsprogs/    libjpeg/    nano/          replimenu/
+root(~/sentinix/usr/src)
+</pre>
+</td></tr></table>
+</p>
+
+<p>
+The <tt>build-all</tt> script enters all directories (in the correct order,
+which is listed inside the <tt>build-all</tt> script) and executes a
+<tt>build</tt> script. The <tt>clean-all</tt> script enters all directories (in
+the correct order, which is listed inside the <tt>clean-all</tt> script) and
+executes a <tt>clean</tt> script. Let's look inside the <tt>postfix</tt>
+directory:
+</p>
+
+<p>
+<table border=0 cellpadding=10 cellspacing=0 width=100% bgcolor="#f0f0f0"><tr><td>
+<pre>
+root(~/sentinix/usr/src) cd postfix
+root(~/sentinix/usr/src/postfix) ls -l
+total 1352
+-rwxr-xr-x    1 root     root          443 Oct 23 11:50 <b>build*</b>
+-rwxr-xr-x    1 root     root           48 Aug  9 01:45 <b>clean*</b>
+-rw-r--r--    1 root     root      1350854 Jul 28 10:03 postfix-2.0.13.tar.gz
+-rw-r--r--    1 root     root          152 Jul 28 11:42 postfix-2.0.13.tar.gz.sig
+-rw-r--r--    1 root     root          531 Jun 29 12:24 postfix-install.patch
+-rw-r--r--    1 root     root           15 Aug  7 18:57 <b>sxconfig</b>
+-rw-r--r--    1 root     root         5258 Jul 28 10:03 wietse.pgp
+root(~/sentinix/usr/src/postfix)
+</pre>
+</td></tr></table>
+</p>
+
+<p>
+Each source package directory has a <tt>build</tt> script, a <tt>clean</tt>
+script, an <tt>sxconfig</tt> file and the tarball or tarballs for the software.
+<tt>build</tt> and <tt>clean</tt> should be chmodded 0755, <tt>sxconfig</tt>
+and the rest should be chmodded 0644.
+</p>
+
+<p>
+Most software <i>get away</i> with having only the two scripts, an
+<tt>sxconfig</tt> file and the tarball, but that isn't the case with Postfix.
+Postfix' <tt>make install</tt> forces user interaction during compilation,
+something we don't want! <b>Interaction (forced user input) should be avoided
+in source packages!</b> Only in very special cases should interaction be
+allowed, but never when compiling SENTINIX from scratch (using the
+<tt>sentinix-fullsource</tt> package). <tt>postfix-install.patch</tt> is a
+diff-patch that removes user interaction from the Postfix installation process,
+it is applied from within the <tt>build</tt> script (see below).
+</p>
+
+<p>
+<table border=0 cellpadding=10 cellspacing=0 width=100%>
+<tr bgcolor="#e0e0e0"><td>The <tt><b>build</b></tt> script:</td></tr>
+<tr bgcolor="#f0f0f0"><td>
+<pre>
+#!/bin/sh
+CWD=`pwd`
+
+. sxconfig &&
+./clean &&
+tar -xzf postfix-$VERSION.tar.gz &&
+cd postfix-$VERSION &&
+chown -R root.root . &&
+cat $CWD/postfix-install.patch | patch -N &&
+
+make makefiles CCARGS="-DFD_SETSIZE=2048 -DUSE_SASL_AUTH -I/usr/include/sasl" AUXLIBS="-lsasl2" &&
+make &&
+strip bin/* libexec/* &&
+make install &&
+echo "pwcheck_method: pwcheck" > /usr/lib/sasl2/smtpd.conf &&
+ln -sf ../sbin/sendmail /usr/lib/sendmail
+</pre>
+</td></tr></table>
+</p>
+
+<p>
+First, the <tt>CWD</tt> variable is defined, then the <tt>sxconfig</tt> file is
+included (see it's contents below). The commands in the script are
+<b>AND</b>'ed together (the <tt>&&</tt>) in order for the script to exit with
+an errorlevel not equal to 0 if any command fails. If a command exits with an
+errorlevel greater than 0 the <b>AND</b> chain is broken and the script will
+continue after the chain. In the case with the <tt>build</tt> script, there
+should only be one chain (in most cases anyway), this way we can easily find
+out if any one single command in the script has failed.
+</p>
+
+<p>
+The <tt>build</tt> script untars the Postfix tarball and applies the diff-patch
+that will remove forced user interaction. It compiles the software, installs it
+and does some post-installation.
+</p>
+
+
+<p>
+<table border=0 cellpadding=10 cellspacing=0 width=100%>
+<tr bgcolor="#e0e0e0"><td>The <tt><b>clean</b></tt> script:</td></tr>
+<tr bgcolor="#f0f0f0"><td>
+<pre>
+#!/bin/sh
+. sxconfig &&
+rm -rf postfix-$VERSION
+</pre>
+</td></tr></table>
+</p>
+
+<p>
+<table border=0 cellpadding=10 cellspacing=0 width=100%>
+<tr bgcolor="#e0e0e0"><td>The <tt><b>sxconfig</b></tt> file:</td></tr>
+<tr bgcolor="#f0f0f0"><td>
+<pre>
+VERSION=2.0.13
+</pre>
+</td></tr></table>
+</p>
+
+<h3><a name="13">1.3 - COMPILING SENTINIX FROM SCRATCH</a></h3>
+<p>
+The following instructions may be found in the README files in the
+<tt>sentinix-fullsource</tt> package aswell.
+</p>
+
+<ol>
+<li><p>Become <tt>root</tt> (very important!).</p>
+
+<li><p>Unpack <tt>sentinix-fullsource-X.XX.tar.gz</tt> on a partition with at least 4 GB of free space.</p>
+
+<li><p>To enter the automatic build system you must <i>chroot</i> into it, do this by typing...</p>
+<p><tt>$ cd sentinix/<br>$ ./schroot</tt></p>
+<p>...as the root user on your regular Linux system.</p>
+
+<li><p>You should now be in the chroot environment ready to build SENTINIX and you
+should see this prompt:</p>
+<p><tt>I have no name!:/#</tt></p>
+<p><tt>"I have no name"</tt> means that <tt>bash</tt> was unable to resolve the
+username for user id 0 since the glibc passwd stuff isn't in the build system.
+Once glibc is installed and <tt>bash</tt> is reloaded, it will say
+<tt>root</tt> instead.</p>
+
+<li><p>Go to <tt>/usr/src</tt> and run the <tt>build-all</tt> script:</p>
+<p><tt>I have no name!:/# cd /usr/src/<br>
+I have no name!:/usr/src# ./build-all<br></tt></p>
+<p>
+Compilation now begins. It takes approximately 2 hours and 40 mintues on an AMD
+1800+ (1.5GHz) with an ATA-100 hard disk to compile SENTINIX. The build system
+is not designed for parallel compilation (no <tt>make -j</tt> anywhere).
+<tt>glibc</tt> won't compile correctly with <tt>make -j</tt>.
+</p>
+<p>
+Please note! <tt>glibc</tt> is compiled twice, once in the beginning and once at
+the end. The second compilation is done with the target system's own
+compiler, not the static compiler that comes with the build system. This is
+considered cleaner and more stable.
+</p>
+
+<li><p>When compilation is done you won't be able to run <tt>ls</tt> or most
+other basic programs (unless you enter the full path to it) since the
+<tt>/static</tt> dir has been renamed to <tt>/staticdumphole</tt>. Exit the
+chroot environment (e.g., Ctrl+D). Before you enter again, edit the
+<tt>schroot</tt> script and add "<tt> --login</tt>" after "<tt>/bin/bash</tt>",
+e.g.:</p>
+<p><tt>chroot $CWD /bin/bash</tt> to <tt>chroot $CWD/bin/bash --login</tt></p>
+
+<li><p>Type <tt>./schroot</tt> again and you're inside the full SENTINIX distro. You may delete
+<tt>/staticdumphole</tt> if you wish.</p>
+
+<li><p>Enter <tt>/isotope</tt> and edit the <tt>config</tt> file, e.g.:</p>
+<p><tt>$ cd /isotope<br>
+$ nano config</tt></p>
+
+<li><p>Change the following variables to suit your system:</p>
+<p><pre>
+# Below, the speed of your CD recorder (speed to record in):
+CDRSPEED=16
+# Speed to record CDRW discs:
+CDRWSPEED=4
+# SCSI (or scsi-generic) device to use:
+CDRDEV=0,0,0
+</pre></p>
+<p>Leave all other variables untouched.</p>
+
+<li><p>Run <tt>build.sources</tt>, i.e.:</p>
+<p><tt>root@sandbox:/isotope# ./build.sources</tt></p>
+
+<li><p>When finished OK, run <tt>build.iso</tt>, i.e.:<p>
+<p><tt>root@sandbox:/isotope# ./build.iso</tt></p>
+
+<li><p>If all is well, insert a blank CD-R or CD-RW and run <tt>mkrealcd</tt> or <tt>mkcdrw</tt>, i.e.:</p>
+<p>To create a CD-R, type...</p>
+<p><tt>root@sandbox:/isotope# ./mkrealcd</tt></p>
+<p>To create a CD-RW, type...</p>
+<p><tt>root@sandbox:/isotope# ./mkcdrw</tt></p>
+
+<li><p>If the recording process went fine, try the CD out by booting from it.
+Avoid to run the installation process, as you might overwrite your regular
+Linux system during partitioning. A separate development box for SENTINIX is
+recommended.
+<p>
+</ol>
+
+<h3><a name="14">1.4 - HOW TO ADD NEW SOFTWARE PACKAGES TO SENTINIX</a></h3>
+<p>
+If you've installed SENTINIX from the ISO there is no source tree as described
+in section 1.2, there's just an empty <tt>/usr/src</tt> directory. SENTINIX
+does not have separate source/binary packages, only source packages. Users
+(non-developers) are advised to run a script (<tt>insrc</tt>) on new packages
+or updates. The script works like Slackware's <tt>installpkg</tt> except that
+it extracts a source package, compiles and installs the software automatically,
+without (in most cases) user interaction.
+</p>
+<p>
+Read section 1.2 above if you haven't already, then come back here and read
+the specifics on how to create a new software package.
+</p>
+<h4>STEP BY STEP</h4>
+<ol>
+<li><p>There are many things to keep in mind while creating the package, these are:</p>
+<p><ul type=square>
+<li>The package must work in <tt>sentinix-fullsource</tt> from-scratch-compilation.
+<li>The package must work as an update to a previous version of the package.
+<li>Forced user interaction (halted compilation) is only to be allowed during
+an update phase, <b>never</b> in <tt>sentinix-fullsource</tt> (never during the
+automatic compilation).
+</ul></p>
+
+<li><p>Create a directory under <tt>/usr/src</tt> to hold the software, e.g.
+<tt>ngrep</tt>. It should be chmodded 0755 and chowned to <tt>root.root</tt>.</p>
+
+<li><p>Put the software tarball(s) and other things needed (diff patches, etc.) into that directory, e.g.:</p>
+<p><pre>
+root@sandbox:/usr/src/ngrep# ls -l
+total 508
+-rw-r--r--    1 root     root       520209 Oct 30 21:39 ngrep-1.41.tar.bz2
+root@sandbox:/usr/src/ngrep# 
+</pre></p>
+<p>The tarball(s) and any diff patches should be chmodded to 0644 and chowned to <tt>root.root</tt>.</p>
+
+<li><p>Create a <tt>sxconfig</tt> file, e.g.:</p>
+<p><tt>root@sandbox:/usr/src/ngrep# nano sxconfig</tt></p>
+<p>The <tt>sxconfig</tt> file should only contain version variables, for example (in the case of <tt>ngrep</tt>):</p>
+<p><tt>VERSION=1.41</tt></p>
+<p>The <tt>$VERSION</tt> variable is then used in the <tt>build</tt> script. The <tt>sxconfig</tt> file is used to simplify future maintenance of new versions of the package.
+The file should be chmodded 0644 and chowned <tt>root.root</tt>.</p>
+
+<li><p>Create a <tt>build</tt> script, e.g.:</p>
+<p><tt>root@sandbox:/usr/src/ngrep# nano build</tt></p>
+<p>This is an example of it's content:</p>
+<p><pre>
+#!/bin/sh
+
+. sxconfig &&
+./clean &&
+/bin/tar -xjvf ngrep-$VERSION.tar.bz2 &&
+cd ngrep-$VERSION &&
+/bin/chown -R root.root . &&
+./configure --prefix=/usr --build=i386-sentinix-linux &&
+make &&
+make install
+</pre>
+</p>
+The <tt>build</tt> script should preferrably be small and easy to read. It must
+exit with an exit code above 0 if an error occured and equal to 0 if no error
+occured, which is easily done by ANDing the commands together (<tt>&&</tt> at
+the end of each command).
+</p>
+
+<li><p>Create a <tt>clean</tt> script. The <tt>clean</tt> script is used to
+clean-up the package's directory from any previously unpacked tarball(s), it can (in a way)
+be compared to <tt>make distclean</tt>. E.g.:</p>
+<p><tt>root@sandbox:/usr/src/ngrep# nano clean</tt></p>
+<p>In the case of <tt>ngrep</tt>, this is the <tt>clean</tt> script's contents:</p>
+<p><pre>
+#!/bin/sh
+. sxconfig &&
+/bin/rm -rf ngrep-$VERSION
+</pre></p>
+<p>Both the <tt>build</tt> script and the <tt>clean</tt> script must be chmodded +x (<tt>chmod +x build clean</tt>)
+and should be chowned <tt>root.root</tt>.
+
+<li><p>You may now create a <tt>CONTRIBUTOR</tt> file containing a couple of lines stating who made the package, for example, the <tt>ngrep</tt> <tt>CONTRIBUTOR</tt> file:</p>
+<p><pre>
+root@sandbox:/usr/src/ngrep# cat CONTRIBUTOR
+ngrep was contributed by Duane Dunston &lt;duane at sukkha.info&gt; - http://sukkha.info/
+root@sandbox:/usr/src/ngrep# 
+</pre></p>
+<p>You may include e-mail address, workplace, homepage, smilies, signatures, etc.</p>
+
+<li><p>Change directory to <tt>..</tt> and compress the package, i.e.:</p>
+<p><pre>
+root@sandbox:/usr/src/ngrep# cd ..
+root@sandbox:/usr/src# tar -czf ngrep-1.41-1-sx.tar.gz ngrep
+</pre></p>
+<p>In most cases the package's name should start with what the main tarball
+starts with, which is <tt>ngrep-1.41</tt> in this example. To that,
+"<tt>-1</tt>" should be added if it's the first release of this package, etc.
+Then, finally, "<tt>-sx.tar.gz</tt>" should be added. Currently, we'll
+<b>only</b> use gzipped tarballs, not bzipped (this may change in the future
+but for now we want consistency).</p>
+
+<li><p>E-mail Michel Blomgren (michel&nbsp;at&nbsp;sentinix.org) the package (or provide a link in the e-mail).</p>
+</ol>
+
+<h1>May the source be with you!</h1>
+
+<!--#include virtual="bottom.html"-->

@@ -1,0 +1,150 @@
+<!--#include virtual="top.html"-->
+
+<img src="images/michels_kitchen.jpg" width=400 height=270 align=right>
+
+<h1>THE SENTINIX DEVELOPMENT TEAM</h1>
+
+<p>
+This is the current list of the people who help to develop this distribution.
+</p>
+
+<!--
+<table border=0 cellpadding=0 cellspacing=1 width="100%" bgcolor="#000000"><tr><td>
+<table border=0 cellpadding=3 cellspacing=0 width="100%">
+<tr bgcolor="#e0e0e0"><td><font size=3><b>Michel Blomgren</b></font></td><tr>
+<tr bgcolor="#f0f0f0"><td><b>Project Manager and Main Developer</b><br>
+E-mail: michel&nbsp;at&nbsp;sentinix.org<br>
+WWW: <a target="_blank" href="http://zebra.ath.cx">http://zebra.ath.cx</a>
+</td></tr>
+</table>
+</td></tr></table>
+-->
+
+
+<ul type=square>
+<li><b>Michel Blomgren</b><br>
+<small>
+<b>Project Manager and Main Developer</b><br>
+E-mail: michel&nbsp;at&nbsp;sentinix.org<br>
+WWW: <a target="_blank" href="http://zebra.ath.cx">http://zebra.ath.cx</a><br>
+</small>
+</ul>
+
+<ul type=square>
+<li><b>Preston Carter</b><br>
+<small>
+<b>Contributor</b><br>
+E-mail: preston&nbsp;at&nbsp;ashenet.net<br>
+WWW: <a target="_blank" href="http://www.ashenet.net">http://www.ashenet.net</a><br>
+<b>Contribution:</b> The SENTINIX web GUI, first (old) Sentinix logotype, SnortCenter, SnortCenter Sensor Agent and Cacti for Compledge Sentinel.
+</small>
+</ul>
+
+<ul type=square>
+<li><b>Duane Dunston</b><br>
+<small>
+<b>Contributor</b><br>
+E-mail: duane&nbsp;at&nbsp;sukkha.info<br>
+WWW: <a target="_blank" href="http://sukkha.info">http://sukkha.info</a><br>
+<b>Contribution:</b> ngrep, msyslog, ipaudit, tcptrace.
+</small>
+</ul>
+
+<ul type=square>
+<li><b>Sebastian Petersson</b><br>
+<small>
+<b>Contributor</b><br>
+E-mail: sebastian&nbsp;at&nbsp;sentinix.org<br>
+<b>Contribution:</b> SENTINIX Documentation Project and beta testing.
+</small>
+</ul>
+
+<ul type=square>
+<li><b>Stephan Seliger</b><br>
+<small>
+<b>Contributor</b><br>
+E-mail: stephan&nbsp;at&nbsp;sentinix.org<br>
+<!-- <b>Contribution:</b> -->
+</small>
+</ul>
+
+<ul type=square>
+<li><b>Xavier Kaotico</b><br>
+<small>
+<b>Contributor</b><br>
+E-mail: xavier&nbsp;at&nbsp;pure-elite.org<br>
+WWW: <a target="_blank" href="http://sabu.net">http://sabu.net</a><br>
+<b>Contribution:</b> grsec kernel and various security patches to Compledge Sentinel.
+</small>
+</ul>
+
+<ul type=square>
+<li><b>Hugo Teso Torío</b><br>
+<small>
+<b>Contributor</b><br>
+E-mail: HugoT&nbsp;(at)&nbsp;mkzingenieria.com<br>
+<!-- WWW: <a target="_blank" href=""></a><br> -->
+<!-- <b>Contribution:</b> -->
+</small>
+</ul>
+
+<ul type=square>
+<li><b>Chris Hammond</b><br>
+<small>
+<b>Contributor</b><br>
+E-mail: chammond&nbsp;at&nbsp;cox.net<br>
+<b>Contribution:</b> bandwidthd, Nikto, backup/restore scripts, mirroring
+</small>
+</ul>
+
+
+<!--
+<ul type=square>
+<li><b>Name</b><br>
+<small>
+<b>Contributor</b><br>
+E-mail: <br>
+WWW: <a target="_blank" href=""></a><br>
+<b>Contribution:</b>
+</small>
+</ul>
+-->
+
+<h1>BETA TESTERS</h1>
+
+<ul type=square>
+<li><b>Kartikeya Puri</b><br>
+<small>
+<b>Beta Tester</b><br>
+E-mail: kartikeya_puri&nbsp;at&nbsp;hotmail.com
+<br>
+</small>
+</ul>
+
+<ul type=square>
+<li><b>Yasar Curtay</b><br>
+<small>
+<b>Beta Tester</b><br>
+E-mail: yasar_curtay&nbsp;at&nbsp;hotmail.com<br>
+</small>
+</ul>
+
+<ul type=square>
+<li><b>George Bogart</b><br>
+<small>
+<b>Beta Tester</b><br>
+E-mail: gbogart&nbsp;at&nbsp;fidalgo.net<br>
+</small>
+</ul>
+
+<ul type=square>
+<li><b>Hare Ram</b><br>
+<small>
+<b>Beta Tester</b><br>
+E-mail: balaji&nbsp;(at)&nbsp;sol.net.in<br>
+</small>
+</ul>
+
+<font color="#ff0000">Remember to replace "<b>at</b>" with <b>@</b> in any e-mail address before e-mailing!</font>
+
+<!--#include virtual="bottom.html"-->

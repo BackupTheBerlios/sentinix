@@ -1,0 +1,46 @@
+<!--#include virtual="top.html"-->
+
+<h1>LOGOS</h1>
+
+<table bgcolor="#000000" border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td>
+<table border=0 cellpadding=10 cellspacing=1 width="100%">
+<tr>
+<td bgcolor="#ffffff"><img src="logos/lint01_thumb.png" width=141 height=200></td>
+<td bgcolor="#ffffff">This is <b>Lint</b> (Lint Is Not Tux),
+yet another Tux character. Created 2003-12-15 at 10am. The working title for
+this dude was <i>"Mr. Weirdo"</i>, which is (needless to say) my alter ego. After too many
+hours in front of the screen, eyes do change shape. ;)
+<br><br>
+The Lint character is Copyright &copy; 2003 Michel Blomgren.
+You may freely use, modify and republish/redistribute Lint under the terms of
+the <a target="_blank" href="http://www.fsf.org/licenses/gpl.html">GNU General
+Public License</a> (version 2 or later).
+<ul>
+<li><a href="logos/lint.eps">EPS vector (as the thumbnail to the left)</a>
+<li><a href="logos/lint.png">300dpi PNG (as the thumbnail to the left)</a>
+<li><a href="logos/lint_xmas.eps">EPS vector (standing in snow wearing Santa Claus cap)</a>
+<li><a href="logos/lint_xmas_without_snow.eps">EPS vector (wearing Santa Claus cap, without snow)</a>
+<li><a href="logos/lint_arms_up.eps">EPS vector (arms raised)</a>
+<li><a href="logos/lint_sentinix_logo.eps">EPS vector (Lint stands in front of the last "I" in SENTINIX)</a>
+</ul>
+</td></tr>
+
+<tr>
+<td bgcolor="#ffffff"><img src="images/sentinix_gecko.png"></td>
+<td bgcolor="#ffffff">
+The SENTINIX Salamander has now been decided that it will have to go. It
+reminds too much of Mozilla's gecko lizard and SuSE's cameleon. SENTINIX has to
+have a more unique logo than that! This logo may freely be used and modified as
+long as it's used to refer to and/or redistribute the official, unmodified
+SENTINIX GNU/Linux distribution.
+<ul>
+<li><a href="images/sentinix_gecko_large.png">A large transparent PNG</a>
+<li><a href="logos/sentinix_gecko_large_separated.xcf">A Gimp XCF with separated layers</a>
+</ul>
+</td>
+</tr>
+
+</table>
+</td></tr></table>
+
+<!--#include virtual="bottom.html"-->

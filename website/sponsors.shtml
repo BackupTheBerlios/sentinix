@@ -1,0 +1,66 @@
+<!--#include virtual="top.html"-->
+
+<h1>SPONSORS</h1>
+<p>
+This page was put up to gratefully thank those who have contributed with financial support and/or hardware
+to the SENTINIX project.
+</p>
+
+<h2>SPONSORSHIP & DONATIONS</h2>
+
+<p>
+<ul type=square>
+<li><p><b>Cycom AB</b><br>
+Sponsorship.
+</p>
+
+<li><p><b>Torbjörn Nilo</b><br>
+CEO Cycom AB<br>
+A dear friend who has provided financial, moral, hardware (and a lot more)
+support.
+</p>
+
+<li><p><b>Edwin Thornhill</b> - ethornhill&nbsp;[at]&nbsp;charter.net<br>
+Donations and mirror provider.
+</p>
+
+<li><p><b>William O'Malley</b><br>
+Donations.
+</p>
+
+</ul>
+</p>
+
+
+<h2>MIRROR SPONSORS</h2>
+<p>
+<ul type=square>
+
+<li><p><b>Richard Cochius</b> - r.cochius&nbsp;[at]&nbsp;net-at-work.de (net at work GmbH)<br>
+FTP and HTTP content.
+</p>
+
+<li><p><b>Pavol Cvengros</b> (Prime Interactive, Ltd.) - orpheus&nbsp;[at]&nbsp;primeinteractive.net<br>
+FTP.
+</p>
+
+<li><p><b>John Winger</b> - jwinger&nbsp;(at)&nbsp;nationsholding.com<br>
+FTP.
+</p>
+
+<li><p><b>Chris Hammond</b> - chammond&nbsp;at&nbsp;cox.net<br>
+FTP, HTTP content and CVS.
+</p>
+
+<li><p><b>Edwin Thornhill</b> - ethornhill&nbsp;[at]&nbsp;charter.net<br>
+HTTP (ISO images).
+</p>
+
+</ul>
+</p>
+
+
+
+
+
+<!--#include virtual="bottom.html"-->

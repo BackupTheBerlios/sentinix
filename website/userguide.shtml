@@ -1,0 +1,176 @@
+<!--#include virtual="top.html"-->
+
+<img src="images/comic2.jpg" width=200 height=599 align=right>
+
+<h1>USER'S GUIDE</h1>
+
+<p>
+There is no complete User's Guide as of yet, but there is an installation guide
+(below). For full documentation, see each open source project's own
+documentation.
+</p>
+
+<h2>INSTALLATION GUIDE - STEP BY STEP</h2>
+
+<p>
+<ol>
+<li><p>Burn the bootable ISO-image to an empty CD using a compatible program. It's highly recommended to produce a single session CD and fixate it otherwise you most probably won't be able to boot from it. If you're using cdrecord, type this:</p>
+<p><pre>
+$ cdrecord -v speed=X dev=0,0 -data sentinix.iso
+</pre></p>
+<p>
+X is the speed of your CD recorder. If you don't have your recorder on dev 0,0,
+type "cdrecord -scanbus" to get a list of your SCSI/emulated SCSI drives.
+</p>
+
+<li><p>Prepare a host machine for SENTINIX. Recommended is a machine with at
+least a 486 CPU @ 200MHz, a 2GB hard disk, 1 PCI network interface, 1 CD-ROM
+drive and at least 128MB of RAM.</p>
+
+<li><p>Insert the newly created SENTINIX CD in it's CD-ROM drive and boot up.
+Make sure that the BIOS boots from the CD-ROM!</p>
+
+<li><p>Choose your kernel to use; e.g. <tt>om</tt> and then press enter.</p>
+
+<li><p>Once booted type:</p>
+<p><pre>$ install</pre></p>
+
+<li><p>Choose keyboard map to use during the installation and start the
+installation process.</p>
+
+<li><p>First you may partition your hard disks. Choose hard disk to partition.
+The program "cfdisk" is started. You need at least 1 "Linux" partition and 1
+"Linux Swap" partition. This is an example:</p>
+
+<p>
+<ul>
+<li>Delete all partitions by press D on all current partitions.
+<li>Bring focus on the "Free Space" and press the N key.
+<li>Choose "Primary" (or "Logical", which works fine too).
+<li>Make it at least 2GB (write "2000" in the field), you need at least
+100MB of free space to create the swap partition later on.
+<li>Choose "Beginning".
+<li>Press T to choose partition type (if it isn't already of type
+"Linux").
+<li>In the "Enter filesystem type:" field enter "83".
+<li>Move the focus down to "Free Space" and press N again.
+<li>Choose "Primary".
+<li>Make it at least 100MB (write "100" in the field).
+<li>Press T.
+<li>In the "Enter filesystem type:" field enter "82" (for Linux Swap).
+<li>On the first "Linux" partition press B to mark it "bootable".
+<li>Press W and type "yes" to write the partition table.
+<li>Press Q to quit.
+</ul>
+</p>
+
+<li><p>Choose "Continue to next step" when you are done partitioning.</p>
+
+<li><p>Choose which partitions that shall be formatted and to which file
+system. EXT3 is recommended on all partitions. Choose "Format partitions" to
+start.</p>
+
+<li><p>Choose "Done, go to next step".</p>
+
+<li><p>Time to choose mount points for your file system(s). At least one need
+to be "/" (rootfs). Others might be "/usr", "/home" or "/var" for example. When
+you're satisfied, choose "Mount partitions and go to next step".</p>
+
+<li><p>Choose "Install SENTINIX" to start the installation. This might take
+anywhere from 5 minutes to 30 minutes depending on hardware.</p>
+
+<li><p>If all went well, you should be inside a chroot environment looking at a
+green replimenu titled "SENTINIX Setup Utility". If not, post a report to the
+<a href="mailinglist.html">SENTINIX mailing list</a>.</p>
+
+<li><p>Choose keyboard map to use under SENTINIX (qwerty/us.map.gz is
+default).</p>
+
+<li><p>Continue with step 2 and choose your timezone.</p>
+
+<li><p>Continue with step 3. Master Boot Record (MBR) is recommended, if that
+should not work, try "Root file system". You might need to try the floppy
+alternative (you need a floppy disk though). Simply discard the "Unable to
+determine video adapter" message if it appears.</p>
+
+<li><p>Probe for network devices. There is only one choice - the automatic
+choice, which should work fine with most systems, if not, you have the
+possibility to choose specific modules later.</p>
+
+<li><p>You may now choose which specific modules to modprobe during boot
+(including Ethernet modules). Choose "Save and exit" if you make some
+changes.</p>
+
+<li><p>If you choose to automatically modprobe Ethernet device(s), you may skip
+step 5.</p>
+
+<li><p>Configure your Ethernet card, etc. Enter your FQDN (fully qualified
+domain name). If you want to use a DHCP server, you don't need to fill-in a
+gateway or any nameserver. In the "Enter IP address for ethX" enter either the
+IP or simply "dhcp" to use DHCP with this interface. You may of course have one
+interface configured to use DHCP and another to use a static IP (in that case
+you need to enter gateway and nameserver IP). Choose "Save and exit" when
+done.</p>
+
+<li><p>Choose network services to use. You may put an X in all checkboxes, but
+running all services on one and the same machine is not recommended for other
+purposes than testing.</p>
+
+<li><p>Set new root password in step 8 (the default root password is <tt>sentinix</tt>).</p>
+
+<li><p>Set new Nagios/Nagat password in step 9 (the default Nagios/Nagat password for <tt>nagiosadmin</tt> is <tt>nagios</tt>).</p>
+
+<li><p>Choose "Reboot the system". The CD will eject before rebooting.</p>
+
+<li><p>Boot up your new SENTINIX installation and check the init messages.</p>
+
+<li><p>If you need to reconfigure your system at any time, login as root and
+type "setup".</p>
+</ol>
+</p>
+
+<h2>The SENTINIX Control Panel (web-interface)</h2>
+<p>
+Enter the SENTINIX machine's FQDN or IP number in a web browser. The Control
+Panel should appear. Test the services you previously enabled during the setup
+process. If Nagios is running, click on "Nagios-Nagat" and login with username
+"nagiosadmin" and the password you choose during setup (or default <tt>nagios</tt>).
+</p>
+
+<p>
+If the SnortCenter Sensor Agent is running, click on "SnortCenter" and login
+with:
+</p>
+
+<p><pre>
+    Username: admin
+    Password: change
+</pre></p>
+
+<p>
+Click on "Cacti" and login with:
+</p>
+
+<p><pre>
+    Username: admin
+    Password: admin
+</pre></p>
+
+<p>
+On tty12 (Alt-F12) you'll find the basic maillog. /opt/MailScanner holds
+MailScanner+SpamAssassin including configuration files. /etc/postfix is for
+incoming mail and /etc/postfix.mailscanner.out is for outgoing mail when using
+Postfix+MailScanner.
+</p>
+
+<h2>DEFAULT PASSWORDS</h2>
+<p>
+<ul>
+<li>The default root password is: sentinix
+<li>The default password for "nagiosadmin" is: nagios
+<li>The snort@localhost MySQL password is: sentinix
+<li>There is no root@localhost MySQL password by default.
+</ul>
+</p>
+
+<!--#include virtual="bottom.html"-->

@@ -1,0 +1,53 @@
+<!--#include virtual="top.html"-->
+
+<h1>WHERE TO GET SENTINIX</h1>
+<p>
+SENTINIX <b><!--#include virtual="latestversion"--></b> is the most recent release.
+</p>
+
+<p>
+<table border=0 cellpadding=0 cellspacing=0 width="100%" bgcolor="#000000"><tr><td>
+<table border=0 cellpadding=2 cellspacing=1 width="100%">
+<tr bgcolor="#b5b084"><td><b>Location</b></td><td><b>Link</b></td><td><b>Description</b></td><td><b>Provided by</b></td></tr>
+<tr bgcolor="#e0e0e0"><td>Slovak Republic</td><td><a target="_blank" href="ftp://grass.sk/pub/sentinix/">ftp://grass.sk/pub/sentinix/</a></td><td>Good speed and the latest ISO images.</td><td>PrimeInteractive, Ltd.</td></tr>
+<tr bgcolor="#e0e0e0"><td>France</td><td><a target="_blank" href="http://www.l-download.homelinux.com/Sentinix/">http://www.l-download.homelinux.com/Sentinix/</a></td><td>SENTINIX 0.70.5 and fullsource-0.70.5</td><td>Libertalia</td></tr>
+<tr bgcolor="#e0e0e0"><td>USA</td><td><a target="_blank" href="http://www.computerinspirations.com/sentinix/">http://www.computerinspirations.com/sentinix/</a></td><td>Good speed and the latest ISO images.</td><td>Edwin Thornhill - ethornhill&nbsp;at&nbsp;charter.net</td></tr>
+<tr bgcolor="#e0e0e0"><td>USA</td><td><a target="_blank" href="ftp://wiresec.net/sentinix">ftp://wiresec.net/sentinix</a></td><td>SENTINIX 0.70.5.</td><td>John Winger - jwinger&nbsp;(at)&nbsp;nationsholding.com</td></tr>
+
+<tr bgcolor="#e0e0e0"><td>Germany</td><td><a target="_blank" href="ftp://sentinix.34hack.net/pub/mirrors/sentinix">ftp://sentinix.34hack.net/pub/mirrors/sentinix</a></td><td>Full HTTP+FTP auto-mirroring.</td><td>Richard Cochius - r.cochius&nbsp;at&nbsp;net-at-work.de (net at work GmbH)</td></tr>
+
+<tr bgcolor="#e0e0e0"><td>Sweden</td><td><a target="_blank" href="ftp://kaosphere.ath.cx/sentinix-devel/">ftp://kaosphere.ath.cx/sentinix-devel/</a></td><td>The latest ISO images and the latest source code (sentinix-fullsource).</td><td>Michel Blomgren - michel&nbsp;at&nbsp;sentinix.org</td></tr>
+<tr bgcolor="#e0e0e0"><td>Sweden</td><td><a target="_blank" href="ftp://sentinix.org/">ftp://sentinix.org/</a></td><td>sentinix.org is primarily hosting SENTINIX web and e-mail, but has now also an FTP server up and running (same content and on the same connection as kaosphere).</td><td>Michel Blomgren - michel&nbsp;at&nbsp;sentinix.org</td></tr>
+
+
+<tr bgcolor="#e0e0e0"><td>Sweden</td><td><a target="_blank" href="ftp://kaosphere.ath.cx/sentinel/">ftp://kaosphere.ath.cx/sentinel/</a></td><td>Downloads of SENTINIX' predecessor, <b>Compledge Sentinel</b></td><td>Michel Blomgren - michel&nbsp;at&nbsp;sentinix.org</td></tr>
+</table>
+</td></tr></table>
+</p>
+
+<h1>SENTINIX NEED MIRRORS</h1>
+<img align=right src="images/kaosphere_traffic.png">
+<p>
+<b>sentinix.1.beta01.iso</b> was downloaded exactly 70 times the first 48 hours
+after my announcement (between 26th and 28th of October, 2003). My 64MB RAM, software RAID-5 FTP server
+(kaosphere.ath.cx, running Slackware and pure-ftpd) started to block
+incoming connections (it only accepts 25 simultaneous logins) and during the first
+day people had to <i>fight</i> their way in.
+</p>
+<p>
+<b>Want to provide a mirror?</b> That would be very appreciated! I would
+appreciate FTP access so that I personally can upload new releases. Download
+through anonymous FTP would be best since it will consume much less resources
+than Apache or IIS. Only mirroring of the ISO image is needed, it's about 200MB
+and there would be 2 releases (maximum) present on the site (400MB worth of
+total space).
+</p>
+
+<p>
+<font size=2><b>Michel Blomgren</b><br>
+SENTINIX Project Manager<br>
+<b>michel&nbsp;at&nbsp;sentinix.org</b><br>
+</font>
+</p>
+
+<!--#include virtual="bottom.html"-->

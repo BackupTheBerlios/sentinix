@@ -1,0 +1,148 @@
+SENTINIX 0.70.5 (SENTINIX 1 beta02):
+
+    - Changed version numbering to a more traditional style:
+	- SENTINIX 0.XX are beta versions of SENTINIX 1.
+	- SENTINIX 1.0, 2.0, 3.0 - stable releases.
+	- SENTINIX 1.XX are beta versions of SENTINIX 2.0, etc.
+
+    - Added "--with-perl-modules" to Net-SNMP build.
+
+    - Replaced fileutils, sh-utils and textutils to GNU's coreutils
+      ( http://www.gnu.org/software/coreutils/ ).
+
+    - Added the missing /cdrom directory for mounting /dev/cdrom (fstab).
+
+    - Added auto-mounting of /mfs (oMFS, openMosix File System) when running
+      openMosix.
+
+    - Upgraded several applications:
+
+        grep, groff and libtool are newer in SENTINIX than available on
+        ftp.gnu.org. The SENTINIX versions were downloaded before GNU decided
+        to "confirm their authenticity". No problems have been detected or
+        reported with these newer versions.
+
+	- Nagios-plugins 1.3.1
+	- Nessus 2.0.9
+	- OpenSSL 0.9.7c
+	- OpenSSH 3.7.1p2
+	- Snort 2.0.4
+	- Nmap 3.48
+	- Apache 1.3.29
+	- PHP 4.3.4
+	- mod_ssl 2.8.16-1.3.29
+	- LILO 22.5.8
+	- CURL 7.10.8
+	- Nano 1.2.2
+	- Links 2.1pre14
+	- lftp 2.6.8
+	- ntp 4.2.0
+	- e2fsprogs 1.34
+	- libao-0.8.4
+	- Automake 1.7.8
+	- Biew 5.50
+	- bin86 0.16.14
+	- Bind 9.2.3
+	- bmon 1.2.1
+	- cdrtools 2.00.3 (downgrade from 2.01 alpha)
+	- cyrus-sasl 2.1.15
+	- debianutils 1.16
+	- fblogo 0.5.2
+	- http_fetcher 1.0.3 (in "fetch")
+	- coreutils 5.0
+	- Freetype 2.1.5
+	- gawk 3.1.3
+	- gd 2.0.15
+	- GNUPG 1.2.3
+	- iptables 1.2.9
+	- MailScanner 4.24-5
+	- man-pages 1.60
+	- Minicom 2.1
+	- MySQL 4.0.16
+	- Nasm 0.98.38
+	- Net-SNMP 5.0.9
+	- nfs-utils 1.0.6
+	- OpenLDAP 2.1.23
+	- Perl 5.8.2
+	- Postfix 2.0.16
+	- procps 3.1.14
+	- psmisc 21.3
+	- Pure-FTPd 1.0.15
+	- Python 2.3.2
+	- GNU readline 4.3
+	- Samba 3.0.0
+	- sed 4.0.8
+	- sysstat 5.0.0
+	- SysVinit 2.85
+	- tcptrace 6.6.0
+	- texinfo 4.6
+	- Vim 6.2
+	- GNU wget 1.9
+	- which 2.16
+	- whois 4.6.8
+
+    - Fixed an "exit" bug in the rc.d-scripts that caused init to exit
+      prematurely after an included rc-script (included from rc.M) had
+      commanded "exit".
+
+    - The initrd installation scripts are now able to install SENTINIX on a
+      Compaq/HP Proliant server with a SmartArray RAID configuration. This was
+      not possible in SENTINIX 1 Beta01. It should also be possible to install
+      SENTINIX on a server with a MYLEX RAID configuration.
+
+    - Added ipfm, iptraf, tcptrace, ipaudit, ngrep and lsof contributed by
+      Duane Dunston (duane at sukkha.info - http://sukkha.info/).
+
+    - LILO setup has now more options. The user may choose "linear" or
+      "lba32" among other things.
+
+    - Fixed the installation and setup scripts to support Compaq SmartArray
+      RAID controller, and hopefully also MYLEX RAID controllers.
+
+    - Updated the old MAKEDEV to the most recent version found on Debian's
+      site. "MAKEDEV generic-i386" now generates /dev/ida/, /dev/rd/,
+      /dev/cciss/, /dev/usb/ and a few more, enabling, among other devices,
+      Compaq SmartArray and MYLEX controllers to be used.
+
+    - The installation CD may now be used to boot a diskless openMosix node.
+
+    - Downgraded to Linux 2.4.21 due to an SMP problem with 2.4.22 and the
+      openMosix patch.
+
+    - Attempted to add the Migshm-1.4 patch to the "om" and "omsmp" kernels,
+      but caused PHP to segfault when running Cacti's 5 minute crontab job
+      (cmd.php). Migshm was removed, the "om" and "omsmp" kernels are (still)
+      plain openMosix-1.
+
+    - Renamed the "default" kernel to "plain".
+
+    - Renamed the "SNMPTools" menu in the GUI to "Network Tools".
+
+    - Added a "dig" CGI front-end for making DNS queries.
+
+    - Added a "netstat" CGI front-end for obtaining local networking
+      information.
+
+    - /etc/cron.weekly/nessus moved to /etc/cron.monthly (running
+      nessus-update-plugins once every month).
+
+    - Snort/SnortCenter starts with only the default Snort rules activated, not
+      everything like before.
+
+    - Snort/SnortCenter (including Sensor Agent) starts with the portscan
+      preprocessor activated.
+
+    - The MySQL output plugin in Snort/SnortCenter is now configured as "alert"
+      and not "log" (as before) by default.
+
+    - /etc/rc.d/rc.snortcenter keeps /var/log/snort/portscan.log 0644 so that
+      the user may use the "portscan events" feature in ACID ("Alert Console"
+      from SnortCenter).
+
+    - /etc/rc.d/rc.nessus now actually does create the "nessus" user (with
+      password "nessus") as it was suppose to do.
+
+SENTINIX 1 beta01:
+
+    - Initial release.
+

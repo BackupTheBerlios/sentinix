@@ -1,0 +1,170 @@
+<!--#include virtual="top.html"-->
+
+<!-- start of news column -->
+<table width="30%" border=0 cellpadding=5 cellspacing=2 align=right>
+<tr><td align=right>
+<h3>NEWS COLUMN</h3>
+</td></tr>
+
+<!--
+<tr><td class="greyarea">
+<small>
+<h3><b class="bluetext">2003-12-27: headline</b></h3>
+News message
+</small>
+</td></tr>
+-->
+
+<tr><td class="greyarea">
+<small>
+<h3><b class="bluetext">2003-12-18: Press coverage</b></h3>
+<img src="images/openmosix_logo_tiny.jpg" align=right>
+Bruce Knox and Matthias Rechenburg from the <a target="_blank" href="http://openmosix.sf.net">openMosix project</a>
+wrote an article titled <i>SENTINIX Gives the Boot to Monitoring Woes</i> a while back, read it...
+<br><br>
+
+<a target="_blank" href="http://pr.linuxjournal.com/article.php?sid=846">...on Linuxjournal</a><br>
+<a target="_blank" href="http://www.newsforge.com/newsvac/03/11/27/1414252.shtml">...on NewsForge</a><br>
+<a target="_blank" href="http://lwn.net/Articles/60370/">...or on LWN</a><br>
+
+</small>
+</td></tr>
+
+
+<tr><td class="greyarea">
+<small>
+<h3><b class="bluetext">2003-12-16: SCO rants</b></h3>
+Keeping up in the <a target="_blank" href="http://www.scosucks.com/">SCO vs.
+IBM trial</a>? <a target="_blank" href="sco_sucks.html">Here's a javascript counter for two of SCO's deadlines</a> (thanks Chris!).
+</small>
+</td></tr>
+
+<tr><td class="greyarea">
+<small>
+<h3><b class="bluetext">2003-12-12: Non-bootable ISO problem!</b></h3>
+The SENTINIX 0.70.5 and Beta 01 ISO images were created with boot-size 32, but
+<b>some</b> <u>picky</u> BIOSes wants <u>only</u> boot-size 4. Why did I do 32? 
+because a real early version of SENTINIX wouldn't boot with 4, 8 or 16 on an
+old PC of mine, but now boot-size 4 seems to be working fine on that one. 4 is
+what everone recommends, so it'll show up in SENTINIX 0.71, but until then, if
+you experience this problem and really want to test it, try booting the CD on
+whole different PC (with different BIOS) or you can always try to upgrade your
+BIOS firmware.
+</small>
+</td></tr>
+
+<tr><td class="greyarea">
+<small>
+<h3><b class="bluetext">2003-12-11: The SENTINIX Promo Shop</b></h3>
+I surfed by CafePress.com and, just for fun, sat up
+a SENTINIX shop full of stuff. All earnings made through this shop goes
+directly back, in full, to the SENTINIX project. Check it out at
+<a target="_blank" href="http://www.cafeshops.com/sentinix">http://www.cafeshops.com/sentinix</a>.
+<br><br>
+<img src="images/poster_12x18_01_200x300.jpg" width=200 height=300>
+</small>
+</td></tr>
+
+<tr><td class="greyarea">
+<small>
+<h3><b class="bluetext">2003-11-27: Misconfiguration notice!</b></h3>
+In SENTINIX 0.70.5 and Beta 01 Cacti is configured with UCD-SNMP 4.X which
+doesn't work, it should be NET-SNMP 5.x, which works fine. Change "<b>Cacti
+settings</b>", "<b>General</b>", "<b>SNMP Version</b>" to "<b>NET-SNMP 5.x</b>"
+and save.
+</small>
+</td></tr>
+
+<tr><td class="greyarea">
+<small>
+<h3><b class="bluetext">2003-11-24: SENTINIX 0.70.5 (Beta 02) released!</b></h3>
+The second beta of SENTINIX has now been released, with a lot of improvements
+and upgrades. <b>0.70.5 is the latest version, SENTINIX 1 BETA 01 was the
+previous version</b>.
+<ul>
+<li>Over 50 programs have been upgraded.
+<li>The ISO release version-numbering has changed and is now coherent with the <tt>fullsource</tt> package.
+<li>You may now boot a diskless openMosix node right off the SENTINIX Installation
+CD.
+<li>Installation of SENTINIX on a Compaq ProLiant (Compaq SmartArray (ida)) has
+been confirmed, SENTINIX is now fully working on a ProLiant DL360.
+</ul>
+<a href="CHANGELOG">Read more in the CHANGELOG</a>. Click on
+<a href="downloads.shtml">DOWNLOADS</a> in the menu for available download sites.
+</small>
+</td></tr>
+
+<tr><td class="greyarea">
+<small>
+<h3><b class="bluetext">2003-10-26: SENTINIX 1 BETA 01 released!</b></h3>
+First version of SENTINIX has now been released. It's beta and testing is under
+way. <b>Beta testing of SCSI and RAID controllers/hard disks is of much
+need!</b> Contact <code>michel&nbsp;at&nbsp;sentinix.org</code> if you want to
+be a beta tester. Click on <a href="downloads.shtml">DOWNLOADS</a> in the menu
+for available download sites.
+</small>
+</td></tr>
+
+</table>
+<!-- end of news column -->
+
+<!-- keep for next xmas? - it's a long haul, but you never know, maybe it's still my alterego :) -->
+<!-- <img src="images/lint_in_snow.png" width=149 height=200 align=left> -->
+
+<img src="images/lint_140x200.png" width=140 height=200 align=left>
+
+<h1>WHAT IS SENTINIX?</h1>
+<p>
+<font color="#aa0202"><b>SENTINIX</b></font> is a GNU/Linux distribution
+designed for monitoring, intrusion detection, penetration testing, auditing,
+statistics/graphing and anti-spam. It's completely free; free to use, free to
+modify and free to distribute. SENTINIX includes the following software,
+installed and pre-configured; <b>Nagios, Nagat, Snort, SnortCenter, ACID,
+Cacti, RRDTool, Nessus, Postfix, MailScanner, SpamAssassin, openMosix, MySQL,
+Apache, PHP, Perl, Python and lots more</b>.
+</p>
+<p>
+SENTINIX is shipped with a lot of programs, not all licensed under
+the same license (e.g. GNU GPL). SENTINIX contains (and will only contain) software whose license
+has been approved by the <a target="_blank" href="http://opensource.org/">Open Source Initiative</a>.
+</p>
+<p>
+<i>Compledge Sentinel</i> was the predecessor of SENTINIX. The website of
+Sentinel (http://compledge.com/sentinel) has been closed down due to a transfer
+of ISP. The old Compledge Sentinel ISO-image is available at
+<a href="ftp://kaosphere.ath.cx/sentinel">ftp://kaosphere.ath.cx/sentinel</a>.
+</p>
+
+<img src="images/ontopof_proliant_dl360.jpg" width=320 height=276 align=left>
+<!-- <img src="images/comic.jpg" width=200 height=427 align=left> -->
+
+<h1>SENTINIX NEED DEVELOPERS!</h1>
+<b>Are you a GNU/Linux developer? Know anything about what makes a GNU/Linux distribution
+work? Want to help out?</b>
+
+<p>SENTINIX is a very ambitious project, aiming at being <b>the best</b>
+security solution on the market, whether compared to free or commercial
+products. SENTINIX will <b>always</b> be <b>free</b>, that is, freely
+distributable and only contain OSI approved software; free to modify, free to
+use, free to distribute and free of charge!</p>
+
+<h2>What's in it for SENTINIX developers?</h2>
+
+<p>
+Despite the lack of monitary award, there are other benefits. Since SENTINIX
+is a specialists' GNU/Linux distribution designed for critical tasks, helping to
+develop SENTINIX <i>could</i> boost your career, even bring in some salery from
+deploying SENTINIX at, e.g. companies that would want a monitoring and/or
+anti-spam solution. In the future, there will be support organizations
+surrounding the SENTINIX GNU/Linux distribution and these organizations will make
+money by selling support agreements and consultation. Support and consultation
+is easier to sell if the one selling it also helps to develop the software.
+</p>
+<p>
+Why wait? We are in need of beta testers, programmers, anti-spam specialists
+and GNU/Linux distribution experts. Send an e-mail to
+<b>michel&nbsp;at&nbsp;sentinix.org</b> and tell me your area(s) of expertise
+and what you'd like to do in the SENTINIX project.
+</p>
+
+<!--#include virtual="bottom.html"-->

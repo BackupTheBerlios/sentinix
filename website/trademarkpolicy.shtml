@@ -1,0 +1,47 @@
+<!--#include virtual="top.html"-->
+
+<h1>TRADEMARK POLICY</h1>
+
+<pre>
+- You may freely use the name SENTINIX (tm) and the Free Use SENTINIX logo(s)
+  (published on www.sentinix.org) to refer to the official SENTINIX project
+  (http://sentinix.org) and/or to endorse or promote redistributions of
+  official, unmodified SENTINIX releases (whether in source or binary form).
+  All other use of the SENTINIX trademarks is explicitly prohibited, unless
+  prior written permission is obtained.
+
+- You may not use the name SENTINIX (tm) nor any SENTINIX logo or other
+  SENTINIX trademark to endorse or promote products derived from SENTINIX (or
+  modified versions of SENTINIX), without prior written permission.
+
+- If you charge for redistributing SENTINIX and endorse or promote the
+  redistribution with any SENTINIX trademark, you have to provide warranty for
+  the media on which SENTINIX is delivered, ensuring the recipient (customer)
+  that they receive a good copy.
+
+- SENTINIX is an unregistered trademark (in the process of registration).
+  Michel Blomgren created the name "SENTINIX" and started using it on the 5th
+  of June 2003 when he registered sentinix.org. At that time www.google.com
+  returned 0 search results for "sentinix" and there was no registered SENTINIX
+  trademark on www.uspto.gov. Just because SENTINIX is an unregistered
+  trademark does not mean it's free for anyone to register. By using, modifying
+  and/or redistributing SENTINIX you agree not to make any trademark claims on
+  the name SENTINIX or any of the SENTINIX logos or other SENTINIX trademarks.
+
+- You may freely modify the Free Use SENTINIX logo(s) (published on
+  www.sentinix.org) to fit your needs, provided that the conditions listed
+  above are met.
+
+Please contact trademarks@sentinix.org:
+        * if you have any questions concerning this Trademark Policy,
+        * if you have questions relating to the use of the SENTINIX trademarks
+          and/or...
+        * if you want to report a suspected trademark infringement and/or
+          violation of this policy.
+
+Michel Blomgren
+SENTINIX Project Manager and Main Developer
+michel@sentinix.org
+http://sentinix.org
+</pre>
+<!--#include virtual="bottom.html"-->

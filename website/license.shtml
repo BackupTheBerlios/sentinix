@@ -1,0 +1,93 @@
+<!--#include virtual="top.html"-->
+
+<h1>SENTINIX LICENSE AGREEMENT</h1>
+<p>You'll find a text-only version of this license agreement at <a href="http://sentinix.org/sentinix-license.txt">http://sentinix.org/sentinix-license.txt</a>.</p>
+<p>SENTINIX LICENSE AGREEMENT Copyright &copy; 2003 Michel Blomgren.<br>
+Derived from the original BSD license.
+</p>
+
+<h2>VERSION</h2>
+<p>
+This is version 4.2, written November 2003.
+</p>
+
+<h2>COPYRIGHT NOTICE</h2>
+<p>
+SENTINIX Copyright &copy; 2003 Michel Blomgren - All rights reserved.
+</p>
+
+<h2>DESCRIPTION</h2>
+<p>
+This license (a non-exclusive agreement between you and the copyright holder of
+SENTINIX) applies to any version (whether distributed as source code or in
+binary form) of the SENTINIX Linux distribution, unless otherwise stated. The
+SENTINIX License Agreement addresses use of SENTINIX, redistribution of
+SENTINIX and warranty of SENTINIX. SENTINIX is a free operating system (or a
+Linux* distribution) made up of several components, or software. Each software
+is individually copyrighted and licensed under a software license (e.g.: GNU
+GPL, BSD, Artistic), mostly by people not affiliated with the SENTINIX project.
+This license covers the use and redistribution of SENTINIX as a compilation,
+not any individual software in the compilation.
+</p>
+<p>
+*) Linux is a registered trademark of Linus Torvalds.
+</p>
+
+<h2>REDISTRIBUTION CONDITIONS</h2>
+<p>
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+</p>
+<p>
+<ol>
+
+<li><p>Redistributions of source code must retain the above copyright notice, this
+list of conditions and the following disclaimer.</p>
+
+<li><p>Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.</p>
+
+<li><p>All advertising materials mentioning features or use of SENTINIX must
+display an acknowledgement, in words, that SENTINIX is being used.</p>
+
+<li><p>The name SENTINIX (including, but not limited to, sentinix.org and the
+SENTINIX logotypes) may be used to refer to and/or promote the official
+SENTINIX project.</p>
+
+<li><p>Neither the name SENTINIX (including, but not limited to, sentinix.org and
+the SENTINIX logotypes) nor the names of its contributors may be used to
+endorse or promote redistributions -- whether commercial (not free of charge)
+or gratis (free of charge) -- of SENTINIX without specific prior written
+permission.</p>
+
+<li><p>Neither the name SENTINIX (including, but not limited to, sentinix.org and
+the SENTINIX logotypes) nor the names of its contributors may be used to
+endorse or promote products derived from SENTINIX or even modified versions of
+SENTINIX without specific prior written permission.</p>
+
+</ol>
+</p>
+
+<h2>DISCLAIMER</h2>
+<p>
+SENTINIX IS PROVIDED BY THE COPYRIGHT HOLDER AND CONTRIBUTORS "AS IS" AND ANY
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+SENTINIX, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</p>
+
+<h2>CONTACT INFORMATION</h2>
+<p>
+Michel Blomgren<br>
+SENTINIX Project Manager and Main Developer<br>
+michel&nbsp;at&nbsp;sentinix.org
+</p>
+
+<!--#include virtual="bottom.html"-->

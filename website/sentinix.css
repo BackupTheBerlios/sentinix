@@ -1,0 +1,31 @@
+BODY {
+  font-family: helvetica, arial, sans-serif;
+  font-size: 100%;
+}
+
+TD {
+  font-size: 12pt;
+  vertical-align: top;
+}
+
+td.bluearea {
+  background: #f0f0ff;  /*#f2f2f9; */
+  border-color: #000000; /*#3366cc;*/
+  border-style: solid;
+  border-width: thin;
+  font-size: 12pt;
+  vertical-align: top;
+}
+
+td.greyarea {
+  background: #f0f0f0;  /*#f2f2f9; */
+  border-color: #000000; /*#3366cc;*/
+  border-style: solid;
+  border-width: thin;
+  font-size: 12pt;
+  vertical-align: top;
+}
+
+.bluetext {
+  color: #3366cc;
+}
