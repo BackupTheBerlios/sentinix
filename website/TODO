@@ -1,11 +1,26 @@
-$Id: TODO,v 1.3 2004/01/18 01:24:14 replikan Exp $
+$Id: TODO,v 1.4 2004/01/29 02:50:18 replikan Exp $
 
 + = Finished.
 - = Pending.
 
+Warninig: this list is getting out of date, I'm too busy with actually
+developing the system than writing TODOs. Please join the #sentinix IRC channel
+on server irc.sentinix.org for updates on what I'm working on right now.
 
-- /etc/profile: umask 077  (not umask 022)
-  /etc/profile: unset HISTFILE  (for all users, so that .bash_history is not saved upon exit)
+
+
+- A note to myself: Make a webpage demonstrating a few scenarios on how to use
+                    SENTINIX in different environments/setups. E.g.: SENTINIX
+                    as scalable openMosix-clustered e-mail
+                    gateway/proxy/router. SENTINIX as network intrusion
+                    detector. SENTINIX as host/service monitor. SENTINIX as
+                    logging+alerting firewall. SENTINIX as web, CVS, FTP,
+                    rsync, etc. server. SENTINIX as automatic pen-tester.
+                    etc...
+
+
++ /etc/profile: umask 077  (not umask 022)
++ /etc/profile: unset HISTFILE  (for all users, so that .bash_history is not saved upon exit)
 
 
 
