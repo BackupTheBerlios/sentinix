@@ -3,4 +3,4 @@
 source sxconfig &&
 cd openssl-$VERSION &&
 make install &&
-cp -a certs/* /etc/ssl/certs/
+cp -dR certs/* /etc/ssl/certs/

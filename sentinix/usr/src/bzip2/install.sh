@@ -6,7 +6,7 @@ make install &&
 
 ### set up the usual suspects
 cp bzip2-shared /bin/bzip2 &&
-cp libbz2.so* /lib &&
+cp -d libbz2.so* /lib &&
 ln -sf ../../lib/libbz2.so.1.0 /usr/lib/libbz2.so &&
 rm /usr/bin/{bunzip2,bzcat,bzip2} &&
 mv /usr/bin/{bzip2recover,bzless,bzmore} /bin &&
