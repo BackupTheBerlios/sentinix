@@ -17,6 +17,6 @@ cd netkit-ftp-$VERSION &&
 chown -R root:root . &&
 
 CFLAGS="-I/usr/include" \
-./configure --prefix=/usr --with-c-compiler=$UCLIBC &&
-make CFLAGS="-march=i486 -mcpu=i686 -O2" LDFLAGS="-s -static" &&
+./configure --prefix=/usr &&
+make CFLAGS="-march=i486 -mcpu=i686 -O2" LDFLAGS=-s &&
 ( cd ftp; strip ftp; cp ftp $destdir )

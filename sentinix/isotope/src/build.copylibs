@@ -1,0 +1,49 @@
+#!/bin/sh
+CWD=`pwd`
+
+libdir="../rootfs/lib"
+
+COPY="cp -dR"
+
+
+if [ ! -d $libdir ]; then
+    echo "$libdir does not exist!"
+    exit 1
+fi
+
+$COPY /lib/ld-* $libdir/ &&
+$COPY /lib/libBrokenLocale* $libdir/ &&
+$COPY /lib/libanl* $libdir/ &&
+$COPY /lib/libblkid.* $libdir/ &&
+$COPY /lib/libc-* $libdir/ &&
+$COPY /lib/libc.so.* $libdir/ &&
+$COPY /lib/libcom_* $libdir/ &&
+$COPY /lib/libcrypt* $libdir/ &&
+$COPY /lib/libdl-* $libdir/ &&
+$COPY /lib/libdl.so.* $libdir/ &&
+$COPY /lib/libe2p.* $libdir/ &&
+$COPY /lib/libext2fs.* $libdir/ &&
+$COPY /lib/libm-* $libdir/ &&
+$COPY /lib/libm.so.* $libdir/ &&
+$COPY /lib/libmemusage.* $libdir/ &&
+$COPY /lib/libncurses.* $libdir/ &&
+$COPY /lib/libnsl-* $libdir/ &&
+$COPY /lib/libnsl.so.* $libdir/ &&
+$COPY /lib/libnss_dns-* $libdir/ &&
+$COPY /lib/libnss_dns.so.* $libdir/ &&
+$COPY /lib/libnss_files-* $libdir/ &&
+$COPY /lib/libnss_files.so.* $libdir/ &&
+$COPY /lib/libpcprofile.* $libdir/ &&
+$COPY /lib/libproc.so.* $libdir/ &&
+$COPY /lib/libpthread-* $libdir/ &&
+$COPY /lib/libpthread.so.* $libdir/ &&
+$COPY /lib/libresolv-* $libdir/ &&
+$COPY /lib/libresolv.so.* $libdir/ &&
+$COPY /lib/librt-* $libdir/ &&
+$COPY /lib/librt.so.* $libdir/ &&
+$COPY /lib/libss.so.* $libdir/ &&
+$COPY /lib/libthread_db* $libdir/ &&
+$COPY /lib/libutil-* $libdir/ &&
+$COPY /lib/libutil.so.* $libdir/ &&
+$COPY /lib/libuuid.so.* $libdir/ &&
+$COPY /lib/evms $libdir/

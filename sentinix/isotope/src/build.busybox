@@ -1,8 +1,8 @@
 #!/bin/sh
 
 if [ ! -e config ]; then
-	echo "No \"config\" file found"!
-	exit 1
+    echo "No \"config\" file found"!
+    exit 1
 fi
 
 . config
@@ -39,8 +39,8 @@ rm -rf ${isotope}/rootfs/sbin
 rm -rf ${isotope}/rootfs/usr/bin
 rm -rf ${isotope}/rootfs/usr/sbin
 
-make CC=$UCLIBC clean &&
-make CC=$UCLIBC &&
-make CC=$UCLIBC PREFIX=${isotope}/rootfs install &&
+make clean &&
+make &&
+make PREFIX=${isotope}/rootfs install &&
 cp -ia ${isotope}/specials/. ${isotope}/rootfs/ &&
 ln -sf ../../var/setup/setup.kbdmap ${isotope}/rootfs/usr/sbin/setup.kbdmap

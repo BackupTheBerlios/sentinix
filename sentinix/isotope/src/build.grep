@@ -10,7 +10,7 @@ tar -xzf grep-$VERSION.tar.gz
 cd grep-$VERSION
 chown -R root:root .
 
-CFLAGS=-O2 LDFLAGS="-static -s" ./configure \
+CFLAGS=-O2 LDFLAGS=-s ./configure \
 --disable-nls \
 --prefix=/usr \
 --bindir=/bin &&

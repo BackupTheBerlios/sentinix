@@ -10,9 +10,9 @@ tar -xzf dhcpcd-$VERSION.tar.gz &&
 cd dhcpcd-$VERSION &&
 chown -R root.root . &&
 zcat $CWD/dhcpcd.noarch+dhcpcd.exe.diff.gz | patch -Np1 &&
-CC=$UCLIBC CFLAGS="-O2 -march=i486 -mcpu=i686" ./configure \
+CFLAGS="-O2 -march=i486 -mcpu=i686" ./configure \
     --prefix=/ \
     --sysconfdir=/etc &&
 make clean &&
-make LDFLAGS="-s -static" &&
+make LDFLAGS=-s &&
 cp dhcpcd $destdir

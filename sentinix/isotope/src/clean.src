@@ -22,7 +22,7 @@ rm -rf sh-utils-$VERSION
 VERSION=2.11z
 rm -rf util-linux-$VERSION
 
-VERSION=0.9.17
+VERSION=0.9.26
 rm -rf uClibc-$VERSION
 
 VERSION=2.0.13

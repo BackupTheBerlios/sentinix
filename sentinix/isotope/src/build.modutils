@@ -9,6 +9,6 @@ rm -rf modutils-$VERSION &&
 tar -xzf modutils-$VERSION.tar.gz &&
 cd modutils-$VERSION &&
 chown -R root.root . &&
-CC=$UCLIBC LDFLAGS=-static ./configure --enable-strip i486-sentinix-linux &&
+./configure --enable-strip i486-sentinix-linux &&
 make &&
 make DESTDIR=$destdir install-bin

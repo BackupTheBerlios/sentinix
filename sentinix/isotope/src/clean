@@ -8,10 +8,13 @@ rootfs="${isotope}/rootfs"
 
 
 # clean the specials dir
-rm -rf $sdir/bin/*
-rm -rf $sdir/sbin/*
-rm -rf $sdir/usr/bin/*
-rm -rf $sdir/usr/sbin/*
+#rm -rf $sdir/bin/*
+#rm -rf $sdir/sbin/*
+#rm -rf $sdir/usr/bin/*
+#rm -rf $sdir/usr/sbin/*
+
+# we do it the forceful way instead
+rm -rf $sdir
 
 if [ -d $rootfs ]; then
 	# clean the rootfs dir
@@ -21,9 +24,7 @@ if [ -d $rootfs ]; then
 	rm -rf ${rootfs}/usr/bin
 	rm -rf ${rootfs}/usr/sbin
 	( cd $isotope &&
-	  tar -czf rootfs.tar.gz rootfs &&
-	  rm -rf $rootfs
-	)
+	  rm -rf rootfs )
 fi
 
 sh clean.src

@@ -4,16 +4,11 @@ destdir="$CWD/../specials/usr/bin"
 
 VERSION=0.8
 
-if [ ! -e config ]; then
-	echo "No \"config\" file found"!
-	exit 1
-fi
+. config &&
 
-. config
-
-rm -rf replimenu-$VERSION
+rm -rf replimenu-$VERSION &&
 tar -xzf replimenu-$VERSION.tar.gz &&
 cd replimenu-$VERSION &&
 chown -R root.root . &&
-make CC=$UCLIBC DOSTATIC=true &&
+make CC=/usr/gcc-2.95.3/bin/gcc &&
 cp src/replimenu $destdir

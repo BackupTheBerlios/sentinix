@@ -3,10 +3,17 @@
 CWD=`pwd`
 sdir="$CWD/../specials"
 
-sh clean
-if [ ! -e uclibc ]; then
-	sh build.uclibc
-fi
+sh clean &&
+
+mkdir -p $sdir/bin &&
+mkdir -p $sdir/sbin &&
+mkdir -p $sdir/usr/bin &&
+mkdir -p $sdir/usr/sbin &&
+
+( cd .. &&
+  tar -xzf rootfs.tar.gz ) &&
+
+sh build.copylibs &&
 sh build.installscript &&
 sh build.replimenu &&
 sh build.e2fsprogs &&
@@ -21,10 +28,20 @@ sh build.sysklogd &&
 sh build.modutils &&
 sh build.dhcpcd &&
 sh build.openmosix-tools &&
-( strip $sdir/bin/* $sdir/sbin/* $sdir/usr/bin/* $sdir/usr/sbin/*
-  sh build.busybox )
-if [ ! $? -eq 0 ]; then
-	echo
-	echo "An error occured, compilation aborted"!
-	exit 1
+
+( find $sdir/bin $sdir/sbin $sdir/usr/bin $sdir/usr/sbin -type f -exec strip -d '{}' \;
+  sh build.busybox || exit 1
+  find ../rootfs/{bin,sbin,lib} ../rootfs/usr/{bin,sbin,lib} -type f -exec strip -d '{}' \;
+  exit 0
+)
+
+if [ $? -eq 0 ]; then
+    echo
+    echo "compilation OK"
+    exit 0
+else
+    echo
+    echo "An error occured, compilation aborted"!
+    exit 1
 fi
+

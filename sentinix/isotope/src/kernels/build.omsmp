@@ -7,6 +7,8 @@ CWD=`pwd`
 XTRAVER=-openmosix-1
 XTRAVER2=-smp
 
+CC=/usr/gcc-2.95.3/bin/gcc
+
 kerneldir=$CWD/../../kernels/omsmp
 modulesdir=$CWD/../..
 
@@ -67,18 +69,18 @@ if [ ! -d linux-${KVERSION}${XTRAVER} ]; then
 fi
 
 cd linux-${KVERSION}${XTRAVER} &&
-make EXTRAVERSION=${XTRAVER}${XTRAVER2} mrproper &&
+make CC=$CC EXTRAVERSION=${XTRAVER}${XTRAVER2} mrproper &&
 ( cp $CWD/config.omsmp .config &&
   echo "rm -rf $modulesdir/lib/modules/${KVERSION}${XTRAVER}${XTRAVER2}" &&
   rm -rf $modulesdir/lib/modules/${KVERSION}${XTRAVER}${XTRAVER2} &&
   rm -rf $modulesdir/lib/modules/${KVERSION}${XTRAVER}${XTRAVER2}.tar.gz ) &&
-make EXTRAVERSION=${XTRAVER}${XTRAVER2} oldconfig &&
-make EXTRAVERSION=${XTRAVER}${XTRAVER2} dep &&
-make EXTRAVERSION=${XTRAVER}${XTRAVER2} clean &&
-make EXTRAVERSION=${XTRAVER}${XTRAVER2} modules &&
-INSTALL_MOD_PATH=$modulesdir make EXTRAVERSION=${XTRAVER}${XTRAVER2} modules_install &&
-make EXTRAVERSION=${XTRAVER}${XTRAVER2} clean &&
-make EXTRAVERSION=${XTRAVER}${XTRAVER2} bzImage &&
+make CC=$CC EXTRAVERSION=${XTRAVER}${XTRAVER2} oldconfig &&
+make CC=$CC EXTRAVERSION=${XTRAVER}${XTRAVER2} dep &&
+make CC=$CC EXTRAVERSION=${XTRAVER}${XTRAVER2} clean &&
+make CC=$CC EXTRAVERSION=${XTRAVER}${XTRAVER2} modules &&
+INSTALL_MOD_PATH=$modulesdir make CC=$CC EXTRAVERSION=${XTRAVER}${XTRAVER2} modules_install &&
+make CC=$CC EXTRAVERSION=${XTRAVER}${XTRAVER2} clean &&
+make CC=$CC EXTRAVERSION=${XTRAVER}${XTRAVER2} bzImage &&
 cp arch/i386/boot/bzImage $kerneldir/bzImage &&
 cat System.map | gzip > $kerneldir/System.map.gz &&
 cp .config $kerneldir/config &&

@@ -26,7 +26,7 @@ tar -xzvf nessus-plugins-$VERSION.tar.gz &&
 # compile nessus-core
 #
 ( cd $CWD/nessus-core &&
-  ./configure --prefix=/usr/components/nessus &&
+  ./configure --prefix=/usr/components/nessus --disable-gtk &&
   make &&
   installwatch -o $CWD/installwatch_3.log make install ) &&
 #

@@ -8,7 +8,7 @@ rm -rf eject-$VERSION
 tar -xzvf eject-$VERSION.tar.gz &&
 cd eject-$VERSION &&
 chown -R root.root . &&
-CFLAGS=-O2 LDFLAGS="-s -static" ./configure --prefix=/usr --build=i486-sentinix-linux &&
+CFLAGS=-O2 LDFLAGS=-s ./configure --prefix=/usr --build=i486-sentinix-linux &&
 make &&
 ( strip eject
   cp eject $destdir/

@@ -17,8 +17,7 @@ tar -xzvf util-linux-$VERSION.tar.gz
 cd $CWD/util-linux-$VERSION
 chown -R root:root .
 
-CC=$UCLIBC \
-LDFLAGS="-s -static" ./configure &&
+LDFLAGS="-s" ./configure &&
 (
 	cd sys-utils
 	make
@@ -52,7 +51,7 @@ LDFLAGS="-s -static" ./configure &&
 # make cfdisk
 #
 cd $CWD/util-linux-$VERSION &&
-LDFLAGS="-s -static" ./configure &&
+LDFLAGS="-s" ./configure &&
 ( cd fdisk
   make
   strip cfdisk
