@@ -1,13 +1,6 @@
 <!--#include virtual="top.html"-->
 
-<!--
-
-    $Log: index.shtml,v $
-    Revision 1.3  2004/01/08 21:38:24  replikan
-    *** empty log message ***
-
-
--->
+<!-- $Date: 2004/01/08 21:40:02 $ -->
 
 <!-- start of news column -->
 <table width="30%" border=0 cellpadding=5 cellspacing=2 align=right>
@@ -175,6 +168,10 @@ Why wait? We are in need of beta testers, programmers, anti-spam specialists
 and GNU/Linux distribution experts. Send an e-mail to
 <b>michel&nbsp;at&nbsp;sentinix.org</b> and tell me your area(s) of expertise
 and what you'd like to do in the SENTINIX project.
+</p>
+
+<p>
+<i>Last modified: $Date: 2004/01/08 21:40:02 $</i>
 </p>
 
 <!--#include virtual="bottom.html"-->
