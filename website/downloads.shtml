@@ -24,29 +24,31 @@ SENTINIX <b><!--#include virtual="latestversion"--></b> is the most recent relea
 
 <h1>BROKEN MIRRORS?</h1>
 <p>
-Please e-mail <tt>michel&nbsp;at&nbsp;sentinix.org</tt> if you discover that a
+Please e-mail <tt><b>michel&nbsp;at&nbsp;sentinix.org</b></tt> if you discover that a
 link above is broken! Thanks!
 </p>
 
 <h1>SENTINIX NEED MIRRORS</h1>
-<img align=right src="images/kaosphere_traffic.png">
 <p>
-<b>Want to provide a mirror?</b> That would be very appreciated! I have now
-started <a target="_blank" href="http://samba.anu.edu.au/rsync/">rsync</a> on
-sentinix.org. <b>I can no longer maintain mirrors!</b> A crontabbed daily (at
-most) rsync job on your side is the best way to do it. You can also mirror it
-using <b>wget</b> (or similar), put that's not recommended since it'll allocate
+<b>Want to provide a mirror?</b> That would be very appreciated! As of Jan 11,
+I have started <a target="_blank" href="http://samba.anu.edu.au/rsync/">rsync</a>
+on sentinix.org. <b>I can no longer maintain mirrors!</b> A crontabbed daily
+(at most) rsync job on your side is the best way to do it. You can also mirror
+it using wget (or similar), but that's not recommended since it'll allocate
 precious FTP connections. There's, however, also a limitation on the number of
 concurrent rsync connections.
 </p>
 
 <p>
-This will grab the <tt>sentinix-release</tt> module which contains full ISO releases.
+This will grab the <tt><b>sentinix-release</b></tt> module which holds the
+bootable ISO images, it's the same dir as
+<tt><b>ftp://sentinix.org/pub/sentinix-release/</b></tt>.
 </p>
 <table bgcolor="#e0e0e0" border=0 cellpadding=10 cellspacing=0><tr><td>
 <pre>
-rsync -vr --delete rsync://sentinix.org/sentinix-release /where/you/want/it/
+$ rsync -vr --delete rsync://sentinix.org/sentinix-release /where/you/want/it/
 </pre>
+Be careful with the <i>--delete</i> option, read <tt><b>man rsync</b></tt> for info!
 </td></tr></table>
 
 <p>
@@ -67,5 +69,5 @@ SENTINIX Project Manager<br>
 </p>
 
 <!--#include virtual="bottom1.html"-->
-$Id: downloads.shtml,v 1.5 2004/01/11 22:30:16 replikan Exp $
+$Id: downloads.shtml,v 1.6 2004/01/11 22:40:22 replikan Exp $
 <!--#include virtual="bottom2.html"-->
