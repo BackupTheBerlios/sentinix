@@ -7,7 +7,7 @@
 # Original version found in Slackware 8.1, adapted (and modified) for
 # SENTINIX by Michel Blomgren.
 #
-# $Id: rc.M,v 1.6 2004/01/16 02:50:52 replikan Exp $
+# $Id: rc.M,v 1.7 2004/01/16 03:12:07 replikan Exp $
 #
 
 echo -e "\033[1mEntering multi-user runlevel...\033[0m"

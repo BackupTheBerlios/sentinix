@@ -1,7 +1,7 @@
 PKG=linuxmandocs
 
 include ../sxarchconfig
-include sxconfig
+include ../linux/sxconfig
 
 $(PKG): compile install
 

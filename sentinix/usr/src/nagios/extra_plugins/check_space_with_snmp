@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# $Id: check_space_with_snmp,v 1.6 2004/01/16 02:50:52 replikan Exp $
+# $Id: check_space_with_snmp,v 1.7 2004/01/16 03:12:07 replikan Exp $
 #
 # check_space_with_snmp (c) 2003,2004 Michel Blomgren <michel@sentinix.org>
 #

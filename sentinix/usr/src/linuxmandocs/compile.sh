@@ -1,7 +1,5 @@
 #!/bin/sh
-if [ ! -e sxconfig ]; then
-    ln -sf ../linux/sxconfig sxconfig
-fi
-source sxconfig &&
+
+source ../linux/sxconfig &&
 cd ../linux/linux-$VERSION &&
 make mandocs
