@@ -16,12 +16,18 @@ SENTINIX <b><!--#include virtual="latestversion"--></b> is the most recent relea
 
 <tr bgcolor="#e0e0e0"><td>Germany</td><td><a target="_blank" href="ftp://sentinix.34hack.net/pub/mirrors/sentinix">ftp://sentinix.34hack.net/pub/mirrors/sentinix</a></td><td>Full HTTP+FTP auto-mirroring.</td><td>Richard Cochius - r.cochius&nbsp;at&nbsp;net-at-work.de (net at work GmbH)</td></tr>
 
-<tr bgcolor="#e0e0e0"><td>Sweden</td><td><a target="_blank" href="ftp://kaosphere.ath.cx/sentinix-devel/">ftp://kaosphere.ath.cx/sentinix-devel/</a></td><td>The latest ISO images and the latest source code (sentinix-fullsource).</td><td>Michel Blomgren - michel&nbsp;at&nbsp;sentinix.org</td></tr>
+<tr bgcolor="#e0e0e0"><td>Sweden</td><td><a target="_blank" href="ftp://kaosphere.ath.cx/sentinix-release/">ftp://kaosphere.ath.cx/sentinix-release/</a></td><td>The latest ISO images and the latest source code (sentinix-fullsource).</td><td>Michel Blomgren - michel&nbsp;at&nbsp;sentinix.org</td></tr>
 <tr bgcolor="#e0e0e0"><td>Sweden</td><td><a target="_blank" href="ftp://sentinix.org/">ftp://sentinix.org/</a></td><td>sentinix.org is primarily hosting SENTINIX web and e-mail, but has now also an FTP server up and running (same content and on the same connection as kaosphere).</td><td>Michel Blomgren - michel&nbsp;at&nbsp;sentinix.org</td></tr>
 
 <tr bgcolor="#e0e0e0"><td>Sweden</td><td><a target="_blank" href="ftp://kaosphere.ath.cx/sentinel/">ftp://kaosphere.ath.cx/sentinel/</a></td><td>Downloads of SENTINIX' predecessor, <b>Compledge Sentinel</b></td><td>Michel Blomgren - michel&nbsp;at&nbsp;sentinix.org</td></tr>
 </table>
 </td></tr></table>
+</p>
+
+<h1>BROKEN MIRRORS?</h1>
+<p>
+Please e-mail <tt>michel&nbsp;at&nbsp;sentinix.org</tt> if you discover that a
+link above is broken! Thanks!
 </p>
 
 <h1>SENTINIX NEED MIRRORS</h1>
@@ -50,5 +56,5 @@ SENTINIX Project Manager<br>
 </p>
 
 <!--#include virtual="bottom1.html"-->
-$Id: downloads.shtml,v 1.3 2004/01/09 16:35:47 replikan Exp $
+$Id: downloads.shtml,v 1.4 2004/01/11 16:02:23 replikan Exp $
 <!--#include virtual="bottom2.html"-->
