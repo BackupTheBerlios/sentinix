@@ -16,10 +16,8 @@ SENTINIX <b><!--#include virtual="latestversion"--></b> is the most recent relea
 
 <tr bgcolor="#e0e0e0"><td>Germany</td><td><a target="_blank" href="ftp://sentinix.34hack.net/pub/mirrors/sentinix">ftp://sentinix.34hack.net/pub/mirrors/sentinix</a></td><td>Full HTTP+FTP auto-mirroring.</td><td>Richard Cochius - r.cochius&nbsp;at&nbsp;net-at-work.de (net at work GmbH)</td></tr>
 
-<tr bgcolor="#e0e0e0"><td>Sweden</td><td><a target="_blank" href="ftp://kaosphere.ath.cx/sentinix-release/">ftp://kaosphere.ath.cx/sentinix-release/</a></td><td>The latest ISO images and the latest source code (sentinix-fullsource).</td><td>Michel Blomgren - michel&nbsp;at&nbsp;sentinix.org</td></tr>
-<tr bgcolor="#e0e0e0"><td>Sweden</td><td><a target="_blank" href="ftp://sentinix.org/">ftp://sentinix.org/</a></td><td>sentinix.org is primarily hosting SENTINIX web and e-mail, but has now also an FTP server up and running (same content and on the same connection as kaosphere).</td><td>Michel Blomgren - michel&nbsp;at&nbsp;sentinix.org</td></tr>
-
-<tr bgcolor="#e0e0e0"><td>Sweden</td><td><a target="_blank" href="ftp://kaosphere.ath.cx/sentinel/">ftp://kaosphere.ath.cx/sentinel/</a></td><td>Downloads of SENTINIX' predecessor, <b>Compledge Sentinel</b></td><td>Michel Blomgren - michel&nbsp;at&nbsp;sentinix.org</td></tr>
+<tr bgcolor="#e0e0e0"><td>Sweden</td><td><a target="_blank" href="ftp://sentinix.org/">ftp://sentinix.org/</a></td><td>sentinix.org is hosting this web site, SMTP, FTP and rsync.</td><td>Michel Blomgren - michel&nbsp;at&nbsp;sentinix.org</td></tr>
+<tr bgcolor="#e0e0e0"><td>Sweden</td><td><a target="_blank" href="ftp://sentinix.org/sentinel/">ftp://sentinix.org/sentinel/</a></td><td>Downloads of SENTINIX' predecessor, <b>Compledge Sentinel</b></td><td>Michel Blomgren - michel&nbsp;at&nbsp;sentinix.org</td></tr>
 </table>
 </td></tr></table>
 </p>
@@ -33,20 +31,33 @@ link above is broken! Thanks!
 <h1>SENTINIX NEED MIRRORS</h1>
 <img align=right src="images/kaosphere_traffic.png">
 <p>
-<b>sentinix.1.beta01.iso</b> was downloaded exactly 70 times the first 48 hours
-after my announcement (between 26th and 28th of October, 2003). My 64MB RAM, software RAID-5 FTP server
-(kaosphere.ath.cx, running Slackware and pure-ftpd) started to block
-incoming connections (it only accepts 25 simultaneous logins) and during the first
-day people had to <i>fight</i> their way in.
+<b>Want to provide a mirror?</b> That would be very appreciated! I have now
+started <a target="_blank" href="http://samba.anu.edu.au/rsync/">rsync</a> on
+sentinix.org. <b>I can no longer maintain mirrors!</b> A crontabbed daily (at
+most) rsync job on your side is the best way to do it. You can also mirror it
+using <b>wget</b> (or similar), put that's not recommended since it'll allocate
+precious FTP connections. There's, however, also a limitation on the number of
+concurrent rsync connections.
 </p>
+
 <p>
-<b>Want to provide a mirror?</b> That would be very appreciated! I would
-appreciate FTP access so that I personally can upload new releases. Download
-through anonymous FTP would be best since it will consume much less resources
-than Apache or IIS. Only mirroring of the ISO image is needed, it's about 200MB
-and there would be 2 releases (maximum) present on the site (400MB worth of
-total space).
+This will grab the <tt>sentinix-release</tt> module which contains full ISO releases.
 </p>
+<table bgcolor="#e0e0e0" border=0 cellpadding=10 cellspacing=0><tr><td>
+<pre>
+rsync -vr --delete rsync://sentinix.org/sentinix-release /where/you/want/it/
+</pre>
+</td></tr></table>
+
+<p>
+To do it with a wget command (not recommended) do this:
+</p>
+<table bgcolor="#e0e0e0" border=0 cellpadding=10 cellspacing=0><tr><td>
+<pre>
+$ cd /where/you/want/it/
+$ wget -r -nH --cut-dirs=2 ftp://sentinix.org/pub/sentinix-release
+</pre>
+</td></tr></table>
 
 <p>
 <font size=2><b>Michel Blomgren</b><br>
@@ -56,5 +67,5 @@ SENTINIX Project Manager<br>
 </p>
 
 <!--#include virtual="bottom1.html"-->
-$Id: downloads.shtml,v 1.4 2004/01/11 16:02:23 replikan Exp $
+$Id: downloads.shtml,v 1.5 2004/01/11 22:30:16 replikan Exp $
 <!--#include virtual="bottom2.html"-->
