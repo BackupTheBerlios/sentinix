@@ -9,7 +9,7 @@ Feel free to subscribe to the SENTINIX mailing list at <a target="_blank" href="
 <h1>IRC</h1>
 
 <p>
-We have a <tt><b>#sentinix</b></tt> IRC channel on <b>irc.sentinix.org</b> (big thanks goes to Xavier Kaotico for his work on setting it up).
+We have a <tt><b>#sentinix</b></tt> IRC channel on <b>irc.sentinix.org</b> (many thanks goes to Xavier Kaotico for his work on setting it up).
 </p>
 
 <p>
@@ -18,5 +18,5 @@ We don't use the old <tt><b>#sentinix</b></tt> channel on <b>irc.oftc.net</b> as
 </p>
 
 <!--#include virtual="bottom1.html"-->
-$Id: mailinglist.shtml,v 1.4 2004/01/23 16:35:20 replikan Exp $
+$Id: mailinglist.shtml,v 1.5 2004/01/23 16:36:03 replikan Exp $
 <!--#include virtual="bottom2.html"-->
