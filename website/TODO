@@ -1,7 +1,13 @@
-$Id: TODO,v 1.2 2004/01/09 15:47:05 replikan Exp $
+$Id: TODO,v 1.3 2004/01/18 01:24:14 replikan Exp $
 
 + = Finished.
 - = Pending.
+
+
+- /etc/profile: umask 077  (not umask 022)
+  /etc/profile: unset HISTFILE  (for all users, so that .bash_history is not saved upon exit)
+
+
 
 - SXSA (SentiniX Security Advisory), some sec announcement system.
 

@@ -17,6 +17,21 @@ News message
 
 <tr><td class="greyarea">
 <small>
+<h3><b class="bluetext">2004-01-17: COMDEX Scandinavia 2004 (January 20-22)</b></h3>
+Torbjörn Nilo (CEO Cycom AB) and Michel Blomgren will hold two seminars at
+<a target="_blank" href="http://www.comdex.se">COMDEX Scandinavia</a> (Gothenburg, Sweden). We'll be
+talking about monitoring (Nagios), intrusion detection (Snort, IDS and
+intelligent firewalling), penetration testing (Nessus, searching for exploit
+code, "tiger team" operations), anti-spam and high performance clustering
+technologies. You'll find us in Dataförening's stand, <b>B01:02</b>, throughout
+the entire exhibition. First seminar is in "Konferensrum R23, plan 2" on
+Tuesday (20th of January) at 14:00. The second is on Wednesday (21th of
+January) at 14:00 in stand B01:02.
+</small>
+</td></tr>
+
+<tr><td class="greyarea">
+<small>
 <h3><b class="bluetext">2003-12-18: Press coverage</b></h3>
 <img src="images/openmosix_logo_tiny.jpg" align=right>
 Bruce Knox and Matthias Rechenburg from the <a target="_blank" href="http://openmosix.sf.net">openMosix project</a>
@@ -169,5 +184,5 @@ and what you'd like to do in the SENTINIX project.
 </p>
 
 <!--#include virtual="bottom1.html"-->
-$Id: index.shtml,v 1.7 2004/01/09 16:35:47 replikan Exp $
+$Id: index.shtml,v 1.8 2004/01/18 01:24:14 replikan Exp $
 <!--#include virtual="bottom2.html"-->
