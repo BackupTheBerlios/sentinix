@@ -1,5 +1,10 @@
 <!--#include virtual="top.html"-->
 
+<!-- $Log: index.shtml,v $
+<!-- Revision 1.2  2004/01/08 21:37:45  replikan
+<!-- testing berlios CVS, updated index.shtml
+<!-- -->
+
 <!-- start of news column -->
 <table width="30%" border=0 cellpadding=5 cellspacing=2 align=right>
 <tr><td align=right>
@@ -115,7 +120,7 @@ for available download sites.
 
 <h1>WHAT IS SENTINIX?</h1>
 <p>
-<font color="#aa0202"><b>SENTINIX</b></font> is a GNU/Linux distribution
+<font color="#aa0202"><b>SENTINIX</b></font> is a <a target="_blank" href="http://www.gnu.org/gnu/linux-and-gnu.html">GNU/Linux</a> distribution
 designed for monitoring, intrusion detection, penetration testing, auditing,
 statistics/graphing and anti-spam. It's completely free; free to use, free to
 modify and free to distribute. SENTINIX includes the following software,
@@ -124,9 +129,10 @@ Cacti, RRDTool, Nessus, Postfix, MailScanner, SpamAssassin, openMosix, MySQL,
 Apache, PHP, Perl, Python and lots more</b>.
 </p>
 <p>
-SENTINIX is shipped with a lot of programs, not all licensed under
-the same license (e.g. GNU GPL). SENTINIX contains (and will only contain) software whose license
-has been approved by the <a target="_blank" href="http://opensource.org/">Open Source Initiative</a>.
+SENTINIX is shipped with a lot of programs, not all licensed under the same
+license (e.g. GNU GPL). SENTINIX contains (and will only contain)
+<a target="_blank" href="http://www.gnu.org/philosophy/free-sw.html">free software</a> whose
+distribution conditions comply to the <a target="_blank" href="http://www.opensource.org/docs/definition.php">Open Source Definition</a>.
 </p>
 <p>
 <i>Compledge Sentinel</i> was the predecessor of SENTINIX. The website of
