@@ -6,7 +6,7 @@ source sxconfig &&
 tar -xzf nfs-utils-$VERSION.tar.gz &&
 cd nfs-utils-$VERSION &&
 chown -R root.root . &&
-CFLAGS="-O2 $SXARCHFLAGS" ./configure \
+CFLAGS="-O2 $SXARCHFLAGS -fstack-protector" ./configure \
     --prefix=/usr \
     --with-statedir=/var/lib/nfs \
     --host=$SXARCH-$SXSYSNAME-linux \

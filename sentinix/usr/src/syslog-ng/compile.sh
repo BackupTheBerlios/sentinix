@@ -6,7 +6,7 @@ source sxconfig &&
 tar -xzf syslog-ng-$VERSION.tar.gz &&
 cd syslog-ng-$VERSION &&
 chown -R root.root . &&
-./configure \
+CFLAGS="-O2 $SXARCHFLAGS -fstack-protector" ./configure \
     --prefix=/usr \
     --host=$SXARCH-$SXSYSNAME-linux &&
 make

@@ -6,7 +6,7 @@ source sxconfig &&
 tar -xzf openldap-$VERSION.tgz &&
 cd openldap-$VERSION &&
 chown -R root.root . &&
-CFLAGS="-O2 $SXARCHFLAGS" \
+CFLAGS="-O2 $SXARCHFLAGS -fstack-protector" \
 LDFLAGS=-s ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \

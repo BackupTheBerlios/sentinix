@@ -1,0 +1,22 @@
+openldap
+apache
+mod_ssl
+php
+openssl
+openssh
+sendmail
+pine (imapd, ipop2d, ipop3d, pico, pilot, pine)
+lynx
+links
+cvs
+bind
+dhcpcd
+dhcp (dhcpd)
+nessus
+samba
+nfs-utils
+net-snmp
+libol
+syslog-ng
+ntp
+portmap

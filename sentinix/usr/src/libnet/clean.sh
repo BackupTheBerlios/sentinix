@@ -1,5 +1,5 @@
 #!/bin/sh
 
 . sxconfig &&
-rm -rf libnet &&
+rm -rf Libnet-$VERSION &&
 rm -f installwatch.log

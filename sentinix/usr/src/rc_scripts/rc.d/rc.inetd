@@ -1,0 +1,27 @@
+#!/bin/sh
+#
+# start/stop/restart inetd
+#
+
+function start_inetd {
+    /usr/sbin/inetd
+}
+
+function stop_inetd {
+    killall inetd
+}
+
+case "$1" in
+    'start')
+	start_inetd ;;
+    'stop')
+	stop_inetd ;;
+    'restart')
+	stop_inetd
+	sleep 1
+	start_inetd ;;
+    'reload')
+	killall -HUP inetd ;;
+    *)
+	echo "usage: $0 start|stop|restart|reload" ;;
+esac

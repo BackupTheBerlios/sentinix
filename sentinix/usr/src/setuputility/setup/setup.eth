@@ -15,9 +15,9 @@ if [ ! "$1" = "-dontloadconfig" ]; then
     RM_gateway="$SX_GATEWAY"
     RM_ns1="$SX_NAMESERVER1"
     RM_ns2="$SX_NAMESERVER2"
-    RM_newinterface="bond0"
+#    RM_newinterface="bond0"
 
-    export RM_fqdn RM_gateway RM_ns1 RM_ns2 RM_newinterface
+    export RM_fqdn RM_gateway RM_ns1 RM_ns2 # RM_newinterface
 fi
 
 cat <<EOF > $TMP
@@ -26,13 +26,13 @@ text=Here you may configure your network interface(s), host and domain name, nam
 aftertext=
 colorscheme=4
 
-begin item
-    name=testapa
-    bullet=*
-    label=list environ
-    type=pause
-    command=printenv | grep '^RM_'
-end
+#begin item
+#    name=testapa
+#    bullet=*
+#    label=list environ
+#    type=pause
+#    command=printenv | grep '^RM_'
+#end
 
 begin item
     name=bonding_howto
@@ -47,7 +47,8 @@ br
 begin item
     name=fqdn
     type=var|defaultfromenv
-    label=Specify your fully qualified domain name (e.g. server1.sentinix.org)
+    label=Specify your fully qualified domain name
+    icaption=Specify your fully qualified domain name\n(e.g. server1.sentinix.org)
     default=
 end
 
@@ -75,35 +76,51 @@ br
 br Configure IP and netmask for your Ethernet device(s) below.
 br
 
-#begin item
-#    name=newinterface
-#    type=var|chain
-#    label=Add a virtual interface to the list (e.g. "bond0")
-#    icaption=Enter an interface (e.g. "bond0") to add. Don't type in\n"eth0" or "lo", they should be added automatically.\nTo delete interfaces added, see further below.
-#    default=bond0
-#end
-#begin item
-#    name=noname1
-#    type=chain|hidden|nocls
-#    command=source /usr/local/setup/ETHERNET
-#end
-
 begin item
     name=newinterface
     type=var|defaultfromenv|chain
     label=Add a virtual interface to the list (e.g. "bond0")
     icaption=Enter an interface (e.g. "bond0") to add. Don't type in\n"eth0" or "lo", they should be added automatically.\nTo delete interfaces added, see further below.
-    default=
+    default=bond0
 end
 begin item
     name=EXEC
     type=hidden|nocls
-    command=source /usr/local/setup/ETHADDIF -realadd \$RM_newinterface
+    command=export RM_if_\${RM_newinterface}_ip="" RM_if_\${RM_newinterface}_netmask="" ; source /usr/local/setup/ETHERNET ; source /usr/local/setup/ETHADDIF -realadd \$RM_newinterface
 end
 br
 EOF
 
 echo -n "" > $savefile
+
+
+#
+# This block adds the eth devices listed in /proc/net/dev.
+#
+cat /proc/net/dev | while read LINE
+do
+    ETH=`echo $LINE | grep "^eth" | cut -d: -f1`
+    if [ ! "$ETH" = "" ]; then
+	echo "begin item" >> $TMP
+	echo "name=if_${ETH}_ip" >> $TMP
+	echo "type=var" >> $TMP
+	echo "bullet=+" >> $TMP
+	echo "label=Enter IP address for ${ETH}" >> $TMP
+	echo "default=`printenv SX_NETDEV_${ETH}_IP 2> /dev/null`" >> $TMP
+	echo "end" >> $TMP
+
+	echo "begin item" >> $TMP
+	echo "name=if_${ETH}_netmask" >> $TMP
+	echo "type=var" >> $TMP
+	echo "bullet=+" >> $TMP
+	echo "label=Enter netmask/master for ${ETH}" >> $TMP
+	echo "default=`printenv SX_NETDEV_${ETH}_NETMASK 2> /dev/null`" >> $TMP
+	echo "end" >> $TMP
+	echo "br" >> $TMP
+
+	echo $ETH >> $savefile
+    fi
+done
 
 #
 # This if-statement goes through a user defined list of "virtual" interfaces.
@@ -135,7 +152,7 @@ if [ -r $EXTRAIF ]; then
 	    echo "bullet=+" >> $TMP
 	    echo "label=Remove \"${ETH}\" " >> $TMP
 	    echo "icaption=Really remove ${ETH} ?" >> $TMP
-	    echo "command=cat $EXTRAIF | grep -v \"^${ETH}\$\" > /usr/local/setup/tmp/setup.eth.$$ ; mv -f /usr/local/setup/tmp/setup.eth.$$ $EXTRAIF ; unset RM_if_${ETH}_ip RM_if_${ETH}_netmask ; exec /usr/local/setup/setup.eth -dontloadconfig" >> $TMP
+	    echo "command=cat $EXTRAIF | grep -v \"^${ETH}\$\" > /usr/local/setup/tmp/setup.eth.$$ ; mv -f /usr/local/setup/tmp/setup.eth.$$ $EXTRAIF ; unset RM_if_${ETH}_ip RM_if_${ETH}_netmask ; source /usr/local/setup/ETHERNET ; exec /usr/local/setup/setup.eth" >> $TMP
 	    echo "end" >> $TMP
 
 	    echo "br" >> $TMP
@@ -145,33 +162,6 @@ if [ -r $EXTRAIF ]; then
     done
 fi
 
-#
-# This block adds the eth devices listed in /proc/net/dev.
-#
-cat /proc/net/dev | while read LINE
-do
-    ETH=`echo $LINE | grep "^eth" | cut -d: -f1`
-    if [ ! "$ETH" = "" ]; then
-	echo "begin item" >> $TMP
-	echo "name=if_${ETH}_ip" >> $TMP
-	echo "type=var" >> $TMP
-	echo "bullet=+" >> $TMP
-	echo "label=Enter IP address for ${ETH}" >> $TMP
-	echo "default=`printenv SX_NETDEV_${ETH}_IP 2> /dev/null`" >> $TMP
-	echo "end" >> $TMP
-
-	echo "begin item" >> $TMP
-	echo "name=if_${ETH}_netmask" >> $TMP
-	echo "type=var" >> $TMP
-	echo "bullet=+" >> $TMP
-	echo "label=Enter netmask/master for ${ETH}" >> $TMP
-	echo "default=`printenv SX_NETDEV_${ETH}_NETMASK 2> /dev/null`" >> $TMP
-	echo "end" >> $TMP
-	echo "br" >> $TMP
-
-	echo $ETH >> $savefile
-    fi
-done
 
 cat <<EOF >> $TMP
 begin item

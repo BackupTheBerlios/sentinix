@@ -1,6 +1,11 @@
 #!/bin/sh
 CWD=`pwd`
 
+# make sure we don't use the default 077 sentinix umask
+umask 022
+
+[ ! "$1" = "okidoki" ] && echo "type \"make sentinix\" to compile and install." && exit 1
+
 function execinstallsh() {
     #
     # this is intended as a recursive function, allow a user to retry a

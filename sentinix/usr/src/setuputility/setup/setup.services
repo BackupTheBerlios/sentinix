@@ -34,7 +34,7 @@ done
 echo "br" >> $TMP
 echo "begin item" >> $TMP
 echo "	name=sxrunMailScanner" >> $TMP
-echo "	label=Run MailScanner+SpamAssassin with Postfix?" >> $TMP
+echo "	label=Run MailScanner with sendmail?" >> $TMP
 echo "	default=yes" >> $TMP
 if [ -e /etc/sxrunMailScanner ]; then
     echo "	type=checkbox|selected" >> $TMP

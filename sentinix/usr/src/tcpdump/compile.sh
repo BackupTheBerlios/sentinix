@@ -4,6 +4,7 @@ source ../sxarchconfig &&
 source sxconfig &&
 ./clean.sh &&
 tar -xzf tcpdump-$VERSION.tar.gz &&
+tar -xzf tcpdump2ascii.tar.gz &&
 cd tcpdump-$VERSION &&
 chown -R root.root . &&
 ./configure \

@@ -17,7 +17,7 @@ do
 	if [ ! "$LINE" = "" ]; then
 	    MOD=`echo $LINE | cut -d' ' -f1`
 	    if ! /sbin/lsmod | grep -vw "^Module" | grep -w $MOD 1> /dev/null 2>&1 ; then
-		    /sbin/modprobe -s $MOD
+		/sbin/modprobe -s $MOD
 	    fi
 	fi
     fi

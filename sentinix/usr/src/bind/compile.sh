@@ -17,7 +17,7 @@ zcat $CWD/bind.var.run.named.diff.gz | patch -Np1 &&
 chown -R root.root . &&
 
 # Threads break '-u' on Linux (for now)
-CFLAGS="-O2 $SXARCHFLAGS" LDFLAGS=-s ./configure \
+CFLAGS="-O2 $SXARCHFLAGS -fstack-protector" LDFLAGS=-s ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \

@@ -1,7 +1,7 @@
 #
 # Makefile for SENTINIX
 #
-# $Id: Makefile,v 1.11 2004/01/19 04:52:05 replikan Exp $
+# $Id: Makefile,v 1.12 2004/02/01 23:32:48 replikan Exp $
 #
 none:
 	@echo
@@ -27,7 +27,7 @@ none:
 	@echo
 
 sentinix:
-	@./install-all.sh
+	@./install-all.sh okidoki
 
 packages:
 	@./mkpackages.sh

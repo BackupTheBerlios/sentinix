@@ -5,7 +5,7 @@ source ../sxarchconfig || exit 1
 source sxconfig || exit 1
 
 php_configure() {
-CFLAGS="-O2 $SXARCHFLAGS" ./configure --prefix=/usr \
+CFLAGS="-O2 $SXARCHFLAGS -fstack-protector" ./configure --prefix=/usr \
 	$* \
 	--enable-discard-path \
 	--with-config-file-path=/etc/apache \
@@ -47,7 +47,7 @@ echo
 echo -e "\033[1mUnpacking PHP\033[0m"
 echo
 rm -rf php-$PHPVER 2> /dev/null
-tar -xzvf php-$PHPVER.tar.gz &&
+tar -xzf php-$PHPVER.tar.gz &&
 cd php-$PHPVER &&
 chown -R root.root . &&
 # make the standalone interpreter:

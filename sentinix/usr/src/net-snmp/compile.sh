@@ -7,7 +7,7 @@ source sxconfig &&
 tar -xzf net-snmp-$VERSION.tar.gz &&
 cd net-snmp-$VERSION &&
 chown -R root.root . &&
-./configure \
+CFLAGS="-O2 $SXARCHFLAGS -fstack-protector" ./configure \
     --prefix=/usr \
     --host=$SXARCH-$SXSYSNAME-linux \
     --with-mib-modules="host smux" \

@@ -5,7 +5,7 @@ source sxconfig &&
 tar -xzf openssl-$VERSION.tar.gz &&
 cd openssl-$VERSION &&
 chown -R root.root . &&
-./config --prefix=/usr --openssldir=/etc/ssl 386 no-mdc2 no-idea no-rc5 &&
+./config --prefix=/usr --openssldir=/etc/ssl -fstack-protector 386 no-mdc2 no-idea no-rc5 &&
 make depend &&
 make &&
 make test

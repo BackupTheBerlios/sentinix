@@ -70,7 +70,7 @@ do
 		echo "Run \"setup\" and enter e.g. \"bond0\" in the Netmask/master field for $ETH."
 	    fi
 	elif [ ! "$IP" = "" -a ! "$NETMASK" = "" ]; then
-    	    BROADCAST=`/bin/ipmask $NETMASK $IP | cut -f1 '-d '`
+	    BROADCAST=`/bin/ipmask $NETMASK $IP | cut -f1 '-d '`
 	    NETWORK=`/bin/ipmask $NETMASK $IP | cut -f2 '-d '`
 	    echo -e "\033[1mConfiguring $ETH with IP $IP and netmask $NETMASK.\033[0m"
 	    /sbin/ifconfig $ETH $IP broadcast $BROADCAST netmask $NETMASK

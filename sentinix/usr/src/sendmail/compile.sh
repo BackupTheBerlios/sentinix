@@ -18,4 +18,4 @@ sed -e "s@^\(include(\`/usr/share/sendmail-cf/m4/cf.m4')\)@dnl \1@" $CWD/sendmai
 sh Build sendmail-sentinix.cf &&
 
 cd $CWD/sendmail-$VERSION &&
-make O="-O2 $SXARCHFLAGS"
+make O="-O2 $SXARCHFLAGS -fstack-protector"

@@ -4,11 +4,12 @@ CWD=`pwd`
 source ../sxarchconfig &&
 source sxconfig &&
 ./clean.sh &&
-tar -xzvf samba-$VERSION.tar.gz &&
+echo "untaring samba-$VERSION.tar.gz" &&
+tar -xzf samba-$VERSION.tar.gz &&
 cd samba-$VERSION &&
 #zcat $CWD/samba.ssl.diff.gz | patch -p1 --verbose --backup --suffix=.orig &&
 cd source &&
-LIBS="-lssl -lcrypto" CFLAGS="$SXARCHFLAGS" ./configure \
+LIBS="-lssl -lcrypto" CFLAGS="$SXARCHFLAGS -fstack-protector" ./configure \
 	--prefix=/usr \
 	--localstatedir=/var \
 	--bindir=/usr/bin \

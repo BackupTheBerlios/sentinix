@@ -14,4 +14,4 @@ if [ ! "$2" = "" ]; then
 fi
 
 # re-run setup.eth
-exec /usr/local/setup/setup.eth -dontloadconfig
+exec /usr/local/setup/setup.eth

@@ -25,8 +25,8 @@ echo
 echo -e "\033[1mUnpacking Apache $VERSION\033[0m"
 echo
 ./clean.sh &&
-tar -xzvf apache_$VERSION.tar.gz &&
-tar -xzvf mod_ssl-$MODSSLVER.tar.gz &&
+tar -xzf apache_$VERSION.tar.gz &&
+tar -xzf mod_ssl-$MODSSLVER.tar.gz &&
 cd $CWD/mod_ssl-$MODSSLVER &&
 zcat $CWD/mod_ssl-sdbm.diff.gz | patch -Np1 &&
 chown -R root.root . &&
@@ -47,7 +47,7 @@ chown -R root.root . &&
 # apply gdbm_compat patch
 patch -Np1 -i $CWD/gdbm_compat.patch &&
 # configuring apache
-EAPI=SYSTEM ./configure \
+CFLAGS="-O2 $SXARCHFLAGS -fstack-protector" EAPI=SYSTEM ./configure \
     --with-layout=Sentinix \
     --enable-module=most \
     --enable-shared=max \

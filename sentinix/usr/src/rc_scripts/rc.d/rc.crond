@@ -1,0 +1,28 @@
+#!/bin/sh
+#
+# start Dillon's crond
+#
+
+function start_crond {
+    # if you want something to be logged, change -l10 to -l8
+    # -l10 will not log anything
+    /usr/sbin/crond -l10 >>/var/log/cron 2>&1
+}
+
+function stop_crond {
+    killall crond
+}
+
+
+case "$1" in
+    'start')
+	start_crond ;;
+    'stop')
+	stop_crond ;;
+    'restart')
+	stop_crond
+	sleep 1
+	start_crond ;;
+    *)
+	echo "usage: $0 start|stop|restart" ;;
+esac

@@ -7,7 +7,15 @@ unset LDFLAGS
 source ../sxarchconfig &&
 source sxconfig &&
 ./clean.sh &&
-tar -xvzf gcc-$VERSION.tar.gz &&
+echo "Unpacking gcc-$VERSION, please wait..." &&
+tar -xzf gcc-$VERSION.tar.gz &&
+# install protector
+( mkdir protector &&
+  cd protector &&
+  tar -xzf $CWD/protector-3.3-7.tar.gz &&
+  cd $CWD/gcc-$VERSION/gcc &&
+  patch -p1 -i $CWD/protector/protector.dif &&
+  cp $CWD/protector/protector.{c,h} . ) &&
 cd gcc-$VERSION &&
 chown -R root.root . &&
 patch -Np1 -i $CWD/gcc-$VERSION-no_fixincludes.patch &&

@@ -18,4 +18,4 @@ find . -perm 775 -exec chmod 755 {} \; &&
     --sysconfdir=/etc \
     --bindir=/usr/sbin \
     --host=$SXARCH-$SXSYSNAME-linux &&
-make CFLAGS="-O2 $SXARCHFLAGS" LDFLAGS=-s
+make CFLAGS="-O2 $SXARCHFLAGS -fstack-protector" LDFLAGS=-s

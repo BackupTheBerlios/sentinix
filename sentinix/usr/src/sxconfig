@@ -5,23 +5,24 @@
 #
 SRC="mop00 linux man-pages glibc binutils-prestep binutils gcc coreutils \
 zlib findutils gawk ncurses vim libtermcap m4 bison less groff sed flex \
-gettext tcpip gdbm perl whois texinfo autoconf automake bash mop01 file \
-libtool bin86 bzip2 diffutils ed kbd hdparm e2fsprogs grep gzip which man \
-nasm lilo make modutils patch procinfo procps psmisc shadow sysklogd \
-sysvinit tar util-linux gcc-2.95.3 linuxmandocs calcpercent installwatch \
+gettext tcpip inetd gdbm perl whois texinfo autoconf automake bash mop01 file \
+libtool bin86 bzip2 diffutils ed kbd hdparm e2fsprogs reiserfsprogs grep \
+gzip which man nasm lilo make modutils patch procinfo procps psmisc shadow \
+sysklogd sysvinit tar util-linux gcc-2.95.3 linuxmandocs calcpercent \
+installwatch \
 mop02 \
 gdb strace ksymoops bsd_db mailx traceroute popt logrotate nano iptables \
 libpng libjpeg freetype glib minicom mm libpcap tcpdump readline openssl wget \
 curl nail lynx gmp mysql gd apache portmap cyrus-sasl openldap samba eject \
 cron dhcp dhcpcd parted debianutils openssh bind bc ntp biew gpm mop03 mc \
-pure-ftpd libnet nmap netcat lftp raidtools zoneinfo links slocate \
-cdrtools infozip usleep sendmail procmail oggvorbis mad sox mpg321 \
-nfs-utils bchunk gcal mhash http_fetcher fetch fping qstat radiusclient net-snmp \
-nessus nagios snort bmon replimenu dialog openmosix-tools rexima \
-cdparanoia cdp gnupg sharkwrapper python sysstat fblogo clamav \
-perlmodules spamassassin mailscanner pine ngrep ansirem announceuptime \
-ipaudit tcptrace lsof makedev ipfm iptraf ettercap rcs cvs libol syslog-ng \
-screen \
-syswideconfig rc_scripts setuputility cgitoolkit rrdtool \
+pure-ftpd libnet libnids dsniff nmap netwox scapy netcat lftp raidtools \
+zoneinfo links slocate cdrtools infozip usleep sendmail procmail oggvorbis \
+mad sox mpg321 nfs-utils bchunk gcal mhash http_fetcher fetch fping qstat \
+radiusclient net-snmp nessus nagios snort bmon replimenu dialog \
+openmosix-tools rexima cdparanoia cdp gnupg sharkwrapper python sysstat \
+fblogo clamav perlmodules spamassassin mailscanner pine ngrep ansirem \
+announceuptime ipaudit tcptrace lsof makedev ipfm iptraf ettercap rsync \
+rcs cvs libol syslog-ng screen \
+syswideconfig rc_scripts setuputility cgitoolkit rrdtool ntop \
 cacti snortcenter bandwidthd \
 mysqldatabases mop04"

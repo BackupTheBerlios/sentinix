@@ -1,5 +1,5 @@
 #
-# $Id: service.sh,v 1.3 2004/01/19 04:52:06 replikan Exp $
+# $Id: service.sh,v 1.4 2004/02/01 23:32:49 replikan Exp $
 #
 # service.sh - (c) 2004 Michel Blomgren
 # for SENTINIX and/or Slackware style /etc/rc.d/rc.* scripts
@@ -51,4 +51,4 @@ check_rc_status /etc/rc.d/rc.$SERVICE || exit 1
 # shift all command line variables (remove $1 from command)
 shift 1
 
-/etc/rc.d/rc.$SERVICE $@
+exec /etc/rc.d/rc.$SERVICE $@

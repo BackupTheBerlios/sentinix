@@ -3,10 +3,9 @@
 # Start the Apache web server
 #
 
-apachestartssl()
-{
+function apachestartssl {
     if [ ! -e /etc/apache/ssl.crt/server.crt -o ! -e /etc/apache/ssl.key/server.key ]; then    
-	# automatically generate an SSL server certificate
+	# automatically generate SSL server certificates
 	/usr/local/sbin/mkapachecert -f
     fi
     /usr/sbin/apachectl startssl

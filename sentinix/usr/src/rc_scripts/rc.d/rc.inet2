@@ -13,7 +13,7 @@
 # Modified for Slackware by Patrick Volkerding <volkerdi@slackware.com>
 #
 # Yet further modified for SENTINIX by Michel Blomgren <michel@sentinix.org>  =)
-# $Id: rc.inet2,v 1.11 2004/01/19 04:52:06 replikan Exp $
+# $Id: rc.inet2,v 1.12 2004/02/01 23:32:49 replikan Exp $
 #
 
 # set up firewall
@@ -60,16 +60,13 @@ if [ -x /etc/rc.d/rc.tcp_syncookies ]; then
 fi
 
 # Start the inetd server:
-if [ -x /usr/sbin/inetd ]; then
-    echo "Starting inetd (Internet super-server daemon, /usr/sbin/inetd)."
-    /usr/sbin/inetd
-else
-    echo "WARNING:  /usr/sbin/inetd not found."
+if [ -x /etc/rc.d/rc.inetd ]; then
+    /etc/rc.d/rc.inetd start
 fi
 
 # Start the OpenSSH SSH daemon:
 if [ -x /etc/rc.d/rc.sshd ]; then
-     /etc/rc.d/rc.sshd start
+    /etc/rc.d/rc.sshd start
 fi
 
 # Start bind, the name server daemon.
@@ -93,33 +90,7 @@ if [ -x /etc/rc.d/rc.nfsd ]; then
   /etc/rc.d/rc.nfsd start
 fi
 
-# # Start the network routing daemon:
-# if [ -x /usr/sbin/routed ]; then
-#   echo "Starting network routing daemon:  /usr/sbin/routed"
-#   /usr/sbin/routed -g -s
-# fi
-# # Done starting the network routing daemon.
-
-# # Start the system status server:
-# if [ -x /usr/sbin/rwhod ]; then
-#   echo "Starting system status server:  /usr/sbin/rwhod"
-#   /usr/sbin/rwhod
-# fi
-# # Done starting the system status server.
-
 # Start NIS (the Network Information Service):
 if [ -x /etc/rc.d/rc.yp ]; then
     /etc/rc.d/rc.yp start
 fi
-
-#  # Fire up the PC-NFS daemon(s).  This is a primarily obsolete system, and may
-#  # not be very secure.  It's not at all needed for normal NFS server support.
-#  # You probably should not run this.
-#  if [ -x /usr/sbin/rpc.pcnfsd ]; then
-#    echo "Starting PC-NFS daemons:  /usr/sbin/rpc.pcnfsd /usr/sbin/rpc.bwnfsd"
-#    /usr/sbin/rpc.pcnfsd /var/spool/lpd
-#  fi
-#  if [ -x /usr/sbin/rpc.bwnfsd ]; then
-#    /usr/sbin/rpc.bwnfsd /var/spool/lpd
-#  fi
-#  # Done firing up the PC-NFS daemons.

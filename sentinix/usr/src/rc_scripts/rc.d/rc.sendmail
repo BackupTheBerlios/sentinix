@@ -1,0 +1,81 @@
+#!/bin/sh
+#
+# Sendmail and MailScanner init script for SENTINIX
+#
+# Author: Michel Blomgren <michel@sentinix.org>
+#
+
+unset sendmail
+unset mailscanner
+unset mspidfile
+
+sendmail=/usr/sbin/sendmail
+mailscanner=/usr/components/mailscanner/bin/check_mailscanner
+mspidfile=/usr/componenets/mailscanner/var/MailScanner.pid
+
+function start_sendmail {
+    if [ ! -x $sendmail ]; then
+	echo -e "\033[0;31merror: $sendmail is not executable!\033[0m"
+	return 1
+    fi
+
+    if [ "$MS" = "y" ]; then
+	echo -e "\033[1mStarting sendmail+MailScanner\033[0m"
+	mtaline="$sendmail -bd -ODeliveryMode=queueonly -OQueueDirectory=/var/spool/mqueue.in"
+	echo "Starting sendmail MTA queue-only: $mtaline"
+	$mtaline
+
+	mtaline="$sendmail -q15m"
+	echo "Starting sendmail queue-runner for /var/spool/mqueue: $mtaline"
+	$mtaline
+
+	if [ -x $mailscanner ]; then
+	    $mailscanner
+        else
+	    echo -e "\033[0;31m$mailscanner is not executable!\033[0m"
+        fi
+    else
+	echo -e "\033[1mStarting sendmail\033[0m"
+
+	mtaline="$sendmail -bd -q25m"
+	echo "Starting sendmail MTA: $mtaline"
+	$mtaline
+    fi
+}
+
+function stop_sendmail {
+    if [ "$MS" = "y" ]; then
+	if [ -e $mspidfile ]; then
+	    kill `cat $mspidfile`
+	fi
+    fi
+    killall sendmail
+}
+
+##############################################################
+
+unset MS
+if [ -e /etc/sxrunMailScanner ]; then
+    MS=y
+else
+    MS=n
+fi
+
+case "$1" in
+    'start')
+	start_sendmail ;;
+    'stop')
+	stop_sendmail ;;
+    'restart')
+	echo "Restarting sendmail, please wait..."
+	stop_sendmail
+	if [ "$MS" = "y" ]; then
+	    sleep 4
+	else
+	    sleep 2
+	fi
+	start_sendmail ;;
+    *)
+	echo "usage: $0 start|stop|restart" ;;
+esac
+

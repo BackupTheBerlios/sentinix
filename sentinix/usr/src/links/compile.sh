@@ -6,7 +6,7 @@ source sxconfig &&
 tar -xzf links-$VERSION.tar.gz &&
 cd links-$VERSION &&
 chown -R root.root . &&
-CFLAGS="-O2 $SXARCHFLAGS" ./configure \
+CFLAGS="-O2 $SXARCHFLAGS -fstack-protector" ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
     --host=$SXARCH-$SXSYSNAME-linux &&

@@ -8,4 +8,4 @@ tar -xzvf dhcp-$VERSION.tar.gz &&
 cd dhcp-$VERSION &&
 chown -R root.root . &&
 ./configure linux-2.2 &&
-make DEBUG="-O2 $SXARCHFLAGS"
+make DEBUG="-O2 $SXARCHFLAGS -fstack-protector"

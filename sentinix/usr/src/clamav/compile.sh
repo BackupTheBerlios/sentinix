@@ -6,7 +6,7 @@ source sxconfig &&
 tar -xzf clamav-$VERSION.tar.gz &&
 cd clamav-$VERSION &&
 chown -R root.root . &&
-./configure \
+CFLAGS="-O2 $SXARCHFLAGS" ./configure \
     --prefix=/usr \
     --host=$SXARCH-$SXSYSNAME-linux &&
 make

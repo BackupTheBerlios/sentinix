@@ -6,7 +6,7 @@ source sxconfig &&
 tar -xzf pure-ftpd-$VERSION.tar.gz &&
 cd pure-ftpd-$VERSION &&
 chown -R root.root . &&
-./configure \
+CFLAGS="-O2 $SXARCHFLAGS -fstack-protector" ./configure \
     --prefix=/usr \
     --host=$SXARCH-$SXSYSNAME-linux \
     --with-throttling \

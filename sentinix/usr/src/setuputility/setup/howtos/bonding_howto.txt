@@ -33,6 +33,8 @@ netmask/master fields for eth0 and eth1 write "bond0". Now enter the IP
 address (or "dhcp") and netmask (if IP="dhcp", leave netmask blank) you
 want for the bond0 interface. Save and exit.
 
+Press "q" to return to replimenu.
+
 May the source be with you!
 http://sentinix.org
 

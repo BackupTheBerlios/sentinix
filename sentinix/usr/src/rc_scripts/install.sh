@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: install.sh,v 1.11 2004/01/19 04:52:06 replikan Exp $
+# $Id: install.sh,v 1.12 2004/02/01 23:32:49 replikan Exp $
 CWD=`pwd`
 
 cd /etc &&

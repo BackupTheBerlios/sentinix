@@ -1,5 +1,5 @@
 #!/bin/sh
 
 source sxconfig &&
-cd libnet &&
+cd Libnet-$VERSION &&
 make install

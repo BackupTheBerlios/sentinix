@@ -6,7 +6,7 @@ include sxconfig
 $(PKG): install
 
 compile:
-	@echo "sorry, no \"compile\", try \"make\" of \"make install\" instead."
+	@echo "sorry, no \"compile\", try \"make\" or \"make install\" instead."
 
 install:
 	./install.sh

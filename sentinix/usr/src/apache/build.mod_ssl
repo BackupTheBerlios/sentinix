@@ -15,7 +15,7 @@ echo
 echo -e "\033[1mConfiguring mod_ssl $MODSSLVER\033[0m"
 echo
 
-./configure --with-apxs=/usr/sbin/apxs \
+CFLAGS="-O2 $SXARCHFLAGS -fstack-protector" ./configure --with-apxs=/usr/sbin/apxs \
 	--with-crt=/etc/apache/mod_ssl/server.crt \
 	--with-key=/etc/apache/mod_ssl/server.key \
 	--with-patch=/usr/bin/patch \

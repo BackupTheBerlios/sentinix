@@ -7,7 +7,7 @@ source sxconfig &&
 tar -xzf lynx${VERSION}.tar.gz &&
 cd lynx${UNTARVER} &&
 chown -R root.root . &&
-./configure \
+CFLAGS="-O2 $SXARCHFLAGS -fstack-protector" ./configure \
     --prefix=/usr \
     --libdir=/usr/lib/lynx \
     --sysconfdir=/etc \

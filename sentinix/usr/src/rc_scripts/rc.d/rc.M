@@ -7,7 +7,7 @@
 # Original version found in Slackware 8.1, adapted (and modified) for
 # SENTINIX by Michel Blomgren.
 #
-# $Id: rc.M,v 1.11 2004/01/19 04:52:06 replikan Exp $
+# $Id: rc.M,v 1.12 2004/02/01 23:32:49 replikan Exp $
 #
 
 echo -e "\033[1mEntering multi-user runlevel...\033[0m"
@@ -55,9 +55,9 @@ if [ -x /etc/rc.d/rc.keymap ]; then
     /etc/rc.d/rc.keymap
 fi
 
-# Start ntpd:
-if [ -x /etc/rc.d/rc.ntpd ]; then
-    /etc/rc.d/rc.ntpd start
+# start Dillon's crond:
+if [ -x /etc/rc.d/rc.crond ]; then
+    /etc/rc.d/rc.crond
 fi
 
 # Fire up openMosix cluster
@@ -65,16 +65,14 @@ if [ -x /etc/rc.d/rc.openmosix ]; then
     /etc/rc.d/rc.openmosix start
 fi
 
-# Start crond (Dillon's crond):
-# If you want cron to actually log activity to /var/log/cron, then change
-# -l10 to -l8 to increase the logging level.
-if [ -x /usr/sbin/crond ]; then
-    /usr/sbin/crond -l10 >>/var/log/cron 2>&1
+# Start ntpd:
+if [ -x /etc/rc.d/rc.ntpd ]; then
+    /etc/rc.d/rc.ntpd start
 fi
 
-# Start the Postfix daemon:
-if [ -x /etc/rc.d/rc.postfix ]; then
-    /etc/rc.d/rc.postfix start
+# Start Sendmail:
+if [ -x /etc/rc.d/rc.sendmail ]; then
+    /etc/rc.d/rc.sendmail start
 fi
 
 # Start MySQL:
