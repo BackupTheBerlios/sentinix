@@ -7,7 +7,7 @@
 #
 # You may want to comment out or uncomment some stuff below.
 #
-# $Id: rc.network_security_tweak,v 1.4 2004/01/16 00:25:45 replikan Exp $
+# $Id: rc.network_security_tweak,v 1.5 2004/01/16 02:03:52 replikan Exp $
 #
 
 # nice function for putting 1 in multiple files:
