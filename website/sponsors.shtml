@@ -6,7 +6,7 @@ This page was put up to gratefully thank those who have contributed with financi
 to the SENTINIX project.
 </p>
 
-<h2>SPONSORSHIP & DONATIONS</h2>
+<h2>SPONSORSHIP</h2>
 
 <p>
 <ul type=square>
@@ -20,19 +20,17 @@ A dear friend who has provided financial, moral, hardware (and a lot more)
 support.
 </p>
 
-<li><p><b>Edwin Thornhill</b> - ethornhill&nbsp;[at]&nbsp;charter.net<br>
-Donations and mirror provider.
-</p>
+<h2>DONATIONS</h2>
 
-<li><p><b>William O'Malley</b><br>
-Donations.
-</p>
+<li>Edwin Thornhill (donations and mirror provider).
+<li>William O'Malley
+<li>Bryan Lockwood
 
 </ul>
 </p>
 
 
-<h2>MIRROR SPONSORS</h2>
+<h2>MIRROR PROVIDERS</h2>
 <p>
 <ul type=square>
 
@@ -60,7 +58,8 @@ HTTP (ISO images).
 </p>
 
 
-
-
+<p>
+<small><i>$Id: sponsors.shtml,v 1.2 2004/01/09 16:27:06 replikan Exp $</i></small>
+</p>
 
 <!--#include virtual="bottom.html"-->

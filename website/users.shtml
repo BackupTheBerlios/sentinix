@@ -1,0 +1,20 @@
+<!--#include virtual="top.html"-->
+
+<h1>USERS</h1>
+
+<p>
+This page will include a list of corporations, government bodies and
+organizations that use SENTINIX (and wish to be listed).
+</p>
+
+<p>
+<ul>
+    <li>Your company/organization name and location goes here. Send an e-mail to <a href="mailto:michel (at) sentinix.org">michel (at) sentinix.org</a> if you want to get listed!
+</ul>
+</p>
+
+<p>
+<small><i>$Id: users.shtml,v 1.1 2004/01/09 16:27:07 replikan Exp $</i></small>
+</p>
+
+<!--#include virtual="bottom.html"-->
